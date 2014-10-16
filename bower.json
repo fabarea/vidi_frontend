@@ -1,0 +1,8 @@
+{
+  "name": "vidi_frontend",
+  "version": "1.0.0",
+  "ignore": [],
+  "dependencies": {
+    "datatables": "~1.10.3"
+  }
+}
