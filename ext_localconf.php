@@ -4,12 +4,12 @@ if (!defined('TYPO3_MODE')) {
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'vidi_frontend',
+	'Fab.vidi_frontend',
 	'Pi1',
 	array(
-		'Request' => 'index, list',
+		'Content' => 'index, list',
 	),
 	array(
-		'Request' => 'list',
+		'Content' => 'list',
 	)
 );

@@ -1,0 +1,54 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<ROOT>
+		<type>array</type>
+		<el>
+			<!--<switchableControllerActions>-->
+				<!--<TCEforms>-->
+					<!--<label>Actions</label>-->
+					<!--<onChange>reload</onChange>-->
+					<!--<config>-->
+						<!--<type>select</type>-->
+						<!--<items type="array">-->
+							<!--<numIndex index="1">-->
+								<!--<numIndex index="0">-->
+									<!--New request-->
+								<!--</numIndex>-->
+								<!--<numIndex index="1">Content->index;Content->list;Content->show;</numIndex>-->
+							<!--</numIndex>-->
+						<!--</items>-->
+						<!--<size>1</size>-->
+					<!--</config>-->
+				<!--</TCEforms>-->
+			<!--</switchableControllerActions>-->
+			<settings.dataType>
+				<TCEforms>
+					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.content_type</label>
+					<config>
+						<type>select</type>
+						<items>
+							<numIndex index="0">
+								<numIndex index="0">LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.select</numIndex>
+								<numIndex index="1"></numIndex>
+							</numIndex>
+						</items>
+						<itemsProcFunc>Fab\VidiFrontend\UserFunction\TceForms->fetchDataTypes</itemsProcFunc>
+						<size>1</size>
+						<maxitems>1</maxitems>
+					</config>
+				</TCEforms>
+			</settings.dataType>
+			<settings.defaultNumberOfItems>
+				<TCEforms>
+					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.content_type</label>
+					<config>
+						<type>input</type>
+						<default>10</default>
+					</config>
+				</TCEforms>
+			</settings.defaultNumberOfItems>
+		</el>
+	</ROOT>
+</T3DataStructure>

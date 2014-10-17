@@ -5,6 +5,27 @@
 <f:layout name="Default"/>
 
 <f:section name="main">
-	asdf
+	<div>Search Bar</div>
+
+	<table class="table table-striped table-hover"
+	       id="content-list">
+		<thead>
+		<tr class="t3-row-header">
+			<f:for each="{columns}" key="columnName" as="configuration">
+				<th>
+					<f:if condition="{v:grid.column.header(name: '{columnName}')}">
+						<f:then>
+							<f:format.raw>{v:grid.column.header(name: '{columnName}')}</f:format.raw>
+						</f:then>
+						<f:else>
+							<v:grid.column.title />
+						</f:else>
+					</f:if>
+				</th>
+			</f:for>
+		</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
 </f:section>
 </html>

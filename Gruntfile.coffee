@@ -137,32 +137,29 @@ module.exports = (grunt) ->
 
 	########## concat css + js ############
 		concat:
-			css:
-				src: [
-					"<%= directory.temporary %>/Source/*.css"
-					"<%= directory.source %>/StyleSheets/**/*.css"
-				],
-				dest: "<%= directory.temporary %>/Build/site.css",
+#			css:
+#				src: [
+#					"<%= directory.temporary %>/Source/*.css"
+#					"<%= directory.source %>/StyleSheets/**/*.css"
+#				],
+#				dest: "<%= directory.temporary %>/Build/site.css",
 			options:
 				separator: "\n"
 			js:
 				src: [
-					"<%= directory.components %>/jquery/dist/jquery.min.js"
-					#"<%= directory.components %>/modernizr/modernizr.js" comment out if needed!!
-					"<%= directory.components %>/bootstrap/dist/js/bootstrap.min.js"
-					"<%= directory.ext_jquerycolorbox %>/js/main.js"
+					"<%= directory.components %>/datatables/media/js/jquery.dataTables.min.js"
 					"<%= directory.temporary %>/main.min.js"
 				]
-				dest: "<%= directory.build %>/JavaScript/site.min.js"
+				dest: "<%= directory.build %>/JavaScript/app.min.js"
 
 	########## Watcher ############
 		watch:
-			css:
-				files: [
-					"<%= directory.source %>/StyleSheets/**/*.scss"
-					"<%= directory.source %>/StyleSheets/**/*.css"
-				]
-				tasks: ["build-css"]
+#			css:
+#				files: [
+#					"<%= directory.source %>/StyleSheets/**/*.scss"
+#					"<%= directory.source %>/StyleSheets/**/*.css"
+#				]
+#				tasks: ["build-css"]
 			js:
 				files: ["<%= jshint.files %>"]
 				tasks: ["build-js"]
@@ -200,8 +197,7 @@ module.exports = (grunt) ->
 	# Tasks
 	#grunt.registerTask "build", ["build-js", "build-css", "build-icons"]
 	grunt.registerTask "build", ["build-js"]
-	#grunt.registerTask "build-js", ["jshint", "uglify", "concat:js", "clean"]
-	grunt.registerTask "build-js", ["copy"]
+	grunt.registerTask "build-js", ["jshint", "uglify", "concat:js", "clean"]
 #	grunt.registerTask "build-css", ["sass", "concat:css", "import", "cssmin", "clean"]
 #	grunt.registerTask "build-icons", ["pngmin", "gifmin", "jpgmin","copy", "clean"]
 #	grunt.registerTask "css", ["build-css"]

@@ -37,8 +37,21 @@ class ContentController extends ActionController {
 	 */
 	public function indexAction() {
 
-		return '12321';
-		#$this->view->assign('columns', TcaService::grid()->getFields());
+		$dataType = '';
+		$columns = array();
+
+		if (!empty($this->settings['dataType'])) {
+			$dataType = $this->settings['dataType'];
+			$fields = TcaService::grid($dataType)->getFields();
+			unset($fields['__checkbox'], $fields['__buttons']); // First, remove system columns...
+			foreach ($fields as $field => $configuration) {
+				if (TcaService::grid($dataType)->isVisible($field)) {
+					$columns[$field] = $configuration;
+				}
+			}
+		}
+		$this->view->assign('dataType', $dataType);
+		$this->view->assign('columns', $columns);
 	}
 
 	/**
