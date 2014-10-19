@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "ignore": [],
   "dependencies": {
-    "datatables": "~1.10.3"
+    "datatables": "~1.10.3",
+    "datatables-plugins": "*"
   }
 }
