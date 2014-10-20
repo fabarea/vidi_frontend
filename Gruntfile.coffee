@@ -73,8 +73,25 @@ module.exports = (grunt) ->
 					"<%= directory.build %>/StyleSheets/vidi_frontend.min.css": ".tmp/replace/jquery.dataTables.css"
 			css_bootstrap:
 				files:
-					"<%= directory.build %>/StyleSheets/vidi_frontend.bootstrap.min.css": ".tmp/replace/dataTables.bootstrap.css"
+					"<%= directory.build %>/StyleSheets/vidi_frontend.bootstrap.min.css": [
+						".tmp/replace/dataTables.bootstrap.css"
+						"<%= sass.css.files[0].dest %>"
+					]
 
+	##
+	# StyleSheet: compiling to CSS
+	##
+		sass:
+			css:
+				options:
+				# output_style = expanded or nested or compact or compressed
+					style: "expanded"
+					sourcemap: 'none'
+
+				files: [
+					src: "<%= directory.source %>/StyleSheets/Sass/main.scss"
+					dest: ".tmp/sass/main.css"
+				]
 
 	##
 	# StyleSheet: importation of "external" stylesheets form third party extensions.
@@ -132,49 +149,61 @@ module.exports = (grunt) ->
 				globals:
 					jQuery: true
 					console: true
-					module: true
-					document: true
-					Modernizr: true
+					define: true
+					require: true
+					VidiFrontend: true
 
 	##
 	# JavaScript: minimize javascript
 	##
 		uglify:
 			js:
-				target: ".tmp/uglify/main.min.js"
 				files:
-					"<%= uglify.js.target %>": "<%= jshint.files %>"
+					src: "<%= jshint.files %>"
+					dest: ".tmp/uglify/main.min.js"
 			js_bootstrap:
-				target: ".tmp/uglify/dataTables.bootstrap.min.js"
 				files:
-					"<%= uglify.js_bootstrap.target %>": "<%= directory.components %>/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js"
+					src: "<%= directory.components %>/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js"
+					dest: ".tmp/uglify/dataTables.bootstrap.min.js"
 
 	########## concat css + js ############
 		concat:
-#			css:
-#				src: [
-#					".tmp/Source/*.css"
-#					"<%= directory.source %>/StyleSheets/**/*.css"
-#				],
-#				dest: ".tmp/Build/site.css",
 			options:
-				separator: "\n"
+				separator: "\n\n"
 			js:
 				src: [
-					"<%= directory.components %>/datatables/media/js/jquery.dataTables.min.js"
-					"<%= uglify.js.target %>"
+					"<%= directory.components %>/datatables/media/js/jquery.dataTables.js"
+					"<%= jshint.files %>"
 				]
-				dest: "<%= directory.build %>/JavaScript/vidi_frontend.min.js"
+				dest: "<%= directory.build %>/JavaScript/vidi_frontend.js"
 			js_bootstrap:
 				src: [
+					"<%= directory.components %>/datatables/media/js/jquery.dataTables.js"
+					"<%= uglify.js_bootstrap.files.src %>"
+					"<%= jshint.files %>"
+				]
+				dest: "<%= directory.build %>/JavaScript/vidi_frontend.bootstrap.js"
+			js_min:
+				src: [
 					"<%= directory.components %>/datatables/media/js/jquery.dataTables.min.js"
-					"<%= uglify.js_bootstrap.target %>"
-					"<%= uglify.js.target %>"
+					"<%= uglify.js.files.dest %>"
+				]
+				dest: "<%= directory.build %>/JavaScript/vidi_frontend.min.js"
+			js_bootstrap_min:
+				src: [
+					"<%= directory.components %>/datatables/media/js/jquery.dataTables.min.js"
+					"<%= uglify.js_bootstrap.files.dest %>"
+					"<%= uglify.js.files.dest %>"
 				]
 				dest: "<%= directory.build %>/JavaScript/vidi_frontend.bootstrap.min.js"
 
 	########## Watcher ############
 		watch:
+			css:
+				files: [
+					"<%= directory.source %>/StyleSheets/**/*.scss"
+				]
+				tasks: ["build-css"]
 			js:
 				files: ["<%= jshint.files %>"]
 				tasks: ["build-js"]
@@ -199,6 +228,7 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks "grunt-contrib-jshint"
 	grunt.loadNpmTasks "grunt-contrib-watch"
 	grunt.loadNpmTasks "grunt-contrib-concat"
+	grunt.loadNpmTasks "grunt-contrib-sass";
 	grunt.loadNpmTasks "grunt-contrib-cssmin"
 	grunt.loadNpmTasks "grunt-contrib-copy"
 	grunt.loadNpmTasks "grunt-contrib-clean"
@@ -212,10 +242,7 @@ module.exports = (grunt) ->
 	# Tasks
 	grunt.registerTask "build", ["build-js", "build-css", "build-icons"]
 	grunt.registerTask "build-js", ["jshint", "uglify", "concat"]
-	grunt.registerTask "build-css", ["replace", "cssmin"]
+	grunt.registerTask "build-css", ["sass", "replace", "cssmin"]
 	grunt.registerTask "build-icons", ["pngmin"]
-	#	grunt.registerTask "css", ["build-css"]
-	#	grunt.registerTask "js", ["build-js"]
-	#	grunt.registerTask "icons", ["build-icons"]
 	grunt.registerTask "default", ["help"]
 	return
