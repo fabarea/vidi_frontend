@@ -19,11 +19,14 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Vidi\Domain\Model\Content;
 use TYPO3\CMS\Vidi\Mvc\JsonView;
 use TYPO3\CMS\Vidi\Mvc\JsonResult;
+use TYPO3\CMS\Vidi\Persistence\Matcher;
 use TYPO3\CMS\Vidi\Persistence\MatcherObjectFactory;
 use TYPO3\CMS\Vidi\Persistence\OrderObjectFactory;
 use TYPO3\CMS\Vidi\Persistence\PagerObjectFactory;
 use TYPO3\CMS\Vidi\Signal\ProcessContentDataSignalArguments;
 use TYPO3\CMS\Vidi\Tca\TcaService;
+use TYPO3\CMS\VidiFrontend\Persistence\MatcherFactory;
+use TYPO3\CMS\VidiFrontend\Persistence\OrderFactory;
 
 /**
  * Controller which handles actions related to Vidi in the Backend.
@@ -37,11 +40,13 @@ class ContentController extends ActionController {
 	 */
 	public function indexAction() {
 
-		$dataType = '';
+		$dataType = $this->settings['dataType'];
+		if (empty($dataType)) {
+			return 'Missing data type value in plugin';
+		}
 		$columns = array();
 
 		if (!empty($this->settings['dataType'])) {
-			$dataType = $this->settings['dataType'];
 			$fields = TcaService::grid($dataType)->getFields();
 			unset($fields['__checkbox'], $fields['__buttons']); // First, remove system columns...
 			foreach ($fields as $field => $configuration) {
@@ -50,8 +55,25 @@ class ContentController extends ActionController {
 				}
 			}
 		}
+
+		// Initialize some objects related to the query.
+		$matcher = MatcherFactory::getInstance()->getMatcher(array(), $dataType);
+		$order = OrderFactory::getInstance()->getOrder($dataType);
+		$pager = PagerObjectFactory::getInstance()->getPager();
+
+		// Fetch objects via the Content Service.
+		$contentService = $this->getContentService($dataType)->findBy($matcher, $order, $pager->getLimit(), $pager->getOffset());
+		$pager->setCount($contentService->getNumberOfObjects());
+
+		// Assign values.
+		$this->view->assign('settings', $this->settings);
+		$this->view->assign('tableIdentifier', uniqid('table-'));
 		$this->view->assign('dataType', $dataType);
 		$this->view->assign('columns', $columns);
+
+		$this->view->assign('objects', $contentService->getObjects());
+		$this->view->assign('numberOfObjects', $contentService->getNumberOfObjects());
+		$this->view->assign('pager', $pager);
 	}
 
 	/**
@@ -96,26 +118,13 @@ class ContentController extends ActionController {
 	}
 
 	/**
-	 * Render an edit URI given an object.
-	 *
-	 * @param Content $object
-	 * @return string
-	 */
-	protected function getEditUri(Content $object) {
-		return sprintf('alt_doc.php?returnUrl=%s&edit[%s][%s]=edit',
-			rawurlencode($this->getModuleLoader()->getModuleUrl()),
-			rawurlencode($object->getDataType()),
-			$object->getUid()
-		);
-	}
-
-	/**
 	 * Get the Vidi Module Loader.
 	 *
-	 * @return \TYPO3\CMS\Vidi\Service\ContentService
+	 * @param string $dataType
+	 * @return \TYPO3\CMS\VidiFrontend\Service\ContentService
 	 */
-	protected function getContentService() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Service\ContentService');
+	protected function getContentService($dataType) {
+		return GeneralUtility::makeInstance('TYPO3\CMS\VidiFrontend\Service\ContentService', $dataType);
 	}
 
 	/**
@@ -187,7 +196,7 @@ class ContentController extends ActionController {
 	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 */
 	protected function getSignalSlotDispatcher() {
-		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		return $this->objectManager->get('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
 	}
 
 	/**
