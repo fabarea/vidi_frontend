@@ -2,8 +2,12 @@
 	$(function() {
 
 		/**
-		 * Activate light box for EXT:news.
+		 * Activate DataTables for all instances
 		 */
-		console.log(123);
-	}); // end of closure
+		for (var i = 0; i < VidiFrontend.instances.length; i++) {
+			var instance = VidiFrontend.instances[i];
+			$('#' + instance.id).dataTable();
+		}
+
+	});
 })(jQuery);
