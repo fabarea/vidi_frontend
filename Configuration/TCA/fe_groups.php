@@ -9,36 +9,12 @@ $tca = array(
 			'description',
 		),
 		'columns' => array(
-			'__checkbox' => array(
-				'renderer' => new \TYPO3\CMS\Vidi\Grid\CheckBoxComponent(),
-			),
 			'uid' => array(
-				'visible' => FALSE,
 				'label' => 'Id',
 				'width' => '5px',
 			),
 			'title' => array(
-				'visible' => TRUE,
 				'label' => 'LLL:EXT:vidi/Resources/Private/Language/fe_groups.xlf:title',
-				'editable' => TRUE,
-			),
-			'tstamp' => array(
-				'visible' => FALSE,
-				'format' => 'date',
-				'label' => 'LLL:EXT:vidi/Resources/Private/Language/locallang.xlf:tstamp',
-			),
-			'crdate' => array(
-				'visible' => FALSE,
-				'format' => 'date',
-				'label' => 'LLL:EXT:vidi/Resources/Private/Language/locallang.xlf:crdate',
-			),
-			'hidden' => array(
-				'renderer' => 'TYPO3\CMS\Vidi\Grid\VisibilityRenderer',
-				'label' => 'LLL:EXT:vidi/Resources/Private/Language/locallang.xlf:visibility_abbreviation',
-				'width' => '3%',
-			),
-			'__buttons' => array(
-				'renderer' => new \TYPO3\CMS\Vidi\Grid\ButtonGroupComponent(),
 			),
 		),
 	),
