@@ -29,14 +29,16 @@ class TceForms {
 	public function fetchDataTypes(&$parameters, $parentObject = NULL) {
 
 		foreach ($GLOBALS['TCA'] as $dataType => $tca) {
-			$label = sprintf(
-				'%s (%s)',
-				TcaService::table($dataType)->getTitle(),
-				$dataType
-			);
-			$values = array($label, $dataType, NULL);
+			if (isset($GLOBALS['TCA'][$dataType]['grid_frontend'])) {
+				$label = sprintf(
+					'%s (%s)',
+					TcaService::table($dataType)->getTitle(),
+					$dataType
+				);
+				$values = array($label, $dataType, NULL);
 
-			$parameters['items'][] = $values;
+				$parameters['items'][] = $values;
+			}
 		}
 	}
 }

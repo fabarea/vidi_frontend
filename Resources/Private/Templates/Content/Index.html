@@ -9,7 +9,7 @@
 	<div>Search Bar</div>
 
 	<script>
-		var tableIdentifier = '{tableIdentifier}';
+		var gridIdentifier = '{gridIdentifier}';
 		var dataTableDom = "<'row'<'col-xs-6'f><'col-xs-6'l>r>" +
 				"<'row'<'col-xs-12't>>" +
 				"<'row'<'col-xs-6'i><'col-xs-6'p>>";
@@ -25,14 +25,14 @@
 		}
 
 		var instance = {
-			id: tableIdentifier
+			id: gridIdentifier
 		};
 		VidiFrontend.instances.push(instance);
 
 		]]>
 	</script>
 
-	<table id="{tableIdentifier}" class="{settings.className}" id="content-list" cellspacing="0" width="100%">
+	<table id="{gridIdentifier}" class="{settings.grid.className}" id="content-list" cellspacing="0" width="100%">
 		<thead>
 		<tr class="t3-row-header">
 			<f:for each="{columns}" key="columnName" as="configuration">

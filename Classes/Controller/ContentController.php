@@ -15,11 +15,11 @@ namespace Fab\VidiFrontend\Controller;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Vidi\Domain\Model\Content;
 use TYPO3\CMS\Vidi\Mvc\JsonView;
 use TYPO3\CMS\Vidi\Mvc\JsonResult;
-use TYPO3\CMS\Vidi\Persistence\Matcher;
 use TYPO3\CMS\Vidi\Persistence\MatcherObjectFactory;
 use TYPO3\CMS\Vidi\Persistence\OrderObjectFactory;
 use TYPO3\CMS\Vidi\Persistence\PagerObjectFactory;
@@ -42,18 +42,7 @@ class ContentController extends ActionController {
 
 		$dataType = $this->settings['dataType'];
 		if (empty($dataType)) {
-			return 'Missing data type value in plugin';
-		}
-		$columns = array();
-
-		if (!empty($this->settings['dataType'])) {
-			$fields = TcaService::grid($dataType)->getFields();
-			unset($fields['__checkbox'], $fields['__buttons']); // First, remove system columns...
-			foreach ($fields as $field => $configuration) {
-				if (TcaService::grid($dataType)->isVisible($field)) {
-					$columns[$field] = $configuration;
-				}
-			}
+			return 'Missing configuration in plugin Vidi Frontend. Please, give a Content Type.';
 		}
 
 		// Initialize some objects related to the query.
@@ -67,9 +56,9 @@ class ContentController extends ActionController {
 
 		// Assign values.
 		$this->view->assign('settings', $this->settings);
-		$this->view->assign('tableIdentifier', uniqid('table-'));
+		$this->view->assign('gridIdentifier', uniqid('grid-'));
 		$this->view->assign('dataType', $dataType);
-		$this->view->assign('columns', $columns);
+		$this->view->assign('columns', $this->getFrontendGridService($dataType)->getFields());
 
 		$this->view->assign('objects', $contentService->getObjects());
 		$this->view->assign('numberOfObjects', $contentService->getNumberOfObjects());
@@ -204,5 +193,13 @@ class ContentController extends ActionController {
 	 */
 	protected function getLanguageService() {
 		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Language\LanguageService');
+	}
+
+	/**
+	 * @param string $dataType
+	 * @return \Fab\VidiFrontend\Tca\FrontendGridService
+	 */
+	protected function getFrontendGridService($dataType) {
+		return GeneralUtility::makeInstance('Fab\VidiFrontend\Tca\FrontendGridService', $dataType);
 	}
 }

@@ -28,27 +28,21 @@
 					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.content_type</label>
 					<config>
 						<type>select</type>
-						<items>
-							<numIndex index="0">
-								<numIndex index="0">LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.select</numIndex>
-								<numIndex index="1"></numIndex>
-							</numIndex>
-						</items>
 						<itemsProcFunc>Fab\VidiFrontend\UserFunction\TceForms->fetchDataTypes</itemsProcFunc>
 						<size>1</size>
 						<maxitems>1</maxitems>
 					</config>
 				</TCEforms>
 			</settings.dataType>
-			<settings.className>
+			<settings.isVisualSearchBar>
 				<TCEforms>
-					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.table_css_class</label>
+					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.is_visual_search_bar</label>
 					<config>
-						<type>input</type>
-						<default>table table-striped table-hover</default>
+						<type>check</type>
+						<default>0</default>
 					</config>
 				</TCEforms>
-			</settings.className>
+			</settings.isVisualSearchBar>
 			<!--<settings.defaultNumberOfItems>-->
 				<!--<TCEforms>-->
 					<!--<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.number_of_items</label>-->

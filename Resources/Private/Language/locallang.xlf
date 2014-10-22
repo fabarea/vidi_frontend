@@ -9,11 +9,11 @@
 			<trans-unit id="flexform.content_type">
 				<source>Content Type</source>
 			</trans-unit>
-			<trans-unit id="flexform.table_css_class">
-				<source>Table CSS class</source>
-			</trans-unit>
 			<trans-unit id="flexform.number_of_items">
 				<source>Table CSS class</source>
+			</trans-unit>
+			<trans-unit id="flexform.is_visual_search_bar">
+				<source>Display the Visual Search bar</source>
 			</trans-unit>
 		</body>
 	</file>

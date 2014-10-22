@@ -7,9 +7,9 @@ if (!defined('TYPO3_MODE')) {
 	'Fab.vidi_frontend',
 	'Pi1',
 	array(
-		'Content' => 'index, list',
+		'Content' => 'index, list, show',
 	),
 	array(
-		'Content' => 'list',
+		'Content' => 'list, show',
 	)
 );
