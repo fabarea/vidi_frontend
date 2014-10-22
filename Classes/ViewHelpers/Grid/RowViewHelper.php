@@ -14,6 +14,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\VidiFrontend\Tca\FrontendTcaService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Vidi\Domain\Model\Content;
@@ -25,9 +26,10 @@ use TYPO3\CMS\Vidi\Tca\TcaService;
 class RowViewHelper extends AbstractViewHelper {
 
 	/**
-	 * @var array
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 * @inject
 	 */
-	#protected $columns = array();
+	protected $configurationManager;
 
 	/**
 	 * Registry for storing variable values and speed up the processing.
@@ -47,35 +49,31 @@ class RowViewHelper extends AbstractViewHelper {
 		$configuration = $this->templateVariableContainer->get('configuration');
 		$dataType = $object->getDataType();
 
-		$value = '';
+		// Fetch value
+		if (FrontendTcaService::grid($dataType)->hasRenderers($fieldNameAndPath)) {
 
-		try {
+			$value = '';
+			$renderers = FrontendTcaService::grid($dataType)->getRenderers($fieldNameAndPath);
 
-			// Fetch value
-			if (TcaService::grid($dataType)->hasRenderers($fieldNameAndPath)) {
+			// if is relation has one
+			foreach ($renderers as $rendererClassName => $rendererConfiguration) {
 
-				$value = '';
-				$renderers = TcaService::grid($dataType)->getRenderers($fieldNameAndPath);
+				$rendererConfiguration['uriBuilder'] = $this->controllerContext->getUriBuilder();
+				$rendererConfiguration['contentElement'] = $this->configurationManager->getContentObject();
 
-				// if is relation has one
-				foreach ($renderers as $rendererClassName => $rendererConfiguration) {
-
-					/** @var $rendererObject \TYPO3\CMS\Vidi\Grid\GridRendererInterface */
-					$rendererObject = GeneralUtility::makeInstance($rendererClassName);
-					$value .= $rendererObject
-						->setObject($object)
-						->setFieldName($fieldNameAndPath)
-						#->setRowIndex($rowIndex)
-						->setFieldConfiguration($configuration)
-						->setGridRendererConfiguration($rendererConfiguration)
-						->render();
-				}
-			} else {
-				$value = $this->resolveValue($object, $fieldNameAndPath);
-				$value = $this->processValue($value, $object, $fieldNameAndPath); // post resolve processing.
+				/** @var $rendererObject \TYPO3\CMS\Vidi\Grid\GridRendererInterface */
+				$rendererObject = GeneralUtility::makeInstance($rendererClassName);
+				$value .= $rendererObject
+					->setObject($object)
+					->setFieldName($fieldNameAndPath)
+					#->setRowIndex($rowIndex)
+					->setFieldConfiguration($configuration)
+					->setGridRendererConfiguration($rendererConfiguration)
+					->render();
 			}
-		} catch(\Exception $e) {
-			// do nothing
+		} else {
+			$value = $this->resolveValue($object, $fieldNameAndPath);
+			$value = $this->processValue($value, $object, $fieldNameAndPath); // post resolve processing.
 		}
 
 		// Possible formatting given by configuration. @see TCA['grid']

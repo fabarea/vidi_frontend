@@ -14,8 +14,9 @@ namespace Fab\VidiFrontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\VidiFrontend\Plugin\PluginParameter;
+use Fab\VidiFrontend\Tca\FrontendTcaService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Vidi\Domain\Model\Content;
 use TYPO3\CMS\Vidi\Mvc\JsonView;
@@ -24,7 +25,6 @@ use TYPO3\CMS\Vidi\Persistence\MatcherObjectFactory;
 use TYPO3\CMS\Vidi\Persistence\OrderObjectFactory;
 use TYPO3\CMS\Vidi\Persistence\PagerObjectFactory;
 use TYPO3\CMS\Vidi\Signal\ProcessContentDataSignalArguments;
-use TYPO3\CMS\Vidi\Tca\TcaService;
 use TYPO3\CMS\VidiFrontend\Persistence\MatcherFactory;
 use TYPO3\CMS\VidiFrontend\Persistence\OrderFactory;
 
@@ -34,16 +34,34 @@ use TYPO3\CMS\VidiFrontend\Persistence\OrderFactory;
 class ContentController extends ActionController {
 
 	/**
+	 * @throws \TYPO3\CMS\Media\Exception\StorageNotOnlineException
+	 */
+	public function initializeAction() {
+
+		if ($this->arguments->hasArgument('content')) {
+
+			/** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
+			$typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\ContentConverter');
+
+			$parameters = GeneralUtility::_GP(PluginParameter::PREFIX);
+			$propertyMappingConfiguration = $this->arguments->getArgument('content')->getPropertyMappingConfiguration();
+			$propertyMappingConfiguration->setTypeConverterOptions(
+				'Fab\VidiFrontend\TypeConverter\ContentConverter',
+				array(
+					'contentElement' => empty($parameters['contentElement']) ? 0 : (int)$parameters['contentElement'],
+				)
+			)->setTypeConverter($typeConverter);
+		}
+	}
+
+	/**
 	 * List action for this controller.
 	 *
 	 * @return void
 	 */
 	public function indexAction() {
 
-		$dataType = $this->settings['dataType'];
-		if (empty($dataType)) {
-			return 'Missing configuration in plugin Vidi Frontend. Please, give a Content Type.';
-		}
+		$dataType = empty($this->settings['dataType']) ? 'fe_users' : $this->settings['dataType'];
 
 		// Initialize some objects related to the query.
 		$matcher = MatcherFactory::getInstance()->getMatcher(array(), $dataType);
@@ -58,7 +76,7 @@ class ContentController extends ActionController {
 		$this->view->assign('settings', $this->settings);
 		$this->view->assign('gridIdentifier', uniqid('grid-'));
 		$this->view->assign('dataType', $dataType);
-		$this->view->assign('columns', $this->getFrontendGridService($dataType)->getFields());
+		$this->view->assign('columns', FrontendTcaService::grid($dataType)->getFields());
 
 		$this->view->assign('objects', $contentService->getObjects());
 		$this->view->assign('numberOfObjects', $contentService->getNumberOfObjects());
@@ -94,16 +112,11 @@ class ContentController extends ActionController {
 	}
 
 	/**
-	 * Retrieve Content objects first according to matching criteria and then "copy" them.
-	 *
-	 * Possible values for $matches, refer to method "updateAction".
-	 *
-	 * @param string $target
-	 * @param array $matches
-	 * @throws \Exception
-	 * @return string
+	 * @param Content $content
+	 * @return void
 	 */
-	public function showAction($content) {
+	public function showAction(Content $content) {
+		$this->view->assign('object', $content);
 	}
 
 	/**
@@ -195,11 +208,4 @@ class ContentController extends ActionController {
 		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Language\LanguageService');
 	}
 
-	/**
-	 * @param string $dataType
-	 * @return \Fab\VidiFrontend\Tca\FrontendGridService
-	 */
-	protected function getFrontendGridService($dataType) {
-		return GeneralUtility::makeInstance('Fab\VidiFrontend\Tca\FrontendGridService', $dataType);
-	}
 }

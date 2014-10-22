@@ -34,17 +34,13 @@ $tca = array(
 			),
 			'usergroup' => array(
 				'renderers' => array(
-					'TYPO3\CMS\Vidi\Grid\RelationEditRenderer',
 					'TYPO3\CMS\Vidi\Grid\RelationRenderer',
 				),
-				'editable' => TRUE,
-				'sortable' => FALSE,
 				'label' => 'LLL:EXT:vidi/Resources/Private/Language/fe_users.xlf:usergroup',
 			),
-			'disable' => array(
-				'renderer' => 'TYPO3\CMS\Vidi\Grid\VisibilityRenderer',
-				'label' => 'LLL:EXT:vidi/Resources/Private/Language/locallang.xlf:active',
-				'width' => '3%',
+			'__buttons' => array(
+				'label' => 'asdf',
+				'renderer' => 'Fab\VidiFrontend\Grid\ShowButtonRenderer',
 			),
 		),
 	),
