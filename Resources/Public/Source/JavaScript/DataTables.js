@@ -7,29 +7,33 @@
  */
 (function(window, document, undefined) {
 
-	var factory = function($, DataTable) {
-		"use strict";
+	// Ony works if VidiFrontend is defined.
+	if (typeof(VidiFrontend) === 'object') {
 
-		/* Set the defaults for DataTables initialisation */
-		$.extend(true, DataTable.defaults, {
-			dom: VidiFrontend.dataTable.dom,
-			renderer: 'bootstrap'
-		});
+		var factory = function($, DataTable) {
+			"use strict";
 
-	}; // /factory
+			/* Set the defaults for DataTables initialisation */
+			$.extend(true, DataTable.defaults, {
+				dom: VidiFrontend.dataTable.dom,
+				renderer: 'bootstrap'
+			});
+
+		}; // /factory
 
 
-	// Define as an AMD module if possible
-	if (typeof define === 'function' && define.amd) {
-		define(['jquery', 'datatables'], factory);
-	}
-	else if (typeof exports === 'object') {
-		// Node/CommonJS
-		factory(require('jquery'), require('datatables'));
-	}
-	else if (jQuery) {
-		// Otherwise simply initialise as normal, stopping multiple evaluation
-		factory(jQuery, jQuery.fn.dataTable);
+		// Define as an AMD module if possible
+		if (typeof define === 'function' && define.amd) {
+			define(['jquery', 'datatables'], factory);
+		}
+		else if (typeof exports === 'object') {
+			// Node/CommonJS
+			factory(require('jquery'), require('datatables'));
+		}
+		else if (jQuery) {
+			// Otherwise simply initialise as normal, stopping multiple evaluation
+			factory(jQuery, jQuery.fn.dataTable);
+		}
 	}
 
 

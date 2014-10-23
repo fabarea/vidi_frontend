@@ -15,8 +15,8 @@ namespace Fab\VidiFrontend\Grid;
  */
 
 use Fab\VidiFrontend\Plugin\PluginParameter;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Vidi\Grid\GridRendererAbstract;
 
 /**
@@ -35,7 +35,7 @@ class ShowButtonRenderer extends GridRendererAbstract {
 		$tagBuilder = $this->getObjectManager()->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
 		$tagBuilder->reset();
 		$tagBuilder->setTagName('a');
-		$tagBuilder->setContent('show');
+		$tagBuilder->setContent('<span class="glyphicon glyphicon-eye-open"></span>');
 
 		$arguments = array(
 			PluginParameter::PREFIX => array(
@@ -49,12 +49,9 @@ class ShowButtonRenderer extends GridRendererAbstract {
 		$uri = $this->getUriBuilder()->build();
 
 		$tagBuilder->addAttribute('href', $uri);
+		$tagBuilder->addAttribute('class', 'link-show');
+		$tagBuilder->addAttribute('title', LocalizationUtility::translate('showDetail', 'vidi_frontend'));
 		return $tagBuilder->render();
-
-		$template = '<div style="text-align: right" class="pull-right invisible"><a href="%s" class="btn-edit-relation">%s</a></div>';
-
-
-		return $result;
 	}
 
 
@@ -80,4 +77,5 @@ class ShowButtonRenderer extends GridRendererAbstract {
 		$configuration = $this->getGridRendererConfiguration();
 		return $configuration['contentElement'];
 	}
+
 }

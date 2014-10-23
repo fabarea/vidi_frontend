@@ -18,6 +18,9 @@
 			<trans-unit id="flexform.templateForDetailView">
 				<source>Template for the "detail" view</source>
 			</trans-unit>
+			<trans-unit id="showDetail">
+				<source>Show detail</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -9,12 +9,12 @@ $tca = array(
 			'description',
 		),
 		'columns' => array(
-			'uid' => array(
-				'label' => 'Id',
-				'width' => '5px',
-			),
 			'title' => array(
 				'label' => 'LLL:EXT:vidi/Resources/Private/Language/fe_groups.xlf:title',
+			),
+			'__buttons' => array(
+				'renderer' => 'Fab\VidiFrontend\Grid\ShowButtonRenderer',
+				'sortable' => FALSE,
 			),
 		),
 	),

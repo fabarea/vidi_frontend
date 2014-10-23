@@ -10,3 +10,11 @@ div.dataTables_length {
     float: right;
   }
 }
+
+table.dataTable {
+  tbody {
+    td {
+      cursor: pointer;
+    }
+  }
+}

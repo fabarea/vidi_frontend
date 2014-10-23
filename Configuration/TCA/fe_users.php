@@ -33,11 +33,9 @@ $tca = array(
 					'TYPO3\CMS\Vidi\Grid\RelationRenderer',
 				),
 				'label' => 'LLL:EXT:vidi/Resources/Private/Language/fe_users.xlf:usergroup',
-				'sortable' => FALSE,
 			),
 			'__buttons' => array(
 				'renderer' => 'Fab\VidiFrontend\Grid\ShowButtonRenderer',
-				'sortable' => FALSE,
 			),
 		),
 	),

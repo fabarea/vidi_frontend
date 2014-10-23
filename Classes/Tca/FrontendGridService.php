@@ -62,4 +62,23 @@ class FrontendGridService extends GridService {
 		}
 		return $label;
 	}
+
+
+	/**
+	 * Returns the "sortable" value of the column.
+	 *
+	 * @param string $fieldName
+	 * @return int|string
+	 */
+	public function isSortable($fieldName) {
+		// Fetch Frontend configuration first and check if a value is defined there.
+		$field = $this->getField($fieldName);
+
+		if (isset($field['sortable'])) {
+			$isSortable = $field['sortable'];
+		} else {
+			$isSortable = TcaService::grid($this->tableName)->isSortable($fieldName);
+		}
+		return $isSortable;
+	}
 }

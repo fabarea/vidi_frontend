@@ -14,6 +14,10 @@
 				"<'row'<'col-xs-12't>>" +
 				"<'row'<'col-xs-6'i><'col-xs-6'p>>";
 
+
+		var columns = [];
+		{vf:grid.column.configuration()}
+
 		<![CDATA[
 		if (window.VidiFrontend === undefined) {
 			window.VidiFrontend = {
@@ -25,7 +29,8 @@
 		}
 
 		var instance = {
-			id: gridIdentifier
+			id: gridIdentifier,
+			columns: columns
 		};
 		VidiFrontend.instances.push(instance);
 
