@@ -71,17 +71,49 @@ For layout not relying on Bootstrap, simply use the following. However, note thi
 .. _Bootstrap: http://getbootstrap.com/
 
 
-
 Configuration
 =============
 
-Configuration is provided mainly by TypoScript or in the plugin record itself.
+The plugin can be configured in various places such as TypoScript, PHP or in the plugin record itself.
+
+
+Register a new Content type
+---------------------------
+
+In order to have a new Content Type (such as fe_users, ...), some configuration must be added in the TCA.
+Best is to learn by example and look at the example provided within file ``EXT:vidi_frontend/Configuration/TCA/fe_users.php``.
+
+Basically, what you have to do is to create a file into your extension, **if not yet existing**::
+
+	touch EXT:foo/Configuration/TCA/tx_domain_model_foo.php
+
+
+And copy & paste and adjust the dummy example. It will declare a new Grid for the Frontend::
+
+	$tca = array(
+		'grid_frontend' => array(
+			'columns' => array(
+
+				# The field "title" of your table.
+				'title' => array(),
+
+				... <-- add your fields
+
+				# System column where to contain some
+				'__buttons' => array(
+					'renderer' => 'Fab\VidiFrontend\Grid\ShowButtonRenderer',
+					'sortable' => FALSE
+				),
+			),
+		),
+	);
+
 
 Register a new template
 -----------------------
 
-The detail view of the content can be personalized per plugin record. To register more templates, simply define them in your TS::
-This TS part is to be put under ``plugin.tx_vidifrontend.settings``::
+The detail view of the content can be personalized per plugin record. To register more templates, simply define them in your TypoScript configuration::
+This TypoScript configuration part is to be put under ``plugin.tx_vidifrontend.settings``::
 
 	templates {
 
@@ -93,7 +125,8 @@ This TS part is to be put under ``plugin.tx_vidifrontend.settings``::
 
 		# Add your own detail view
 		2 {
-			title = My title
-			path = EXT:your_ext/../Show.html
+			title = Foo detail view
+			path = EXT:foo/Resources/Private/Templates/VidiFrontend/ShowFoo.html
 		}
 	}
+

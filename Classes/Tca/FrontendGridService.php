@@ -14,8 +14,10 @@ namespace Fab\VidiFrontend\Tca;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Vidi\Exception\InvalidKeyInArrayException;
 use TYPO3\CMS\Vidi\Tca\GridService;
+use TYPO3\CMS\Vidi\Tca\TcaService;
 
 /**
  * A class to handle TCA grid configuration
@@ -41,4 +43,23 @@ class FrontendGridService extends GridService {
 		$this->tca = $GLOBALS['TCA'][$this->tableName]['grid_frontend'];
 	}
 
+	/**
+	 * Get the translation of a label given a column name.
+	 *
+	 * @param string $fieldNameAndPath
+	 * @return string
+	 */
+	public function getLabel($fieldNameAndPath) {
+		if ($this->hasLabel($fieldNameAndPath)) {
+			$field = $this->getField($fieldNameAndPath);
+			$label = LocalizationUtility::translate($field['label'], '');
+			if (is_null($label)) {
+				$label = $field['label'];
+			}
+		} else {
+			// Fetch the label from the Grid service provided by "vidi". He may know more about labels.
+			$label = TcaService::grid($this->tableName)->getLabel($fieldNameAndPath);
+		}
+		return $label;
+	}
 }

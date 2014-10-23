@@ -2,7 +2,7 @@
 if (!defined('TYPO3_MODE')) die ('Access denied.');
 
 $tca = array(
-	'grid' => array(
+	'grid_frontend' => array(
 		'facets' => array(
 			'uid',
 			'title',

@@ -20,27 +20,24 @@ $tca = array(
 		),
 		'columns' => array(
 			'uid' => array(
-				'label' => 'Id',
 				'width' => '5px',
 			),
 			'username' => array(
-				'label' => 'LLL:EXT:vidi/Resources/Private/Language/fe_users.xlf:username',
 			),
 			'name' => array(
-				'label' => 'LLL:EXT:vidi/Resources/Private/Language/fe_users.xlf:name',
 			),
 			'email' => array(
-				'label' => 'LLL:EXT:vidi/Resources/Private/Language/fe_users.xlf:email',
 			),
 			'usergroup' => array(
 				'renderers' => array(
 					'TYPO3\CMS\Vidi\Grid\RelationRenderer',
 				),
 				'label' => 'LLL:EXT:vidi/Resources/Private/Language/fe_users.xlf:usergroup',
+				'sortable' => FALSE,
 			),
 			'__buttons' => array(
-				'label' => 'asdf',
 				'renderer' => 'Fab\VidiFrontend\Grid\ShowButtonRenderer',
+				'sortable' => FALSE,
 			),
 		),
 	),

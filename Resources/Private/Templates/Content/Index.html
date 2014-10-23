@@ -37,12 +37,12 @@
 		<tr class="t3-row-header">
 			<f:for each="{columns}" key="columnName" as="configuration">
 				<th>
-					<f:if condition="{v:grid.column.header(name: '{columnName}')}">
+					<f:if condition="{vf:grid.column.header(name: '{columnName}')}">
 						<f:then>
-							<f:format.raw>{v:grid.column.header(name: '{columnName}')}</f:format.raw>
+							<f:format.raw>{vf:grid.column.header(name: '{columnName}')}</f:format.raw>
 						</f:then>
 						<f:else>
-							<v:grid.column.title/>
+							<vf:grid.column.title/>
 						</f:else>
 					</f:if>
 				</th>
