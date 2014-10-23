@@ -112,21 +112,20 @@ And copy & paste and adjust the dummy example. It will declare a new Grid for th
 Register a new template
 -----------------------
 
-The detail view of the content can be personalized per plugin record. To register more templates, simply define them in your TypoScript configuration::
-This TypoScript configuration part is to be put under ``plugin.tx_vidifrontend.settings``::
+The detail view of the content can be personalized per plugin record. To register more templates, simply define them in your TypoScript configuration
+This TypoScript will typically be put under within ``EXT:foo/Configuration/TypoScript/setup.txt``
 
-	templates {
+	plugin.tx_vidifrontend {
+		settings {
+			templates {
 
-		# Default TS
-		1 {
-			title = Default detail view
-			path = EXT:vidi_frontend/Resources/Private/Templates/Content/Show.html
-		}
-
-		# Add your own detail view
-		2 {
-			title = Foo detail view
-			path = EXT:foo/Resources/Private/Templates/VidiFrontend/ShowFoo.html
+				# Key "1" is already taken by the TS
+				# Use key "2", "3" and following for your own templates
+				2 {
+					title = Foo detail view
+					path = EXT:foo/Resources/Private/Templates/VidiFrontend/ShowFoo.html
+				}
+			}
 		}
 	}
 
