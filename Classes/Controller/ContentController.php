@@ -19,12 +19,9 @@ use Fab\VidiFrontend\Tca\FrontendTcaService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Vidi\Domain\Model\Content;
-use TYPO3\CMS\Vidi\Mvc\JsonView;
-use TYPO3\CMS\Vidi\Mvc\JsonResult;
 use TYPO3\CMS\Vidi\Persistence\MatcherObjectFactory;
 use TYPO3\CMS\Vidi\Persistence\OrderObjectFactory;
 use TYPO3\CMS\Vidi\Persistence\PagerObjectFactory;
-use TYPO3\CMS\Vidi\Signal\ProcessContentDataSignalArguments;
 use TYPO3\CMS\VidiFrontend\Persistence\MatcherFactory;
 use TYPO3\CMS\VidiFrontend\Persistence\OrderFactory;
 
@@ -116,6 +113,10 @@ class ContentController extends ActionController {
 	 * @return void
 	 */
 	public function showAction(Content $content) {
+
+		// Configure the template path according to the Plugin settings
+		$pathAbs = GeneralUtility::getFileAbsFileName($this->settings['template']);
+		$this->view->setTemplatePathAndFilename($pathAbs);
 		$this->view->assign('object', $content);
 	}
 
@@ -129,83 +130,83 @@ class ContentController extends ActionController {
 		return GeneralUtility::makeInstance('TYPO3\CMS\VidiFrontend\Service\ContentService', $dataType);
 	}
 
-	/**
-	 * @return \TYPO3\CMS\Vidi\Resolver\ContentObjectResolver
-	 */
-	protected function getContentObjectResolver() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Resolver\ContentObjectResolver');
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Vidi\Resolver\FieldPathResolver
-	 */
-	protected function getFieldPathResolver () {
-		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Resolver\FieldPathResolver');
-	}
-
-	/**
-	 * Return a special view for handling JSON
-	 * Goal is to have this view injected but require more configuration.
-	 *
-	 * @return JsonView
-	 */
-	protected function getJsonView() {
-		if (!$this->view instanceof JsonView) {
-			/** @var JsonView $view */
-			$this->view = $this->objectManager->get('TYPO3\CMS\Vidi\Mvc\JsonView');
-			$this->view->setResponse($this->response);
-		}
-		return $this->view;
-	}
-
-	/**
-	 * @return JsonResult
-	 */
-	protected function getJsonResult() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Mvc\JsonResult');
-	}
-
-	/**
-	 * Signal that is called for post-processing content data send to the server for update.
-	 *
-	 * @param Content $contentObject
-	 * @param $fieldNameAndPath
-	 * @param $contentData
-	 * @param $counter
-	 * @param $savingBehavior
-	 * @param $language
-	 * @return ProcessContentDataSignalArguments
-	 * @signal
-	 */
-	protected function emitProcessContentDataSignal(Content $contentObject, $fieldNameAndPath, $contentData, $counter, $savingBehavior, $language) {
-
-		/** @var \TYPO3\CMS\Vidi\Signal\ProcessContentDataSignalArguments $signalArguments */
-		$signalArguments = GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Signal\ProcessContentDataSignalArguments');
-		$signalArguments->setContentObject($contentObject)
-			->setFieldNameAndPath($fieldNameAndPath)
-			->setContentData($contentData)
-			->setCounter($counter)
-			->setSavingBehavior($savingBehavior)
-			->setLanguage($language);
-
-		$signalResult = $this->getSignalSlotDispatcher()->dispatch('TYPO3\CMS\Vidi\Controller\Backend\ContentController', 'processContentData', array($signalArguments));
-		return $signalResult[0];
-	}
-
-	/**
-	 * Get the SignalSlot dispatcher.
-	 *
-	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	protected function getSignalSlotDispatcher() {
-		return $this->objectManager->get('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Vidi\Language\LanguageService
-	 */
-	protected function getLanguageService() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Language\LanguageService');
-	}
+//	/**
+//	 * @return \TYPO3\CMS\Vidi\Resolver\ContentObjectResolver
+//	 */
+//	protected function getContentObjectResolver() {
+//		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Resolver\ContentObjectResolver');
+//	}
+//
+//	/**
+//	 * @return \TYPO3\CMS\Vidi\Resolver\FieldPathResolver
+//	 */
+//	protected function getFieldPathResolver () {
+//		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Resolver\FieldPathResolver');
+//	}
+//
+//	/**
+//	 * Return a special view for handling JSON
+//	 * Goal is to have this view injected but require more configuration.
+//	 *
+//	 * @return JsonView
+//	 */
+//	protected function getJsonView() {
+//		if (!$this->view instanceof JsonView) {
+//			/** @var JsonView $view */
+//			$this->view = $this->objectManager->get('TYPO3\CMS\Vidi\Mvc\JsonView');
+//			$this->view->setResponse($this->response);
+//		}
+//		return $this->view;
+//	}
+//
+//	/**
+//	 * @return JsonResult
+//	 */
+//	protected function getJsonResult() {
+//		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Mvc\JsonResult');
+//	}
+//
+//	/**
+//	 * Signal that is called for post-processing content data send to the server for update.
+//	 *
+//	 * @param Content $contentObject
+//	 * @param $fieldNameAndPath
+//	 * @param $contentData
+//	 * @param $counter
+//	 * @param $savingBehavior
+//	 * @param $language
+//	 * @return ProcessContentDataSignalArguments
+//	 * @signal
+//	 */
+//	protected function emitProcessContentDataSignal(Content $contentObject, $fieldNameAndPath, $contentData, $counter, $savingBehavior, $language) {
+//
+//		/** @var \TYPO3\CMS\Vidi\Signal\ProcessContentDataSignalArguments $signalArguments */
+//		$signalArguments = GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Signal\ProcessContentDataSignalArguments');
+//		$signalArguments->setContentObject($contentObject)
+//			->setFieldNameAndPath($fieldNameAndPath)
+//			->setContentData($contentData)
+//			->setCounter($counter)
+//			->setSavingBehavior($savingBehavior)
+//			->setLanguage($language);
+//
+//		$signalResult = $this->getSignalSlotDispatcher()->dispatch('TYPO3\CMS\Vidi\Controller\Backend\ContentController', 'processContentData', array($signalArguments));
+//		return $signalResult[0];
+//	}
+//
+//	/**
+//	 * Get the SignalSlot dispatcher.
+//	 *
+//	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+//	 */
+//	protected function getSignalSlotDispatcher() {
+//		return $this->objectManager->get('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
+//	}
+//
+//	/**
+//	 * @return \TYPO3\CMS\Vidi\Language\LanguageService
+//	 */
+//	protected function getLanguageService() {
+//		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Language\LanguageService');
+//	}
 
 }

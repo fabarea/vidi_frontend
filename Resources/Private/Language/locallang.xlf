@@ -15,6 +15,9 @@
 			<trans-unit id="flexform.is_visual_search_bar">
 				<source>Display the Visual Search bar</source>
 			</trans-unit>
+			<trans-unit id="flexform.templateForDetailView">
+				<source>Template for the "detail" view</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

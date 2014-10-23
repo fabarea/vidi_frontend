@@ -43,6 +43,17 @@
 					</config>
 				</TCEforms>
 			</settings.isVisualSearchBar>
+			<settings.template>
+				<TCEforms>
+					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.templateForDetailView</label>
+					<config>
+						<type>select</type>
+						<itemsProcFunc>Fab\VidiFrontend\UserFunction\TceForms->fetchTemplatesForActionShow</itemsProcFunc>
+						<size>1</size>
+						<maxitems>1</maxitems>
+					</config>
+				</TCEforms>
+			</settings.template>
 			<!--<settings.defaultNumberOfItems>-->
 				<!--<TCEforms>-->
 					<!--<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.number_of_items</label>-->
