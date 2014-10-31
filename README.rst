@@ -41,6 +41,8 @@ Once the extension activated, **load the static TypoScript template** in your ro
 .. _master branch: https://github.com/TYPO3-extensions/vidi.git
 
 
+You are almost there! Check out next paragraph how to load the JavaScript and CSS and then create a Content Element of type "Vidi Frontend" in General Plugin > "Generic List Component".
+
 Load assets files (JS / CSS)
 ----------------------------
 
@@ -119,9 +121,9 @@ This TypoScript will typically be put under within ``EXT:foo/Configuration/TypoS
 		settings {
 			templates {
 
-				# Key "1" is already taken by the TS
-				# Use key "2", "3" and following for your own templates
-				2 {
+				# Key "1", "2" is already taken by this extension.
+				# Use key "10", "11" and following for your own templates to be safe.
+				10 {
 					title = Foo detail view
 					path = EXT:foo/Resources/Private/Templates/VidiFrontend/ShowFoo.html
 				}

@@ -21,8 +21,7 @@ use TYPO3\CMS\Vidi\Persistence\Order;
 use TYPO3\CMS\Vidi\Signal\AfterFindContentObjectsSignalArguments;
 
 /**
- * File References service.
- * Find a bunch of file references given by the property name.
+ * Service related to the Content.
  */
 class ContentService {
 
@@ -110,6 +109,7 @@ class ContentService {
 	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 */
 	protected function getSignalSlotDispatcher() {
+
 		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
 		$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 		return $objectManager->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
@@ -128,4 +128,5 @@ class ContentService {
 	public function getNumberOfObjects() {
 		return $this->numberOfObjects;
 	}
+
 }

@@ -7,7 +7,7 @@ if (TYPO3_MODE == 'BE') {
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 		'Fab.vidi_frontend',
 		'Pi1',
-		'Vidi - List Component'
+		'Generic List Component'
 	);
 
 	$TCA['tt_content']['types']['list']['subtypes_addlist']['vidifrontend_pi1'] = 'pi_flexform';

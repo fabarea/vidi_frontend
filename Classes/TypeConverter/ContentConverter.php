@@ -54,23 +54,7 @@ class ContentConverter extends AbstractTypeConverter {
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), PropertyMappingConfigurationInterface $configuration = NULL) {
 
-		$contentElementIdentifier = $configuration->getConfigurationValue('Fab\VidiFrontend\TypeConverter\ContentConverter', 'contentElement');
-		$clause = sprintf('uid = %s ', $contentElementIdentifier);
-		$clause .= $this->getPageRepository()->enableFields('tt_content');
-		$clause .= $this->getPageRepository()->deleteClause('tt_content');
-		$contentElement = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tt_content', $clause);
-
-		if (empty($contentElement)) {
-			throw new \Exception('I could find Content Element with identifier: ' . $contentElementIdentifier, 1413992029);
-		}
-
-		$xml = GeneralUtility::xml2array($contentElement['pi_flexform']);
-
-		if (!empty($xml['data']['sDEF']['lDEF']['settings.dataType']['vDEF'])) {
-			$dataType = $xml['data']['sDEF']['lDEF']['settings.dataType']['vDEF'];
-		} else {
-			throw new \Exception('I could find data type in Content Element: ' . $contentElementIdentifier, 1413992029);
-		}
+		$dataType = $this->getContentType()->getCurrentType();
 
 		$contentRepository = ContentRepositoryFactory::getInstance($dataType);
 		$content = $contentRepository->findByIdentifier((int)$source);
@@ -78,21 +62,10 @@ class ContentConverter extends AbstractTypeConverter {
 	}
 
 	/**
-	 * Returns a pointer to the database.
-	 *
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 * @return \TYPO3\CMS\VidiFrontend\Service\ContentType
 	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
-	/**
-	 * Returns an instance of the page repository.
-	 *
-	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
-	 */
-	protected function getPageRepository() {
-		return $GLOBALS['TSFE']->sys_page;
+	protected function getContentType() {
+		return GeneralUtility::makeInstance('TYPO3\CMS\VidiFrontend\Service\ContentType');
 	}
 
 }

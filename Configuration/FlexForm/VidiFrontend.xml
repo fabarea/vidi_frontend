@@ -28,7 +28,7 @@
 					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.content_type</label>
 					<config>
 						<type>select</type>
-						<itemsProcFunc>Fab\VidiFrontend\UserFunction\TceForms->fetchDataTypes</itemsProcFunc>
+						<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->fetchDataTypes</itemsProcFunc>
 						<size>1</size>
 						<maxitems>1</maxitems>
 					</config>
@@ -48,7 +48,7 @@
 					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.templateForDetailView</label>
 					<config>
 						<type>select</type>
-						<itemsProcFunc>Fab\VidiFrontend\UserFunction\TceForms->fetchTemplatesForActionShow</itemsProcFunc>
+						<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->fetchTemplatesForActionShow</itemsProcFunc>
 						<size>1</size>
 						<maxitems>1</maxitems>
 					</config>

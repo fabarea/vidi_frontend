@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"
+      xmlns:f="http://typo3.org/ns/fluid/ViewHelpers"
+      xmlns:v="http://typo3.org/ns/TYPO3/CMS/Vidi/ViewHelpers"
+      xmlns:vf="http://typo3.org/ns/Fab/VidiFrontend/ViewHelpers">
+
+<f:layout name="Default"/>
+
+<f:section name="main">
+
+	<f:link.page>Back</f:link.page>
+
+	<!--
+	WARNING! We can use variable "user" because we have defined it in the setup.txt.
+	Otherwise, use variable "object" as the fallback name.
+	-->
+	<h2>{user.username} ({user.uid})</h2>
+
+	<span>Frontend User Group:</span>
+
+	<f:if condition="{user.usergroup}}">
+		<ul>
+			<f:for each="{user.usergroup}" as="group">
+				<li>{group.title}</li>
+			</f:for>
+		</ul>
+	</f:if>
+</f:section>
+</html>

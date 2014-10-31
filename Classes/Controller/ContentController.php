@@ -40,14 +40,9 @@ class ContentController extends ActionController {
 			/** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
 			$typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\ContentConverter');
 
-			$parameters = GeneralUtility::_GP(PluginParameter::PREFIX);
-			$propertyMappingConfiguration = $this->arguments->getArgument('content')->getPropertyMappingConfiguration();
-			$propertyMappingConfiguration->setTypeConverterOptions(
-				'Fab\VidiFrontend\TypeConverter\ContentConverter',
-				array(
-					'contentElement' => empty($parameters['contentElement']) ? 0 : (int)$parameters['contentElement'],
-				)
-			)->setTypeConverter($typeConverter);
+			$this->arguments->getArgument('content')
+				->getPropertyMappingConfiguration()
+				->setTypeConverter($typeConverter);
 		}
 	}
 
@@ -110,14 +105,23 @@ class ContentController extends ActionController {
 
 	/**
 	 * @param Content $content
-	 * @return void
 	 */
 	public function showAction(Content $content) {
 
-		// Configure the template path according to the Plugin settings
+		// Configure the template path according to the Plugin settings.
 		$pathAbs = GeneralUtility::getFileAbsFileName($this->settings['template']);
+		if (!is_file($pathAbs)) {
+			return sprintf('I could not find the template file <strong>%s</strong>', $pathAbs);
+		}
+
+		$variableName = 'object';
+		$dataType = $this->getContentType()->getCurrentType();
+		if (isset($this->settings['fluidVariables'][$dataType]) && basename($this->settings['template']) !== 'Show.html') {
+			$variableName = $this->settings['fluidVariables'][$dataType];
+		}
+
 		$this->view->setTemplatePathAndFilename($pathAbs);
-		$this->view->assign('object', $content);
+		$this->view->assign($variableName, $content);
 	}
 
 	/**
@@ -128,6 +132,13 @@ class ContentController extends ActionController {
 	 */
 	protected function getContentService($dataType) {
 		return GeneralUtility::makeInstance('TYPO3\CMS\VidiFrontend\Service\ContentService', $dataType);
+	}
+
+	/**
+	 * @return \TYPO3\CMS\VidiFrontend\Service\ContentType
+	 */
+	protected function getContentType() {
+		return GeneralUtility::makeInstance('TYPO3\CMS\VidiFrontend\Service\ContentType');
 	}
 
 //	/**

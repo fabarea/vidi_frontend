@@ -1,5 +1,5 @@
 <?php
-namespace Fab\VidiFrontend\UserFunction;
+namespace Fab\VidiFrontend\Backend;
 
 /**
  * This file is part of the TYPO3 CMS project.
