@@ -127,3 +127,33 @@ This TypoScript will typically be put under within ``EXT:foo/Configuration/TypoS
 		}
 	}
 
+
+Building assets in development
+==============================
+
+The extension provides JS / CSS bundles which included all the necessary code. If you need to make a new build for those JS / CSS files,
+consider that `Bower`_ and `Grunt`_ must be installed on your system as prerequisite.
+
+Install the required Web Components::
+
+	cd typo3conf/ext/vidi_upload
+
+	# This will populate the directory Resources/Public/WebComponents.
+	bower install
+
+	# Install the necessary NodeJS package.
+	npm install
+
+
+Then, you can run the Grunt of the extension to generate a build::
+
+	cd typo3conf/ext/vidi_upload
+	grunt build
+
+While developing, you can use the ``watch`` which will generate the build as you edit files::
+
+	grunt watch
+
+
+.. _Bower: http://bower.io/
+.. _Grunt: http://gruntjs.com/

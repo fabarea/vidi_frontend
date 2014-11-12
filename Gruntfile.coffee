@@ -158,13 +158,15 @@ module.exports = (grunt) ->
 	##
 		uglify:
 			js:
-				files:
+				files: [
 					src: "<%= jshint.files %>"
 					dest: ".tmp/uglify/main.min.js"
+				]
 			js_bootstrap:
-				files:
+				files: [
 					src: "<%= directory.components %>/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js"
 					dest: ".tmp/uglify/dataTables.bootstrap.min.js"
+				]
 
 	########## concat css + js ############
 		concat:
@@ -179,21 +181,21 @@ module.exports = (grunt) ->
 			js_bootstrap:
 				src: [
 					"<%= directory.components %>/datatables/media/js/jquery.dataTables.js"
-					"<%= uglify.js_bootstrap.files.src %>"
+					"<%= uglify.js_bootstrap.files[0].src %>"
 					"<%= jshint.files %>"
 				]
 				dest: "<%= directory.build %>/JavaScript/vidi_frontend.bootstrap.js"
 			js_min:
 				src: [
 					"<%= directory.components %>/datatables/media/js/jquery.dataTables.min.js"
-					"<%= uglify.js.files.dest %>"
+					"<%= uglify.js.files[0].dest %>"
 				]
 				dest: "<%= directory.build %>/JavaScript/vidi_frontend.min.js"
 			js_bootstrap_min:
 				src: [
 					"<%= directory.components %>/datatables/media/js/jquery.dataTables.min.js"
-					"<%= uglify.js_bootstrap.files.dest %>"
-					"<%= uglify.js.files.dest %>"
+					"<%= uglify.js_bootstrap.files[0].dest %>"
+					"<%= uglify.js.files[0].dest %>"
 				]
 				dest: "<%= directory.build %>/JavaScript/vidi_frontend.bootstrap.min.js"
 
