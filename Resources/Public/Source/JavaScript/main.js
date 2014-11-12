@@ -16,7 +16,7 @@
 				$('#' + instance.id).dataTable(options);
 			}
 
-			$('table.dataTable').find('tr').on('click', function(e) {
+			$('table.dataTable').find('tbody').find('tr').on('click', function(e) {
 				var url;
 				if (e.target instanceof HTMLInputElement || e.target instanceof HTMLAnchorElement){
 					return;
