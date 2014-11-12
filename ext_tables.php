@@ -17,6 +17,3 @@ if (TYPO3_MODE == 'BE') {
 	);
 
 }
-
-// Add static TypoScript
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('vidi_frontend', 'Configuration/TypoScript', 'Vidi Frontend');

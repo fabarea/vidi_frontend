@@ -51,6 +51,7 @@ class TceForms {
 	 */
 	public function fetchTemplatesForActionShow(&$parameters, $parentObject = NULL) {
 		$configuration = $this->getPluginConfiguration();
+
 		if (empty($configuration) || empty($configuration['settings']['templates'])) {
 			$parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
 		} else {
@@ -69,13 +70,12 @@ class TceForms {
 	 */
 	protected function getPluginConfiguration() {
 		$setup = $this->getConfigurationManager()->getTypoScriptSetup();
-		$extensionName = 'vidifrontend';
 
 		$pluginConfiguration = array();
-		if (is_array($setup['plugin.']['tx_' . strtolower($extensionName) . '.'])) {
+		if (is_array($setup['plugin.']['tx_vidifrontend.'])) {
 			/** @var \TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService */
 			$typoScriptService = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Service\TypoScriptService');
-			$pluginConfiguration = $typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . strtolower($extensionName) . '.']);
+			$pluginConfiguration = $typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_vidifrontend.']);
 		}
 		return $pluginConfiguration;
 	}

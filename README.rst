@@ -35,8 +35,6 @@ Install the extension as normal in the Extension Manager or download the Git ver
 
 	-> next step, is to open the Extension Manager in the BE.
 
-Once the extension activated, **load the static TypoScript template** in your root TS template.
-
 .. _TER: typo3.org/extensions/repository/
 .. _master branch: https://github.com/TYPO3-extensions/vidi.git
 
@@ -50,24 +48,22 @@ In order the plugin to work, it is required to load some JavaScript and CSS. It 
 
 Having `Bootstrap`_ integration, you can use::
 
-	# JavaScript
-	EXT:vidi_frontend/Resources/Public/Build/JavaScript/vidi_frontend.bootstrap.min.js
-
 	# CSS
 	EXT:vidi_frontend/Resources/Public/Build/StyleSheets/vidi_frontend.bootstrap.min.css
+
+	# JavaScript
+	EXT:vidi_frontend/Resources/Public/Build/JavaScript/vidi_frontend.bootstrap.min.js
 
 For your information there is an un-compressed JavaScript version for debug purpose, simply remove the ``min`` segment at the end of the file:
 
 
 For layout not relying on Bootstrap, simply use the following. However, note this version has be less tested as of this writing::
 
-
-	# JavaScript
-	EXT:vidi_frontend/Resources/Public/Build/JavaScript/vidi_frontend.min.js
-
 	# CSS
 	EXT:vidi_frontend/Resources/Public/Build/StyleSheets/vidi_frontend.min.css
 
+	# JavaScript
+	EXT:vidi_frontend/Resources/Public/Build/JavaScript/vidi_frontend.min.js
 
 .. _DataTable: http://www.datatables.net/
 .. _Bootstrap: http://getbootstrap.com/
