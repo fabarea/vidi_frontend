@@ -17,3 +17,18 @@ if (TYPO3_MODE == 'BE') {
 	);
 
 }
+
+/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+
+/** @var $signalSlotDispatcher \TYPO3\CMS\Extbase\SignalSlot\Dispatcher */
+$signalSlotDispatcher = $objectManager->get('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
+
+// Connect "postFileIndex" signal slot with the metadata service.
+$signalSlotDispatcher->connect(
+	'TYPO3\CMS\Vidi\Tca\Tca',
+	'preProcessTca',
+	'Fab\VidiFrontend\Configuration\TcaTweak',
+	'tweakFileReferences',
+	TRUE
+);
