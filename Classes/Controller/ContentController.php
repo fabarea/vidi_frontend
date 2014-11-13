@@ -128,17 +128,17 @@ class ContentController extends ActionController {
 	 * Get the Vidi Module Loader.
 	 *
 	 * @param string $dataType
-	 * @return \TYPO3\CMS\VidiFrontend\Service\ContentService
+	 * @return \Fab\VidiFrontend\Service\ContentService
 	 */
 	protected function getContentService($dataType) {
-		return GeneralUtility::makeInstance('TYPO3\CMS\VidiFrontend\Service\ContentService', $dataType);
+		return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentService', $dataType);
 	}
 
 	/**
-	 * @return \TYPO3\CMS\VidiFrontend\Service\ContentType
+	 * @return \Fab\VidiFrontend\Service\ContentType
 	 */
 	protected function getContentType() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\VidiFrontend\Service\ContentType');
+		return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentType');
 	}
 
 //	/**

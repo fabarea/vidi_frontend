@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\VidiFrontend\Service;
+namespace Fab\VidiFrontend\Service;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -44,7 +44,7 @@ class ContentService {
 	 * Constructor
 	 *
 	 * @param string $dataType
-	 * @return \TYPO3\CMS\VidiFrontend\Service\ContentService
+	 * @return \Fab\VidiFrontend\Service\ContentService
 	 */
 	public function __construct($dataType) {
 		$this->dataType = $dataType;
@@ -99,7 +99,7 @@ class ContentService {
 			->setOffset($offset)
 			->setHasBeenProcessed(FALSE);
 
-		$signalResult = $this->getSignalSlotDispatcher()->dispatch('TYPO3\CMS\VidiFrontend\Service\ContentService', 'afterFindContentObjects', array($signalArguments));
+		$signalResult = $this->getSignalSlotDispatcher()->dispatch('Fab\VidiFrontend\Service\ContentService', 'afterFindContentObjects', array($signalArguments));
 		return $signalResult[0];
 	}
 

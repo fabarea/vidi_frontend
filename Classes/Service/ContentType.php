@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\VidiFrontend\Service;
+namespace Fab\VidiFrontend\Service;
 
 /**
  * This file is part of the TYPO3 CMS project.

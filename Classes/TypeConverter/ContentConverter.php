@@ -62,10 +62,10 @@ class ContentConverter extends AbstractTypeConverter {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\VidiFrontend\Service\ContentType
+	 * @return \Fab\VidiFrontend\Service\ContentType
 	 */
 	protected function getContentType() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\VidiFrontend\Service\ContentType');
+		return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentType');
 	}
 
 }
