@@ -18,17 +18,10 @@ if (TYPO3_MODE == 'BE') {
 
 }
 
-/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-
-/** @var $signalSlotDispatcher \TYPO3\CMS\Extbase\SignalSlot\Dispatcher */
-$signalSlotDispatcher = $objectManager->get('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
-
-// Connect "postFileIndex" signal slot with the metadata service.
-$signalSlotDispatcher->connect(
-	'TYPO3\CMS\Vidi\Tca\Tca',
-	'preProcessTca',
-	'Fab\VidiFrontend\Configuration\TcaTweak',
-	'tweakFileReferences',
-	TRUE
-);
+// Register cache for this extension
+//if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['vidi_frontend_cache'])) {
+//	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['vidi_frontend_cache'] = array();
+//	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['vidi_frontend_cache']['frontend'] = 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend';
+//	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['vidi_frontend_cache']['backend'] = 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend';
+//	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['vidi_frontend_cache']['options']['compression'] = 1;
+//}
