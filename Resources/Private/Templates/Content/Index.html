@@ -6,17 +6,18 @@
 <f:layout name="Default"/>
 
 <f:section name="main">
-	<div>Search Bar</div>
 
 	<script>
 		var gridIdentifier = '{gridIdentifier}';
-		var dataTableDom = "<'row'<'col-xs-6'f><'col-xs-6'l>r>" +
-				"<'row'<'col-xs-12't>>" +
-				"<'row'<'col-xs-6'i><'col-xs-6'p>>";
+		var dataTableDom = "{vf:visualSearch.configuration()}";
 
-
+		// Columns configuration
 		var columns = [];
 		{vf:grid.column.configuration()}
+
+		// Labels
+		var labels = {};
+		{vf:grid.column.localization()}
 
 		<![CDATA[
 		if (window.VidiFrontend === undefined) {
@@ -30,8 +31,10 @@
 
 		var instance = {
 			id: gridIdentifier,
-			columns: columns
+			columns: columns,
+			language: labels
 		};
+
 		VidiFrontend.instances.push(instance);
 
 		]]>
