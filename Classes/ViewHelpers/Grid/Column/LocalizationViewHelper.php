@@ -31,6 +31,8 @@ class LocalizationViewHelper extends AbstractViewHelper {
 	 */
 	public function render() {
 		$output = '';
+
+		// The list of labels.
 		$labels = array(
 			'processing',
 			'search',
@@ -43,34 +45,6 @@ class LocalizationViewHelper extends AbstractViewHelper {
 			'emptyTable',
 		);
 
-		/**
-		 *
-
-
-		"processing":     "",
-		"search":         "",
-		"lengthMenu":     "",
-		"info":           "",
-		"infoEmpty":      "",
-		"infoFiltered":   "",
-		"infoPostFix":    "",
-		"loadingRecords": "",
-		"zeroRecords":    "",
-		"emptyTable":     "",
-		"paginate": {
-			"first":      "",
-			"previous":   "",
-			"next":       "",
-			"last":       ""
-		},
-		"aria": {
-			"sortAscending":  "",
-			"sortDescending": ""
-		}
-
-		 *
-		 *
-		 */
 		foreach($labels as $label) {
 			$output .= sprintf('labels["%s"] = "%s";' . PHP_EOL,
 				$label,
