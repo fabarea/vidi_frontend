@@ -146,12 +146,14 @@ module.exports = (grunt) ->
 				boss: true
 				eqnull: true
 				browser: true
+				loopfunc: true
 				globals:
 					jQuery: true
 					console: true
 					define: true
 					require: true
 					VidiFrontend: true
+					VS: true
 
 	##
 	# JavaScript: minimize javascript
