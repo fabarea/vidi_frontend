@@ -17,4 +17,12 @@ table.dataTable {
       cursor: pointer;
     }
   }
+
+  thead {
+    tr {
+      th {
+        padding-left: 8px;
+      }
+    }
+  }
 }
