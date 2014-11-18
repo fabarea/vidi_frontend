@@ -14,7 +14,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid\Column;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Fab\VidiFrontend\Tca\FrontendTcaService;
+use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -36,6 +36,7 @@ class LocalizationViewHelper extends AbstractViewHelper {
 		$labels = array(
 			'processing',
 			'search',
+			'searchPlaceholder',
 			'lengthMenu',
 			'info',
 			'infoEmpty',

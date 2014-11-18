@@ -1,29 +1,25 @@
 (function($) {
 	$(function() {
 
-
 		/**
-		 * Activate DataTables for all instances.
-		 * Ony works if VidiFrontend is defined.
+		 * Activate the Grid and the Visual Search bar for all instances.
 		 */
 		if (typeof(VidiFrontend) === 'object') {
-
-			for (var i = 0; i < VidiFrontend.instances.length; i++) {
-				var instance = VidiFrontend.instances[i];
-				var options = {
-					columns: instance.columns
-				};
-				$('#' + instance.id).dataTable(options);
-			}
-
-			$('table.dataTable').find('tbody').find('tr').on('click', function(e) {
-				var url;
-				if (e.target instanceof HTMLInputElement || e.target instanceof HTMLAnchorElement){
-					return;
-				}
-				url = $(this).closest('tr').find('.link-show').attr('href');
-				window.location.href = url;
-			});
+			VidiFrontend.Grid.initialize($);
+			VidiFrontend.VisualSearch.initialize($);
 		}
+
+		/**
+		 * Clicking on a row will open the detail view.
+		 */
+		$('table.dataTable').find('tbody').find('tr').on('click', function(e) {
+			var url;
+			if (e.target instanceof HTMLInputElement || e.target instanceof HTMLAnchorElement) {
+				return;
+			}
+			url = $(this).closest('tr').find('.link-show').attr('href');
+			window.location.href = url;
+		});
+
 	});
 })(jQuery);

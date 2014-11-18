@@ -7,8 +7,17 @@
 
 <f:section name="main">
 
+	<f:if condition="{settings.isVisualSearchBar}">
+		<style>
+			.dataTables_filter {
+				visibility: hidden;
+			}
+		</style>
+	</f:if>
+
 	<script>
-		var gridIdentifier = '{gridIdentifier}';
+		var dataType = "{dataType}";
+		var gridIdentifier = '{gridIdentifier}' - 0;
 		var dataTableDom = "{vf:visualSearch.configuration()}";
 
 		// Columns configuration
@@ -19,28 +28,37 @@
 		var labels = {};
 		{vf:grid.column.localization()}
 
+		// Facets
+		var facets = {vf:grid.facets()};
+
+		// Facet suggestions
+		var suggestions = {vf:grid.suggestions()};
+
 		<![CDATA[
 		if (window.VidiFrontend === undefined) {
 			window.VidiFrontend = {
-				instances: [],
+				settings: {},
+				bars: {},
+				grids: {},
 				dataTable: {
 					dom: dataTableDom
 				}
 			};
 		}
 
-		var instance = {
+		VidiFrontend.settings[gridIdentifier] = {
 			id: gridIdentifier,
+			dataType: dataType,
 			columns: columns,
-			language: labels
+			language: labels,
+			facets: facets,
+			suggestions: suggestions
 		};
-
-		VidiFrontend.instances.push(instance);
 
 		]]>
 	</script>
 
-	<table id="{gridIdentifier}" class="{settings.grid.className}" cellspacing="0" width="100%">
+	<table id="grid-{gridIdentifier}" class="{settings.grid.className}" cellspacing="0" width="100%">
 		<thead>
 		<tr class="t3-row-header">
 			<f:for each="{columns}" key="columnName" as="configuration">
@@ -57,17 +75,7 @@
 			</f:for>
 		</tr>
 		</thead>
-		<tbody>
-		<f:for each="{objects}" as="object">
-			<tr>
-				<f:for each="{columns}" key="columnName" as="configuration" iteration="{iterator}">
-					<td class="cell-{columnName}">
-						{vf:grid.row(object: '{object}')}
-					</td>
-				</f:for>
-			</tr>
-		</f:for>
-		</tbody>
+		<tbody></tbody>
 	</table>
 
 </f:section>

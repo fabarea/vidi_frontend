@@ -41,8 +41,9 @@ class ConfigurationViewHelper extends AbstractViewHelper {
 		 * r - processing
 		 */
 		$dom = sprintf(
-			"<'row'%s<'col-xs-2'l>r><'row'<'col-xs-12't>><'row'<'col-xs-6'i><'col-xs-6'p>>",
-			(bool)$settings['isVisualSearchBar'] ? $this->getVisualSearchConfiguration() : $this->getDefaultSearchConfiguration()
+			"<'row'%s<'col-xs-2'l>r><'row'<'col-xs-12't>><'row'%s>",
+			(bool)$settings['isVisualSearchBar'] ? $this->getTopBarWithVisualSearchEnabled() : $this->getTopBarDefault(),
+			(bool)$settings['isVisualSearchBar'] ? $this->getBottomBarWithVisualSearchEnabled() : $this->getBottomBarDefault()
 		);
 
 		return $dom;
@@ -52,7 +53,7 @@ class ConfigurationViewHelper extends AbstractViewHelper {
 	 * @return string
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
 	 */
-	public function getVisualSearchConfiguration() {
+	public function getTopBarWithVisualSearchEnabled() {
 
 		$gridIdentifier = $this->templateVariableContainer->get('gridIdentifier');
 
@@ -61,10 +62,23 @@ class ConfigurationViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @return string
+	 */
+	public function getBottomBarWithVisualSearchEnabled() {
+		return "<'col-xs-4'i><'col-xs-4'f><'col-xs-4'p>";
+	}
+
+	/**
+	 * @return string
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
 	 */
-	public function getDefaultSearchConfiguration() {
+	public function getTopBarDefault() {
 		return "<'col-xs-10'f>";
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getBottomBarDefault() {
+		return "<'col-xs-6'i><'col-xs-6'p>";
+	}
 }

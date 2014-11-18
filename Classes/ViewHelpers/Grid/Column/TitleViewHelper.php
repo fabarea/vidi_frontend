@@ -14,7 +14,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid\Column;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Fab\VidiFrontend\Tca\FrontendTcaService;
+use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -31,7 +31,7 @@ class TitleViewHelper extends AbstractViewHelper {
 		$dataType = $this->templateVariableContainer->get('dataType');
 		$columnName = $this->templateVariableContainer->get('columnName');
 
-		return FrontendTcaService::grid($dataType)->getLabel($columnName);
+		return FrontendTca::grid($dataType)->getLabel($columnName);
 	}
 
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Fab\VidiFrontend\ViewHelpers\Grid;
+namespace Fab\VidiFrontend\View\Grid;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -16,20 +16,25 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid;
 
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Vidi\Domain\Model\Content;
+use TYPO3\CMS\Vidi\Tca\Tca;
 use TYPO3\CMS\Vidi\Tca\TcaService;
+use TYPO3\CMS\Vidi\View\AbstractComponentView;
 
 /**
- * View helper for rendering multiple rows.
+ * View helper for rendering a row of a content object.
  */
-class RowViewHelper extends AbstractViewHelper {
+class Row extends AbstractComponentView {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
 	 */
 	protected $configurationManager;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+	 */
+	protected $controllerContext;
 
 	/**
 	 * Registry for storing variable values and speed up the processing.
@@ -39,17 +44,20 @@ class RowViewHelper extends AbstractViewHelper {
 	protected $variables = array();
 
 	/**
+	 * @param array $columns
+	 */
+	public function __construct($columns = array()){
+		$this->columns = $columns;
+	}
+
+	/**
 	 * Returns rows of content as array.
 	 *
 	 * @param Content $object
 	 * @param int $rowIndex
 	 * @return array
 	 */
-	public function render(Content $object, $rowIndex = 0) {
-		#$fieldNameAndPath = $this->templateVariableContainer->get('columnName');
-		#$configuration = $this->templateVariableContainer->get('configuration');
-		#var_dump($fieldNameAndPath, $configuration);
-
+	public function render(Content $object = NULL, $rowIndex = 0) {
 
 		// Initialize returned array
 		$output = array();
@@ -65,7 +73,6 @@ class RowViewHelper extends AbstractViewHelper {
 
 				// if is relation has one
 				foreach ($renderers as $rendererClassName => $rendererConfiguration) {
-
 					$rendererConfiguration['uriBuilder'] = $this->controllerContext->getUriBuilder();
 					$rendererConfiguration['contentElement'] = $this->configurationManager->getContentObject();
 
@@ -95,8 +102,6 @@ class RowViewHelper extends AbstractViewHelper {
 			$output[$fieldName] = $value;
 		}
 
-		var_dump($output);
-
 		return $output;
 	}
 
@@ -124,8 +129,8 @@ class RowViewHelper extends AbstractViewHelper {
 			// TRUE means the field name does not contains a path. "title" vs "metadata.title"
 			// Fetch the default label
 			if ($fieldNameOfForeignTable === $fieldName) {
-				$foreignTable = TcaService::table($object->getDataType())->field($fieldName)->getForeignTable();
-				$fieldNameOfForeignTable = TcaService::table($foreignTable)->getLabelField();
+				$foreignTable = Tca::table($object->getDataType())->field($fieldName)->getForeignTable();
+				$fieldNameOfForeignTable = Tca::table($foreignTable)->getLabelField();
 			}
 
 			$value = $object[$fieldName][$fieldNameOfForeignTable];
@@ -146,17 +151,17 @@ class RowViewHelper extends AbstractViewHelper {
 
 		// Set default value if $field name correspond to the label of the table
 		$fieldName = $this->getFieldPathResolver()->stripFieldPath($fieldNameAndPath, $object->getDataType());
-		if (TcaService::table($object->getDataType())->getLabelField() === $fieldName && empty($value)) {
+		if (Tca::table($object->getDataType())->getLabelField() === $fieldName && empty($value)) {
 			#$value = sprintf('[%s]', $this->getLabelService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1));
 		}
 
 		// Resolve the identifier in case of "select" or "radio button".
-		$fieldType = TcaService::table($object->getDataType())->field($fieldNameAndPath)->getType();
+		$fieldType = Tca::table($object->getDataType())->field($fieldNameAndPath)->getType();
 		if ($fieldType !== TcaService::TEXTAREA) {
 			$value = htmlspecialchars($value);
-//		} elseif ($fieldType === TcaService::TEXTAREA && !$this->isClean($value)) {
+//		} elseif ($fieldType === Tca::TEXTAREA && !$this->isClean($value)) {
 //			$value = htmlspecialchars($value); // Avoid bad surprise, converts characters to HTML.
-//		} elseif ($fieldType === TcaService::TEXTAREA && !$this->hasHtml($value)) {
+//		} elseif ($fieldType === Tca::TEXTAREA && !$this->hasHtml($value)) {
 //			$value = nl2br($value);
 		}
 
@@ -188,6 +193,24 @@ class RowViewHelper extends AbstractViewHelper {
 	 */
 	protected function getFieldPathResolver() {
 		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Resolver\FieldPathResolver');
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 * @return $this
+	 */
+	public function setConfigurationManager($configurationManager) {
+		$this->configurationManager = $configurationManager;
+		return $this;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
+	 * @return $this
+	 */
+	public function setControllerContext($controllerContext) {
+		$this->controllerContext = $controllerContext;
+		return $this;
 	}
 
 	/**

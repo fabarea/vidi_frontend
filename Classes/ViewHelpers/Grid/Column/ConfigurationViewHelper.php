@@ -14,7 +14,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid\Column;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Fab\VidiFrontend\Tca\FrontendTcaService;
+use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -32,7 +32,7 @@ class ConfigurationViewHelper extends AbstractViewHelper {
 		$output = '';
 		$dataType = $this->templateVariableContainer->get('dataType');
 
-		foreach(FrontendTcaService::grid($dataType)->getFields() as $fieldNameAndPath => $configuration) {
+		foreach(FrontendTca::grid($dataType)->getFields() as $fieldNameAndPath => $configuration) {
 
 			// mData vs columnName
 			// -------------------
@@ -40,10 +40,10 @@ class ConfigurationViewHelper extends AbstractViewHelper {
 			// columnName: whole field name with path
 			$output .= sprintf('columns.push({ "data": "%s", "sortable": %s, "visible": %s, "width": "%s", "class": "%s", "columnName": "%s" });' . PHP_EOL,
 				$this->getFieldPathResolver()->stripFieldPath($fieldNameAndPath, $dataType), // Suitable field name for the DataTable plugin.
-				FrontendTcaService::grid($dataType)->isSortable($fieldNameAndPath) ? 'true' : 'false',
-				FrontendTcaService::grid($dataType)->isVisible($fieldNameAndPath) ? 'true' : 'false',
-				FrontendTcaService::grid($dataType)->getWidth($fieldNameAndPath),
-				FrontendTcaService::grid($dataType)->getClass($fieldNameAndPath),
+				FrontendTca::grid($dataType)->isSortable($fieldNameAndPath) ? 'true' : 'false',
+				FrontendTca::grid($dataType)->isVisible($fieldNameAndPath) ? 'true' : 'false',
+				FrontendTca::grid($dataType)->getWidth($fieldNameAndPath),
+				FrontendTca::grid($dataType)->getClass($fieldNameAndPath),
 				$fieldNameAndPath
 			);
 		}

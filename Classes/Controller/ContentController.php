@@ -14,13 +14,10 @@ namespace Fab\VidiFrontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Fab\VidiFrontend\Plugin\PluginParameter;
-use Fab\VidiFrontend\Tca\FrontendTcaService;
+use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Vidi\Domain\Model\Content;
-use TYPO3\CMS\Vidi\Persistence\MatcherObjectFactory;
-use TYPO3\CMS\Vidi\Persistence\OrderObjectFactory;
 use TYPO3\CMS\Vidi\Persistence\PagerObjectFactory;
 use TYPO3\CMS\VidiFrontend\Persistence\MatcherFactory;
 use TYPO3\CMS\VidiFrontend\Persistence\OrderFactory;
@@ -55,6 +52,26 @@ class ContentController extends ActionController {
 
 		$dataType = empty($this->settings['dataType']) ? 'fe_users' : $this->settings['dataType'];
 
+		// Assign values.
+		$this->view->assign('settings', $this->settings);
+		$this->view->assign('gridIdentifier', $this->configurationManager->getContentObject()->data['uid']);
+		$this->view->assign('dataType', $dataType);
+		$this->view->assign('columns', FrontendTca::grid($dataType)->getFields());
+	}
+
+	/**
+	 * List Row action for this controller. Output a json list of contents
+	 *
+	 * @param array $columns corresponds to columns to be rendered.
+	 * @param array $matches
+	 * @validate $columns Fab\VidiFrontend\Domain\Validator\ColumnsValidator
+	 * @validate $matches Fab\VidiFrontend\Domain\Validator\MatchesValidator
+	 * @return void
+	 */
+	public function listAction(array $columns = array(), $matches = array()) {
+
+		$dataType = GeneralUtility::_GP('dataType');
+
 		// Initialize some objects related to the query.
 		$matcher = MatcherFactory::getInstance()->getMatcher(array(), $dataType);
 		$order = OrderFactory::getInstance()->getOrder($dataType);
@@ -64,36 +81,8 @@ class ContentController extends ActionController {
 		$contentService = $this->getContentService($dataType)->findBy($matcher, $order, $pager->getLimit(), $pager->getOffset());
 		$pager->setCount($contentService->getNumberOfObjects());
 
-		// Assign values.
-		$this->view->assign('settings', $this->settings);
-		$this->view->assign('gridIdentifier', uniqid('grid-'));
-		$this->view->assign('dataType', $dataType);
-		$this->view->assign('columns', FrontendTcaService::grid($dataType)->getFields());
-
-		$this->view->assign('objects', $contentService->getObjects());
-		$this->view->assign('numberOfObjects', $contentService->getNumberOfObjects());
-		$this->view->assign('pager', $pager);
-	}
-
-	/**
-	 * List Row action for this controller. Output a json list of contents
-	 *
-	 * @param array $columns corresponds to columns to be rendered.
-	 * @param array $matches
-	 * @validate $columns TYPO3\CMS\Vidi\Domain\Validator\ColumnsValidator
-	 * @validate $matches TYPO3\CMS\Vidi\Domain\Validator\MatchesValidator
-	 * @return void
-	 */
-	public function listAction(array $columns = array(), $matches = array()) {
-
-		// Initialize some objects related to the query.
-		$matcher = MatcherObjectFactory::getInstance()->getMatcher($matches);
-		$order = OrderObjectFactory::getInstance()->getOrder();
-		$pager = PagerObjectFactory::getInstance()->getPager();
-
-		// Fetch objects via the Content Service.
-		$contentService = $this->getContentService()->findBy($matcher, $order, $pager->getLimit(), $pager->getOffset());
-		$pager->setCount($contentService->getNumberOfObjects());
+		// Set format.
+		$this->request->setFormat('json');
 
 		// Assign values.
 		$this->view->assign('columns', $columns);

@@ -14,16 +14,18 @@ namespace Fab\VidiFrontend\Tca;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Vidi\Exception\InvalidKeyInArrayException;
+use TYPO3\CMS\Vidi\Facet\FacetInterface;
+use TYPO3\CMS\Vidi\Facet\StandardFacet;
 use TYPO3\CMS\Vidi\Tca\GridService;
-use TYPO3\CMS\Vidi\Tca\TcaService;
+use TYPO3\CMS\Vidi\Tca\Tca;
 
 /**
  * A class to handle TCA grid configuration
  */
-class FrontendGridService extends GridService {
-
+class FrontendGridService extends GridService { // implements TcaServiceInterface (?)
 
 	/**
 	 * __construct
@@ -58,7 +60,7 @@ class FrontendGridService extends GridService {
 			}
 		} else {
 			// Fetch the label from the Grid service provided by "vidi". He may know more about labels.
-			$label = TcaService::grid($this->tableName)->getLabel($fieldNameAndPath);
+			$label = Tca::grid($this->tableName)->getLabel($fieldNameAndPath);
 		}
 		return $label;
 	}
@@ -71,14 +73,104 @@ class FrontendGridService extends GridService {
 	 * @return int|string
 	 */
 	public function isSortable($fieldName) {
+
 		// Fetch Frontend configuration first and check if a value is defined there.
 		$field = $this->getField($fieldName);
 
 		if (isset($field['sortable'])) {
 			$isSortable = $field['sortable'];
 		} else {
-			$isSortable = TcaService::grid($this->tableName)->isSortable($fieldName);
+			$isSortable = Tca::grid($this->tableName)->isSortable($fieldName);
 		}
 		return $isSortable;
 	}
+
+//	/**
+//	 * Returns the field name given its position.
+//	 *
+//	 * @param string $position the position of the field in the grid
+//	 * @throws InvalidKeyInArrayException
+//	 * @return int
+//	 */
+//	public function getFieldNameByPosition($position) {
+//		$fields = array_keys($this->getFields());
+//		if (empty($fields[$position])) {
+//			throw new InvalidKeyInArrayException('No field exist for position: ' . $position, 1356945119);
+//		}
+//
+//		return $fields[$position];
+//	}
+
+	/**
+	 * Returns an array containing column names.
+	 *
+	 * @return array
+	 */
+	public function getFields() {
+		return is_array($this->tca['columns']) ? $this->tca['columns'] : array();
+	}
+
+	/**
+	 * Tell whether the field exists in the grid or not.
+	 *
+	 * @param string $fieldName
+	 * @return bool
+	 */
+	public function hasField($fieldName) {
+		return isset($this->tca['columns'][$fieldName]);
+	}
+
+	/**
+	 * Tell whether the field does not exist.
+	 *
+	 * @param string $fieldName
+	 * @return bool
+	 */
+	public function hasNotField($fieldName) {
+		return !$this->hasField($fieldName);
+	}
+
+	/**
+	 * Returns an array containing facets fields.
+	 *
+	 * @return array
+	 */
+	public function getFacets() {
+		if (is_array($this->tca['facets'])) {
+			$facets = $this->tca['facets'];
+		} else {
+			$facets = Tca::grid($this->tableName)->getFacets();
+		}
+		return $facets;
+	}
+
+	/**
+	 * Returns a "facet" service instance.
+	 *
+	 * @param string|FacetInterface $facet
+	 * @return \TYPO3\CMS\Vidi\Tca\FacetService
+	 */
+	public function facet($facet = '') {
+		if (!$facet instanceof StandardFacet) {
+			$label = $this->getLabel($facet);
+
+			/** @var StandardFacet $facet */
+			$facet = GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Facet\StandardFacet', $facet, $label);
+		}
+
+		if (empty($this->instances[$facet->getName()])) {
+
+			/** @var \TYPO3\CMS\Vidi\Tca\FacetService $instance */
+			$instance = GeneralUtility::makeInstance(
+				'TYPO3\CMS\Vidi\Tca\FacetService',
+				$facet,
+				$this->tableName
+			);
+
+			$this->instances[$facet->getName()] = $instance;
+		}
+
+		return $this->instances[$facet->getName()];
+	}
+
 }

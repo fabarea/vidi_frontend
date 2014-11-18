@@ -34,8 +34,12 @@
 				<target>Traitement en cours...</target>
 			</trans-unit>
 			<trans-unit id="grid.search">
+				<source></source>
+				<target></target>
+			</trans-unit>
+			<trans-unit id="grid.searchPlaceholder">
 				<source>Search...</source>
-				<target>Rechercher :</target>
+				<target>Recherche...</target>
 			</trans-unit>
 			<trans-unit id="grid.lengthMenu">
 				<source>Show _MENU_</source>

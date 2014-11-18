@@ -150,10 +150,13 @@ module.exports = (grunt) ->
 				globals:
 					jQuery: true
 					console: true
+					module: true
+					Uri: true
 					define: true
 					require: true
 					VidiFrontend: true
 					VS: true
+					_: true
 
 	##
 	# JavaScript: minimize javascript

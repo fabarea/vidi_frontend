@@ -1,5 +1,5 @@
 <?php
-namespace Fab\VidiFrontend\ViewHelpers\Grid\Column;
+namespace Fab\VidiFrontend\ViewHelpers\Grid;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -18,19 +18,26 @@ use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Return a possible column header.
+ * View helper which returns the json serialization of the search fields.
  */
-class HeaderViewHelper extends AbstractViewHelper {
+class FacetsViewHelper extends AbstractViewHelper {
 
 	/**
-	 * Returns a column header.
+	 * Returns the json serialization of the search fields.
 	 *
-	 * @param string $name the column Name
 	 * @return boolean
 	 */
-	public function render($name) {
+	public function render() {
 		$dataType = $this->templateVariableContainer->get('dataType');
-		return FrontendTca::grid($dataType)->getHeader($name);
+
+		$facets = array();
+
+		foreach (FrontendTca::grid($dataType)->getFacets() as $facetName) {
+			$name = FrontendTca::grid($dataType)->facet($facetName)->getName();
+			$facets[$name] = FrontendTca::grid($dataType)->facet($facetName)->getLabel();
+		}
+
+		return json_encode($facets);
 	}
 
 }

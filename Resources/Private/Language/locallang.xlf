@@ -26,6 +26,9 @@
 				<source>Processing...</source>
 			</trans-unit>
 			<trans-unit id="grid.search">
+				<source></source>
+			</trans-unit>
+			<trans-unit id="grid.searchPlaceholder">
 				<source>Search...</source>
 			</trans-unit>
 			<trans-unit id="grid.lengthMenu">

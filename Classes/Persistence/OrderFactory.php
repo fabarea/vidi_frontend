@@ -14,9 +14,9 @@ namespace TYPO3\CMS\VidiFrontend\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Vidi\Tca\TcaService;
 
 /**
  * Factory class related to Order object.
@@ -41,7 +41,16 @@ class OrderFactory implements SingletonInterface {
 	public function getOrder($dataType) {
 
 		// Default ordering
-		$order = TcaService::table($dataType)->getDefaultOrderings();
+		#$order = Tca::table($dataType)->getDefaultOrderings();
+
+		// Retrieve a possible id of the column from the request
+		$columnPosition = GeneralUtility::_GP('iSortCol_0');
+		$field = FrontendTca::grid($dataType)->getFieldNameByPosition($columnPosition);
+
+		$direction = GeneralUtility::_GP('sSortDir_0');
+		$order = array(
+			$field => strtoupper($direction)
+		);
 
 		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Persistence\Order', $order);
 	}

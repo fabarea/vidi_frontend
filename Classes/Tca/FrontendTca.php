@@ -23,35 +23,7 @@ use TYPO3\CMS\Vidi\Tca\TcaServiceInterface;
 /**
  * A class to handle TCA ctrl.
  */
-class FrontendTcaService implements SingletonInterface, TcaServiceInterface {
-
-	/**
-	 * Fields that are considered as system.
-	 *
-	 * @var array
-	 */
-	static protected $systemFields = array(
-		'uid',
-		'pid',
-		'tstamp',
-		'crdate',
-		'deleted',
-		'hidden',
-		'starttime',
-		'endtime',
-		'sys_language_uid',
-		'l18n_parent',
-		'l18n_diffsource',
-		't3ver_oid',
-		't3ver_id',
-		't3ver_wsid',
-		't3ver_label',
-		't3ver_state',
-		't3ver_stage',
-		't3ver_count',
-		't3ver_tstamp',
-		't3_origuid',
-	);
+class FrontendTca implements SingletonInterface, TcaServiceInterface {
 
 	/**
 	 * @var array
@@ -86,7 +58,7 @@ class FrontendTcaService implements SingletonInterface, TcaServiceInterface {
 	 * Returns a "grid" service instance.
 	 *
 	 * @param string|Content $tableNameOrContentObject
-	 * @return \TYPO3\CMS\Vidi\Tca\GridService
+	 * @return \Fab\VidiFrontend\Tca\FrontendGridService
 	 */
 	static public function grid($tableNameOrContentObject) {
 		$tableName = $tableNameOrContentObject instanceof Content ? $tableNameOrContentObject->getDataType() : $tableNameOrContentObject;
