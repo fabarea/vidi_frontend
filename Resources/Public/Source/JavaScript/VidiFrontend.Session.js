@@ -1,4 +1,12 @@
 /**
+ * Just initialize the VidiFrontend object.
+ * This file must be loaded first.
+ */
+if (window.VidiFrontend === undefined) {
+	window.VidiFrontend = {};
+}
+
+/**
  * Object for handling session.
  *
  * @type {{get: Function, set: Function, reset: Function, has: Function, _getKey: Function}}
@@ -44,7 +52,7 @@ VidiFrontend.Session = {
 	reset: function (key) {
 		if (window.sessionStorage) {
 			key = this._getKey(key);
-			sessionStorage.setItem(key, '');
+			sessionStorage.setItem(key, null);
 		}
 	},
 

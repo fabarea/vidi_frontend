@@ -102,6 +102,9 @@ class Row extends AbstractComponentView {
 			$output[$fieldName] = $value;
 		}
 
+		$output['DT_RowId'] = 'row-' . $object->getUid();
+		$output['DT_RowClass'] = sprintf('%s_%s', $object->getDataType(), $object->getUid());
+
 		return $output;
 	}
 

@@ -1,4 +1,12 @@
 /**
+ * Just initialize the VidiFrontend object.
+ * This file must be loaded first.
+ */
+if (window.VidiFrontend === undefined) {
+	window.VidiFrontend = {};
+}
+
+/**
  * Collection of method dealing with the Visual Search.
  *
  * @type {{retrieveFacetName: Function, suggest: Function, convertExpression: Function, retrieveValue: Function}}
@@ -145,7 +153,6 @@ VidiFrontend.VisualSearch = {
 	convertExpression: function(searchExpression, settings) {
 
 		var convertedExpression = [];
-		console.log(searchExpression);
 		if (searchExpression) {
 
 			// In case the search expression has been fetched from the URL.

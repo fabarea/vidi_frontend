@@ -1,4 +1,12 @@
 /**
+ * Just initialize the VidiFrontend object.
+ * This file must be loaded first.
+ */
+if (window.VidiFrontend === undefined) {
+	window.VidiFrontend = {};
+}
+
+/**
  * Collection of method dealing with the Data Tables.
  *
  * @type {{initialize: Function}}
@@ -62,10 +70,6 @@ VidiFrontend.Grid = {
 				 */
 				serverData: function(source, data, callback, settings) {
 
-					//// Store the parameters to be able to reconstruct the URL later on.
-					//Vidi.Grid.storage.data = data;
-					//Vidi.Grid.storage.url = sSource;
-					//console.log(source);
 					source += "&dataType=" + VidiFrontend.settings[identifier].dataType;
 					source += "&format=json";
 
@@ -136,7 +140,7 @@ VidiFrontend.Grid = {
 					});
 
 					// Visual effect
-					VidiFrontend.Session.set('lastEditedUid' + identifier, 1);
+					//VidiFrontend.Session.set('lastEditedUid' + identifier, 1);
 					$('#grid-' + identifier).css('opacity', 0.3);
 				},
 				processing: true,

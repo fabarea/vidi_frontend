@@ -50,6 +50,13 @@ module.exports = (grunt) ->
 				options:
 					ext: '.png'
 				files: [
+					src: "<%= directory.source %>/Images/*.png"
+					dest: "<%= directory.build %>/Images"
+				]
+			images_datatables:
+				options:
+					ext: '.png'
+				files: [
 					src: "<%= directory.components %>/datatables/media/images/*.png"
 					dest: "<%= directory.build %>/Images"
 				]

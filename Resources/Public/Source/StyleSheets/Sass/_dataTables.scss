@@ -13,8 +13,30 @@ div.dataTables_length {
 
 table.dataTable {
   tbody {
-    td {
-      cursor: pointer;
+
+    tr {
+      td {
+        cursor: pointer;
+      }
+
+    }
+
+    .fade-in {
+
+      td {
+        background: rgba(255, 151, 36, 0.20) !important;
+        transition: background .25s ease-in-out;
+      }
+
+    }
+
+    .fade-out {
+
+      td {
+        background: transparent !important;
+        transition: background .25s ease-in-out;
+      }
+
     }
   }
 
@@ -26,3 +48,4 @@ table.dataTable {
     }
   }
 }
+
