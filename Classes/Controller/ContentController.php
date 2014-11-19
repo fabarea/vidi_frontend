@@ -14,6 +14,7 @@ namespace Fab\VidiFrontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\VidiFrontend\Plugin\PluginParameter;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -41,6 +42,17 @@ class ContentController extends ActionController {
 				->getPropertyMappingConfiguration()
 				->setTypeConverter($typeConverter);
 		}
+
+		if ($this->arguments->hasArgument('columns')) {
+
+			/** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
+			$typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\ArrayConverter');
+
+			$this->arguments->getArgument('columns')
+				->getPropertyMappingConfiguration()
+				->setTypeConverter($typeConverter);
+		}
+
 	}
 
 	/**
@@ -66,11 +78,15 @@ class ContentController extends ActionController {
 	 * @param array $matches
 	 * @validate $columns Fab\VidiFrontend\Domain\Validator\ColumnsValidator
 	 * @validate $matches Fab\VidiFrontend\Domain\Validator\MatchesValidator
+	 * @param int $contentElement
 	 * @return void
 	 */
-	public function listAction(array $columns = array(), $matches = array()) {
-
+	public function listAction(array $columns = array(), $matches = array(), $contentElement = 0) {
 		$dataType = GeneralUtility::_GP('dataType');
+
+		// In the context of Ajax, we must define manually the current Content Element object.
+		$contentObjectRenderer = $this->getContentElementService($dataType)->getContentObjectRender($contentElement);
+		$this->configurationManager->setContentObject($contentObjectRenderer);
 
 		// Initialize some objects related to the query.
 		$matcher = MatcherFactory::getInstance()->getMatcher(array(), $dataType);
@@ -124,89 +140,20 @@ class ContentController extends ActionController {
 	}
 
 	/**
+	 * Get the Vidi Module Loader.
+	 *
+	 * @param string $dataType
+	 * @return \Fab\VidiFrontend\Service\ContentElementService
+	 */
+	protected function getContentElementService($dataType) {
+		return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentElementService', $dataType);
+	}
+
+	/**
 	 * @return \Fab\VidiFrontend\Service\ContentType
 	 */
 	protected function getContentType() {
 		return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentType');
 	}
-
-//	/**
-//	 * @return \TYPO3\CMS\Vidi\Resolver\ContentObjectResolver
-//	 */
-//	protected function getContentObjectResolver() {
-//		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Resolver\ContentObjectResolver');
-//	}
-//
-//	/**
-//	 * @return \TYPO3\CMS\Vidi\Resolver\FieldPathResolver
-//	 */
-//	protected function getFieldPathResolver () {
-//		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Resolver\FieldPathResolver');
-//	}
-//
-//	/**
-//	 * Return a special view for handling JSON
-//	 * Goal is to have this view injected but require more configuration.
-//	 *
-//	 * @return JsonView
-//	 */
-//	protected function getJsonView() {
-//		if (!$this->view instanceof JsonView) {
-//			/** @var JsonView $view */
-//			$this->view = $this->objectManager->get('TYPO3\CMS\Vidi\Mvc\JsonView');
-//			$this->view->setResponse($this->response);
-//		}
-//		return $this->view;
-//	}
-//
-//	/**
-//	 * @return JsonResult
-//	 */
-//	protected function getJsonResult() {
-//		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Mvc\JsonResult');
-//	}
-//
-//	/**
-//	 * Signal that is called for post-processing content data send to the server for update.
-//	 *
-//	 * @param Content $contentObject
-//	 * @param $fieldNameAndPath
-//	 * @param $contentData
-//	 * @param $counter
-//	 * @param $savingBehavior
-//	 * @param $language
-//	 * @return ProcessContentDataSignalArguments
-//	 * @signal
-//	 */
-//	protected function emitProcessContentDataSignal(Content $contentObject, $fieldNameAndPath, $contentData, $counter, $savingBehavior, $language) {
-//
-//		/** @var \TYPO3\CMS\Vidi\Signal\ProcessContentDataSignalArguments $signalArguments */
-//		$signalArguments = GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Signal\ProcessContentDataSignalArguments');
-//		$signalArguments->setContentObject($contentObject)
-//			->setFieldNameAndPath($fieldNameAndPath)
-//			->setContentData($contentData)
-//			->setCounter($counter)
-//			->setSavingBehavior($savingBehavior)
-//			->setLanguage($language);
-//
-//		$signalResult = $this->getSignalSlotDispatcher()->dispatch('TYPO3\CMS\Vidi\Controller\Backend\ContentController', 'processContentData', array($signalArguments));
-//		return $signalResult[0];
-//	}
-//
-//	/**
-//	 * Get the SignalSlot dispatcher.
-//	 *
-//	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-//	 */
-//	protected function getSignalSlotDispatcher() {
-//		return $this->objectManager->get('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
-//	}
-//
-//	/**
-//	 * @return \TYPO3\CMS\Vidi\Language\LanguageService
-//	 */
-//	protected function getLanguageService() {
-//		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Language\LanguageService');
-//	}
 
 }

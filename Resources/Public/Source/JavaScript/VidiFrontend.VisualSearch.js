@@ -19,6 +19,12 @@ VidiFrontend.VisualSearch = {
 				container: $('.visual-search-container-' + identifier),
 				query: '',
 				callbacks: {
+
+					/**
+					 * @param {string} query
+					 * @param {object} searchCollection
+					 * @return void
+					 */
 					search: function(query, searchCollection) {
 
 						var jsonQuery = JSON.stringify(searchCollection.facets());
@@ -28,9 +34,12 @@ VidiFrontend.VisualSearch = {
 
 						// Inject value in data table search and trigger a refresh.
 						$('input[aria-controls=grid-' + identifier + ']').val(jsonQuery).keyup().keyup(); // Weird... we must call twice keyup so that it works.
-						//console.log(jsonQuery);
-						//console.log(VidiFrontend.visualSearch.searchBox.value());
 					},
+
+					/**
+					 * @param {function} callback
+					 * @return void
+					 */
 					facetMatches: function(callback) {
 						var facets = [];
 
@@ -40,6 +49,13 @@ VidiFrontend.VisualSearch = {
 						});
 						callback(facets);
 					},
+
+					/**
+					 * @param {string} facetLabel
+					 * @param {string} searchTerm
+					 * @param {function} callback
+					 * @return void
+					 */
 					valueMatches: function(facetLabel, searchTerm, callback) {
 
 						// "text" is a special facet and must never suggest values.

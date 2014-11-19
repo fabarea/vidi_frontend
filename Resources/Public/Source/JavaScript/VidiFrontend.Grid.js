@@ -94,53 +94,46 @@ VidiFrontend.Grid = {
 				serverParams: function(data) {
 
 					// Get the parameter related to filter from the URL and "re-inject" them into the Ajax request
-					//var uri = new Uri(window.location.href);
-					//for (var index = 0; index < uri.queryPairs.length; index++) {
-					//	var queryPair = uri.queryPairs[index];
-					//	var parameterName = queryPair[0];
-					//	var parameterValue = queryPair[1];
-					//
+					var uri = new Uri(window.location.href);
+					for (var index = 0; index < uri.queryPairs.length; index++) {
+						var queryPair = uri.queryPairs[index];
+						var parameterName = queryPair[0];
+						var parameterValue = queryPair[1];
+
 					//	// Transmit filter parameter.
 					//	var regularExpression = new RegExp(Vidi.module.parameterPrefix);
 					//	if (regularExpression.test(parameterName)) {
 					//		data.push({ 'name': decodeURI(parameterName), 'value': parameterValue });
 					//	}
-					//
-					//	// Transmit a few other parameters as well.
-					//	var transmittedParameters = ['vidiModuleCode', 'id'];
-					//	for (var parameterIndex = 0; parameterIndex < transmittedParameters.length; parameterIndex++) {
-					//		var transmittedParameter = transmittedParameters[parameterIndex];
-					//		if (transmittedParameter === parameterName) {
-					//			data.push({ 'name': decodeURI(parameterName), 'value': parameterValue });
-					//		}
-					//	}
-					//}
+
+						// Transmit a few other parameters as well, e.g the page id if present
+						var transmittedParameters = ['id', 'L'];
+						for (var parameterIndex = 0; parameterIndex < transmittedParameters.length; parameterIndex++) {
+							var transmittedParameter = transmittedParameters[parameterIndex];
+							if (transmittedParameter === parameterName) {
+								data.push({ 'name': decodeURI(parameterName), 'value': parameterValue });
+							}
+						}
+					}
 
 					// Transmit visible columns to the server so that id does not need to process not displayed stuff.
-					//var columns = $(this).dataTable().fnSettings().aoColumns;
-					//$.each(columns, function(index, column) {
-					//	if (column['bVisible']) {
-					//		data.push({ 'name': Vidi.module.parameterPrefix + '[columns][]', 'value': column['columnName'] });
-					//	}
-					//});
+					var columns = $(this).dataTable().fnSettings().aoColumns;
+					$.each(columns, function(index, column) {
+						if (column['bVisible']) {
+							data.push({name: VidiFrontend.parameterPrefix + '[columns][]', value: column['columnName'] });
+						}
+					});
 
 					var settings = VidiFrontend.settings[identifier];
+					data.push({ 'name': VidiFrontend.parameterPrefix + '[contentElement]', 'value': identifier });
 
 					// Handle the search term parameter coming from the Visual Search bar.
 					$.each(data, function(index, object) {
 						if (object['name'] === 'sSearch') {
 							object['value'] = VidiFrontend.VisualSearch.convertExpression(object['value'], settings);
-							console.log(object['value']);
 							data.push({ 'name': VidiFrontend.parameterPrefix + '[searchTerm]', 'value': object['value'] });
 						}
 					});
-
-					// Get the parameter related to filter from the URL and "re-inject" them into the Ajax request
-					//var parameterPrefix = 'tx_vidi_' + Vidi.module.moduleCode.toLowerCase();
-					//
-					//data.push({ 'name': parameterPrefix + '[action]', 'value': 'list' });
-					//data.push({ 'name': parameterPrefix + '[controller]', 'value': 'Content' });
-					//data.push({ 'name': parameterPrefix + '[format]', 'value': 'json' });
 
 					// Visual effect
 					VidiFrontend.Session.set('lastEditedUid' + identifier, 1);
@@ -148,7 +141,7 @@ VidiFrontend.Grid = {
 				},
 				processing: true,
 				serverSide: true,
-				ajaxSource: 'index.php?type=1416239670',
+				ajaxSource: '?type=1416239670',
 
 				/**
 				 *
