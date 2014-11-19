@@ -5,6 +5,8 @@ module.exports = (grunt) ->
 			components: "Resources/Public/WebComponents"
 			build: "Resources/Public/Build"
 			source: "Resources/Public/Source"
+		file:
+			visualsearch: ".tmp/visualsearch/visualsearch.js"
 
 	############################ Assets ############################
 
@@ -181,42 +183,56 @@ module.exports = (grunt) ->
 					src: "<%= jshint.files %>"
 					dest: ".tmp/uglify/main.min.js"
 				]
-			js_bootstrap:
+			js_datatables_bootstrap:
 				files: [
 					src: "<%= directory.components %>/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js"
 					dest: ".tmp/uglify/dataTables.bootstrap.min.js"
+				]
+			js_visualsearch:
+				files: [
+					src: "<%= file.visualsearch %>"
+					dest: ".tmp/uglify/visualsearch.min.js"
 				]
 
 	########## concat css + js ############
 		concat:
 			options:
 				separator: "\n\n"
-			js:
+			js_datatables:
 				src: [
 					"<%= directory.components %>/datatables/media/js/jquery.dataTables.js"
 					"<%= jshint.files %>"
+					"<%= directory.components %>/visualsearch/build-min/dependencies.js"
+					"<%= uglify.js_visualsearch.files[0].src %>"
 				]
 				dest: "<%= directory.build %>/JavaScript/vidi_frontend.js"
-			js_bootstrap:
+			js_datatables_bootstrap:
 				src: [
 					"<%= directory.components %>/datatables/media/js/jquery.dataTables.js"
-					"<%= uglify.js_bootstrap.files[0].src %>"
+					"<%= uglify.js_datatables_bootstrap.files[0].src %>"
 					"<%= jshint.files %>"
+					"<%= directory.components %>/visualsearch/build-min/dependencies.js"
+					"<%= uglify.js_visualsearch.files[0].src %>"
 				]
 				dest: "<%= directory.build %>/JavaScript/vidi_frontend.bootstrap.js"
-			js_min:
+			js_datatables_min:
 				src: [
 					"<%= directory.components %>/datatables/media/js/jquery.dataTables.min.js"
 					"<%= uglify.js.files[0].dest %>"
+					"<%= directory.components %>/visualsearch/build-min/dependencies.js"
+					"<%= uglify.js_visualsearch.files[0].dest %>"
 				]
 				dest: "<%= directory.build %>/JavaScript/vidi_frontend.min.js"
-			js_bootstrap_min:
+			js_datatables_bootstrap_min:
 				src: [
 					"<%= directory.components %>/datatables/media/js/jquery.dataTables.min.js"
-					"<%= uglify.js_bootstrap.files[0].dest %>"
+					"<%= uglify.js_datatables_bootstrap.files[0].dest %>"
 					"<%= uglify.js.files[0].dest %>"
+					"<%= directory.components %>/visualsearch/build-min/dependencies.js"
+					"<%= uglify.js_visualsearch.files[0].dest %>"
 				]
 				dest: "<%= directory.build %>/JavaScript/vidi_frontend.bootstrap.min.js"
+
 
 	########## Watcher ############
 		watch:
@@ -260,9 +276,34 @@ module.exports = (grunt) ->
 	# Alias tasks
 	grunt.task.renameTask("string-replace", "replace")
 
+	grunt.registerTask 'visualsearch', 'Run all my build tasks.', (n) ->
+		componentBasePath = grunt.template.process "<%= directory.components %>"
+		targetFile = grunt.template.process "<%= file.visualsearch %>"
+		buffer = ''
+
+		files = [
+			'visualsearch.js'
+			'views/search_box.js'
+			'views/search_facet.js'
+			'views/search_input.js'
+			'models/search_facets.js'
+			'models/search_query.js'
+			'utils/backbone_extensions.js'
+			'utils/hotkeys.js'
+			'utils/jquery_extensions.js'
+			'utils/search_parser.js'
+			'utils/inflector.js'
+			'templates/templates.js'
+		]
+		for file in files
+			buffer += grunt.file.read componentBasePath + "/visualsearch/lib/js/" + file
+
+		grunt.file.write(targetFile, buffer);
+		grunt.log.writeln "Done! VisualSearch library built!"
+
 	# Tasks
-	grunt.registerTask "build", ["build-js", "build-css", "build-icons"]
-	grunt.registerTask "build-js", ["jshint", "uglify", "concat"]
+	grunt.registerTask "build", ["build-js", "build-css", "build-icons", "clean"]
+	grunt.registerTask "build-js", ["jshint", "visualsearch", "uglify", "concat"]
 	grunt.registerTask "build-css", ["sass", "replace", "cssmin"]
 	grunt.registerTask "build-icons", ["pngmin"]
 	grunt.registerTask "default", ["help"]

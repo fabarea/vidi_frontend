@@ -155,5 +155,17 @@ While developing, you can use the ``watch`` which will generate the build as you
 	grunt watch
 
 
+Patch VisualSearch
+------------------
+
+To improve the User experience, `Visual Search`_ plugin has been patched avoiding the drop down menu to appear inopportunely.
+It means when making a fresh build, the patch must be (for now) manually added::
+
+	cd Resources/Public/WebComponents/visualsearch/
+	grep -lr "options.app.searchBox.searchEvent(e)"
+
+	-> it must be 2 occurrences
+
 .. _Bower: http://bower.io/
 .. _Grunt: http://gruntjs.com/
+.. _Visual Search: http://documentcloud.github.io/visualsearch/
