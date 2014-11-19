@@ -60,12 +60,19 @@ module.exports = (grunt) ->
 					src: "<%= directory.components %>/datatables/media/images/*.png"
 					dest: "<%= directory.build %>/Images"
 				]
-			images_bootstrap:
+			images_datatables_bootstrap:
 				options:
 					ext: '.png'
 				files: [
 					src: "<%= directory.components %>/datatables-plugins/integration/bootstrap/images/*.png"
 					dest: "<%= directory.build %>/Images/Bootstrap"
+				]
+			images_visualsearch:
+				options:
+					ext: '.png'
+				files: [
+					src: "<%= directory.components %>/visualsearch/images/embed/icons/*.png"
+					dest: "<%= directory.build %>/Images"
 				]
 
 	############################ StyleSheets ############################
