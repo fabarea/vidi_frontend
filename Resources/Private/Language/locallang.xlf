@@ -18,6 +18,12 @@
 			<trans-unit id="flexform.templateForDetailView">
 				<source>Template for the "detail" view</source>
 			</trans-unit>
+			<trans-unit id="flexform.loadJsFile">
+				<source>JavaScript file to be loaded</source>
+			</trans-unit>
+			<trans-unit id="flexform.loadCssFile">
+				<source>StyleSheet to be loaded</source>
+			</trans-unit>
 			<trans-unit id="showDetail">
 				<source>Show detail</source>
 			</trans-unit>

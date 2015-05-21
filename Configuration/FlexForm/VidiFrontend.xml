@@ -6,22 +6,22 @@
 		<type>array</type>
 		<el>
 			<!--<switchableControllerActions>-->
-				<!--<TCEforms>-->
-					<!--<label>Actions</label>-->
-					<!--<onChange>reload</onChange>-->
-					<!--<config>-->
-						<!--<type>select</type>-->
-						<!--<items type="array">-->
-							<!--<numIndex index="1">-->
-								<!--<numIndex index="0">-->
-									<!--New request-->
-								<!--</numIndex>-->
-								<!--<numIndex index="1">Content->index;Content->list;Content->show;</numIndex>-->
-							<!--</numIndex>-->
-						<!--</items>-->
-						<!--<size>1</size>-->
-					<!--</config>-->
-				<!--</TCEforms>-->
+			<!--<TCEforms>-->
+			<!--<label>Actions</label>-->
+			<!--<onChange>reload</onChange>-->
+			<!--<config>-->
+			<!--<type>select</type>-->
+			<!--<items type="array">-->
+			<!--<numIndex index="1">-->
+			<!--<numIndex index="0">-->
+			<!--New request-->
+			<!--</numIndex>-->
+			<!--<numIndex index="1">Content->index;Content->list;Content->show;</numIndex>-->
+			<!--</numIndex>-->
+			<!--</items>-->
+			<!--<size>1</size>-->
+			<!--</config>-->
+			<!--</TCEforms>-->
 			<!--</switchableControllerActions>-->
 			<settings.dataType>
 				<TCEforms>
@@ -54,14 +54,70 @@
 					</config>
 				</TCEforms>
 			</settings.template>
+			<settings.loadJsFile>
+				<TCEforms>
+					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.loadJsFile</label>
+					<config>
+						<type>select</type>
+						<items type="array">
+							<numIndex index="0">
+								<numIndex index="0"></numIndex>
+								<numIndex index="1"></numIndex>
+							</numIndex>
+							<numIndex index="1">
+								<numIndex index="0">vidi_frontend.min.js</numIndex>
+								<numIndex index="1">vidi_frontend.min.js</numIndex>
+							</numIndex>
+							<numIndex index="2">
+								<numIndex index="0">vidi_frontend.js</numIndex>
+								<numIndex index="1">vidi_frontend.js</numIndex>
+							</numIndex>
+							<numIndex index="3">
+								<numIndex index="0">vidi_frontend.bootstrap.min.js</numIndex>
+								<numIndex index="1">vidi_frontend.bootstrap.min.js</numIndex>
+							</numIndex>
+							<numIndex index="4">
+								<numIndex index="0">vidi_frontend.bootstrap.js</numIndex>
+								<numIndex index="1">vidi_frontend.bootstrap.js</numIndex>
+							</numIndex>
+						</items>
+						<size>1</size>
+						<maxitems>1</maxitems>
+					</config>
+				</TCEforms>
+			</settings.loadJsFile>
+			<settings.loadCssFile>
+				<TCEforms>
+					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.loadCssFile</label>
+					<config>
+						<type>select</type>
+						<items type="array">
+							<numIndex index="0">
+								<numIndex index="0"></numIndex>
+								<numIndex index="1"></numIndex>
+							</numIndex>
+							<numIndex index="1">
+								<numIndex index="0">vidi_frontend.min.css</numIndex>
+								<numIndex index="1">vidi_frontend.min.css</numIndex>
+							</numIndex>
+							<numIndex index="2">
+								<numIndex index="0">vidi_frontend.bootstrap.min.css</numIndex>
+								<numIndex index="1">vidi_frontend.bootstrap.min.css</numIndex>
+							</numIndex>
+						</items>
+						<size>1</size>
+						<maxitems>1</maxitems>
+					</config>
+				</TCEforms>
+			</settings.loadCssFile>
 			<!--<settings.defaultNumberOfItems>-->
-				<!--<TCEforms>-->
-					<!--<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.number_of_items</label>-->
-					<!--<config>-->
-						<!--<type>input</type>-->
-						<!--<default>10</default>-->
-					<!--</config>-->
-				<!--</TCEforms>-->
+			<!--<TCEforms>-->
+			<!--<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.number_of_items</label>-->
+			<!--<config>-->
+			<!--<type>input</type>-->
+			<!--<default>10</default>-->
+			<!--</config>-->
+			<!--</TCEforms>-->
 			<!--</settings.defaultNumberOfItems>-->
 		</el>
 	</ROOT>

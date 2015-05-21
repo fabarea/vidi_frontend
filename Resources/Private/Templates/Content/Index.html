@@ -1,6 +1,5 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"
       xmlns:f="http://typo3.org/ns/fluid/ViewHelpers"
-      xmlns:v="http://typo3.org/ns/TYPO3/CMS/Vidi/ViewHelpers"
       xmlns:vf="http://typo3.org/ns/Fab/VidiFrontend/ViewHelpers">
 
 <f:layout name="Default"/>
@@ -13,6 +12,13 @@
 				visibility: hidden;
 			}
 		</style>
+	</f:if>
+
+	<f:if condition="{settings.loadJsFile}">
+		<vf:script file="{f:uri.resource(path:'Build/JavaScript/{settings.loadJsFile}')}" />
+	</f:if>
+	<f:if condition="{settings.loadCssFile}">
+		<vf:style file="{f:uri.resource(path:'Build/StyleSheets/{settings.loadCssFile}')}" />
 	</f:if>
 
 	<script>
