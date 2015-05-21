@@ -35,15 +35,17 @@
 		var suggestions = {vf:grid.suggestions()};
 
 		<![CDATA[
-		if (window.VidiFrontend === undefined) {
-			window.VidiFrontend = {
-				parameterPrefix: 'tx_vidifrontend_pi1',
-				settings: {},
-				bars: {},
-				grids: {},
-				dataTable: {
-					dom: dataTableDom
-				}
+
+		window.VidiFrontend = !window.VidiFrontend ? {} : window.VidiFrontend;
+
+		// Initialize VidiFrontend if necessary.
+		if (!VidiFrontend.settings) {
+			VidiFrontend.parameterPrefix = 'tx_vidifrontend_pi1';
+			VidiFrontend.settings = {};
+			VidiFrontend.bars = {};
+			VidiFrontend.grids = {};
+			VidiFrontend.dataTable = {
+				dom: dataTableDom
 			};
 		}
 
