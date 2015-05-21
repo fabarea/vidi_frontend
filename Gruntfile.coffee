@@ -86,7 +86,10 @@ module.exports = (grunt) ->
 			options: {}
 			css:
 				files:
-					"<%= directory.build %>/StyleSheets/vidi_frontend.min.css": ".tmp/replace/jquery.dataTables.css"
+					"<%= directory.build %>/StyleSheets/vidi_frontend.min.css": [
+						".tmp/replace/jquery.dataTables.css"
+						"<%= sass.css.files[0].dest %>"
+					]
 			css_bootstrap:
 				files:
 					"<%= directory.build %>/StyleSheets/vidi_frontend.bootstrap.min.css": [
