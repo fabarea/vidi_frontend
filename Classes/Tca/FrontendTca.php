@@ -16,9 +16,9 @@ namespace Fab\VidiFrontend\Tca;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Vidi\Domain\Model\Content;
-use TYPO3\CMS\Vidi\Exception\NotExistingClassException;
-use TYPO3\CMS\Vidi\Tca\TcaServiceInterface;
+use Fab\Vidi\Domain\Model\Content;
+use Fab\Vidi\Exception\NotExistingClassException;
+use Fab\Vidi\Tca\TcaServiceInterface;
 
 /**
  * A class to handle TCA ctrl.

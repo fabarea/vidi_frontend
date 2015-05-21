@@ -16,11 +16,11 @@ namespace Fab\VidiFrontend\Tca;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Vidi\Exception\InvalidKeyInArrayException;
-use TYPO3\CMS\Vidi\Facet\FacetInterface;
-use TYPO3\CMS\Vidi\Facet\StandardFacet;
-use TYPO3\CMS\Vidi\Tca\GridService;
-use TYPO3\CMS\Vidi\Tca\Tca;
+use Fab\Vidi\Exception\InvalidKeyInArrayException;
+use Fab\Vidi\Facet\FacetInterface;
+use Fab\Vidi\Facet\StandardFacet;
+use Fab\Vidi\Tca\GridService;
+use Fab\Vidi\Tca\Tca;
 
 /**
  * A class to handle TCA grid configuration
@@ -148,21 +148,21 @@ class FrontendGridService extends GridService { // implements TcaServiceInterfac
 	 * Returns a "facet" service instance.
 	 *
 	 * @param string|FacetInterface $facet
-	 * @return \TYPO3\CMS\Vidi\Tca\FacetService
+	 * @return \Fab\Vidi\Tca\FacetService
 	 */
 	public function facet($facet = '') {
 		if (!$facet instanceof StandardFacet) {
 			$label = $this->getLabel($facet);
 
 			/** @var StandardFacet $facet */
-			$facet = GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Facet\StandardFacet', $facet, $label);
+			$facet = GeneralUtility::makeInstance('Fab\Vidi\Facet\StandardFacet', $facet, $label);
 		}
 
 		if (empty($this->instances[$facet->getName()])) {
 
-			/** @var \TYPO3\CMS\Vidi\Tca\FacetService $instance */
+			/** @var \Fab\Vidi\Tca\FacetService $instance */
 			$instance = GeneralUtility::makeInstance(
-				'TYPO3\CMS\Vidi\Tca\FacetService',
+				'Fab\Vidi\Tca\FacetService',
 				$facet,
 				$this->tableName
 			);

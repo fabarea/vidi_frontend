@@ -15,7 +15,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Object;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Vidi\Domain\Model\Content;
+use Fab\Vidi\Domain\Model\Content;
 
 /**
  * View helper for rendering multiple rows.

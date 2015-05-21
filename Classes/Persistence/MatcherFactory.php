@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\VidiFrontend\Persistence;
+namespace Fab\VidiFrontend\Persistence;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -17,8 +17,8 @@ namespace TYPO3\CMS\VidiFrontend\Persistence;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Vidi\Persistence\Matcher;
-use TYPO3\CMS\Vidi\Tca\Tca;
+use Fab\Vidi\Persistence\Matcher;
+use Fab\Vidi\Tca\Tca;
 
 /**
  * Factory class related to Matcher object.
@@ -28,10 +28,10 @@ class MatcherFactory implements SingletonInterface {
 	/**
 	 * Gets a singleton instance of this class.
 	 *
-	 * @return \TYPO3\CMS\VidiFrontend\Persistence\MatcherFactory
+	 * @return \Fab\VidiFrontend\Persistence\MatcherFactory
 	 */
 	static public function getInstance() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\VidiFrontend\Persistence\MatcherFactory');
+		return GeneralUtility::makeInstance('Fab\VidiFrontend\Persistence\MatcherFactory');
 	}
 
 	/**
@@ -44,7 +44,7 @@ class MatcherFactory implements SingletonInterface {
 	public function getMatcher($matches = array(), $dataType) {
 
 		/** @var $matcher Matcher */
-		$matcher = GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Persistence\Matcher', $matches, $dataType);
+		$matcher = GeneralUtility::makeInstance('Fab\Vidi\Persistence\Matcher', $matches, $dataType);
 
 		$matcher = $this->applyCriteriaFromDataTables($matcher, $dataType);
 
@@ -124,7 +124,7 @@ class MatcherFactory implements SingletonInterface {
 	 * @signal
 	 */
 	protected function emitPostProcessMatcherObjectSignal(Matcher $matcher) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\CMS\VidiFrontend\Persistence\MatcherFactory', 'postProcessMatcherObject', array($matcher, $matcher->getDataType()));
+		$this->getSignalSlotDispatcher()->dispatch('Fab\VidiFrontend\Persistence\MatcherFactory', 'postProcessMatcherObject', array($matcher, $matcher->getDataType()));
 	}
 
 	/**
@@ -144,9 +144,9 @@ class MatcherFactory implements SingletonInterface {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Vidi\Resolver\FieldPathResolver
+	 * @return \Fab\Vidi\Resolver\FieldPathResolver
 	 */
 	protected function getFieldPathResolver() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Resolver\FieldPathResolver');
+		return GeneralUtility::makeInstance('Fab\Vidi\Resolver\FieldPathResolver');
 	}
 }

@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
-use TYPO3\CMS\Vidi\Domain\Repository\ContentRepositoryFactory;
+use Fab\Vidi\Domain\Repository\ContentRepositoryFactory;
 
 /**
  * Convert a content identifier into a Content object.
@@ -33,7 +33,7 @@ class ContentConverter extends AbstractTypeConverter {
 	/**
 	 * @var string
 	 */
-	protected $targetType = 'TYPO3\CMS\Vidi\Domain\Model\Content';
+	protected $targetType = 'Fab\Vidi\Domain\Model\Content';
 
 	/**
 	 * @var integer

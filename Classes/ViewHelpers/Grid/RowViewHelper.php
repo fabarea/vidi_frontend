@@ -14,11 +14,12 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\Vidi\Tca\FieldType;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Vidi\Domain\Model\Content;
-use TYPO3\CMS\Vidi\Tca\TcaService;
+use Fab\Vidi\Domain\Model\Content;
+use Fab\Vidi\Tca\Tca;
 
 /**
  * View helper for rendering multiple rows.
@@ -69,7 +70,7 @@ class RowViewHelper extends AbstractViewHelper {
 					$rendererConfiguration['uriBuilder'] = $this->controllerContext->getUriBuilder();
 					$rendererConfiguration['contentElement'] = $this->configurationManager->getContentObject();
 
-					/** @var $rendererObject \TYPO3\CMS\Vidi\Grid\GridRendererInterface */
+					/** @var $rendererObject \Fab\Vidi\Grid\GridRendererInterface */
 					$rendererObject = GeneralUtility::makeInstance($rendererClassName);
 					$value .= $rendererObject
 						->setObject($object)
@@ -103,7 +104,7 @@ class RowViewHelper extends AbstractViewHelper {
 	/**
 	 * Compute the value for the Content object according to a field name.
 	 *
-	 * @param \TYPO3\CMS\Vidi\Domain\Model\Content $object
+	 * @param \Fab\Vidi\Domain\Model\Content $object
 	 * @param string $fieldNameAndPath
 	 * @return string
 	 */
@@ -124,8 +125,8 @@ class RowViewHelper extends AbstractViewHelper {
 			// TRUE means the field name does not contains a path. "title" vs "metadata.title"
 			// Fetch the default label
 			if ($fieldNameOfForeignTable === $fieldName) {
-				$foreignTable = TcaService::table($object->getDataType())->field($fieldName)->getForeignTable();
-				$fieldNameOfForeignTable = TcaService::table($foreignTable)->getLabelField();
+				$foreignTable = Tca::table($object->getDataType())->field($fieldName)->getForeignTable();
+				$fieldNameOfForeignTable = Tca::table($foreignTable)->getLabelField();
 			}
 
 			$value = $object[$fieldName][$fieldNameOfForeignTable];
@@ -138,7 +139,7 @@ class RowViewHelper extends AbstractViewHelper {
 	 * Process the value
 	 *
 	 * @param string $value
-	 * @param \TYPO3\CMS\Vidi\Domain\Model\Content $object
+	 * @param \Fab\Vidi\Domain\Model\Content $object
 	 * @param string $fieldNameAndPath
 	 * @return string
 	 */
@@ -146,17 +147,17 @@ class RowViewHelper extends AbstractViewHelper {
 
 		// Set default value if $field name correspond to the label of the table
 		$fieldName = $this->getFieldPathResolver()->stripFieldPath($fieldNameAndPath, $object->getDataType());
-		if (TcaService::table($object->getDataType())->getLabelField() === $fieldName && empty($value)) {
+		if (Tca::table($object->getDataType())->getLabelField() === $fieldName && empty($value)) {
 			#$value = sprintf('[%s]', $this->getLabelService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1));
 		}
 
 		// Resolve the identifier in case of "select" or "radio button".
-		$fieldType = TcaService::table($object->getDataType())->field($fieldNameAndPath)->getType();
-		if ($fieldType !== TcaService::TEXTAREA) {
+		$fieldType = Tca::table($object->getDataType())->field($fieldNameAndPath)->getType();
+		if ($fieldType !== FieldType::TEXTAREA) {
 			$value = htmlspecialchars($value);
-//		} elseif ($fieldType === TcaService::TEXTAREA && !$this->isClean($value)) {
+//		} elseif ($fieldType === FieldType::TEXTAREA && !$this->isClean($value)) {
 //			$value = htmlspecialchars($value); // Avoid bad surprise, converts characters to HTML.
-//		} elseif ($fieldType === TcaService::TEXTAREA && !$this->hasHtml($value)) {
+//		} elseif ($fieldType === FieldType::TEXTAREA && !$this->hasHtml($value)) {
 //			$value = nl2br($value);
 		}
 
@@ -176,7 +177,7 @@ class RowViewHelper extends AbstractViewHelper {
 		}
 		$className = $configuration['format'];
 
-		/** @var \TYPO3\CMS\Vidi\Formatter\FormatterInterface $formatter */
+		/** @var \Fab\Vidi\Formatter\FormatterInterface $formatter */
 		$formatter = GeneralUtility::makeInstance($className);
 		$value = $formatter->format($value);
 
@@ -184,17 +185,17 @@ class RowViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Vidi\Resolver\FieldPathResolver
+	 * @return \Fab\Vidi\Resolver\FieldPathResolver
 	 */
 	protected function getFieldPathResolver() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Resolver\FieldPathResolver');
+		return GeneralUtility::makeInstance('Fab\Vidi\Resolver\FieldPathResolver');
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Vidi\Resolver\ContentObjectResolver
+	 * @return \Fab\Vidi\Resolver\ContentObjectResolver
 	 */
 	protected function getContentObjectResolver() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Resolver\ContentObjectResolver');
+		return GeneralUtility::makeInstance('Fab\Vidi\Resolver\ContentObjectResolver');
 	}
 
 }

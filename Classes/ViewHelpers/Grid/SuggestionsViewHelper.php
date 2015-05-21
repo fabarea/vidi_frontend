@@ -41,7 +41,7 @@ class SuggestionsViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Vidi\Facet\FacetSuggestionService
+	 * @return \Fab\Vidi\Facet\FacetSuggestionService
 	 */
 	protected function getFacetSuggestionService () {
 		#$settings = $this->templateVariableContainer->get('settings'); (?)

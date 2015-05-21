@@ -9,7 +9,7 @@ $tca = array(
 			'first_name',
 			'last_name',
 			'usergroup',
-			new \TYPO3\CMS\Vidi\Facet\StandardFacet(
+			new \Fab\Vidi\Facet\StandardFacet(
 				'disable',
 				'LLL:EXT:vidi/Resources/Private/Language/locallang.xlf:active',
 				array(
@@ -30,7 +30,7 @@ $tca = array(
 			),
 			'usergroup' => array(
 				'renderers' => array(
-					'TYPO3\CMS\Vidi\Grid\RelationRenderer',
+					'Fab\Vidi\Grid\RelationRenderer',
 				),
 				'label' => 'LLL:EXT:vidi/Resources/Private/Language/fe_users.xlf:usergroup',
 			),

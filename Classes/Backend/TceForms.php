@@ -14,7 +14,7 @@ namespace Fab\VidiFrontend\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Vidi\Tca\TcaService;
+use Fab\Vidi\Tca\Tca;
 
 /**
  * A class to interact with TCEForms
@@ -33,7 +33,7 @@ class TceForms {
 			if (isset($GLOBALS['TCA'][$dataType]['grid_frontend'])) {
 				$label = sprintf(
 					'%s (%s)',
-					TcaService::table($dataType)->getTitle(),
+					Tca::table($dataType)->getTitle(),
 					$dataType
 				);
 				$values = array($label, $dataType, NULL);

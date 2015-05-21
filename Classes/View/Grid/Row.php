@@ -14,12 +14,13 @@ namespace Fab\VidiFrontend\View\Grid;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\Vidi\Tca\FieldType;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Vidi\Domain\Model\Content;
-use TYPO3\CMS\Vidi\Tca\Tca;
-use TYPO3\CMS\Vidi\Tca\TcaService;
-use TYPO3\CMS\Vidi\View\AbstractComponentView;
+use Fab\Vidi\Domain\Model\Content;
+use Fab\Vidi\Tca\Tca;
+use Fab\Vidi\Tca\Tca;
+use Fab\Vidi\View\AbstractComponentView;
 
 /**
  * View helper for rendering a row of a content object.
@@ -76,7 +77,7 @@ class Row extends AbstractComponentView {
 					$rendererConfiguration['uriBuilder'] = $this->controllerContext->getUriBuilder();
 					$rendererConfiguration['contentElement'] = $this->configurationManager->getContentObject();
 
-					/** @var $rendererObject \TYPO3\CMS\Vidi\Grid\GridRendererInterface */
+					/** @var $rendererObject \Fab\Vidi\Grid\GridRendererInterface */
 					$rendererObject = GeneralUtility::makeInstance($rendererClassName);
 					$value .= $rendererObject
 						->setObject($object)
@@ -111,7 +112,7 @@ class Row extends AbstractComponentView {
 	/**
 	 * Compute the value for the Content object according to a field name.
 	 *
-	 * @param \TYPO3\CMS\Vidi\Domain\Model\Content $object
+	 * @param \Fab\Vidi\Domain\Model\Content $object
 	 * @param string $fieldNameAndPath
 	 * @return string
 	 */
@@ -146,7 +147,7 @@ class Row extends AbstractComponentView {
 	 * Process the value
 	 *
 	 * @param string $value
-	 * @param \TYPO3\CMS\Vidi\Domain\Model\Content $object
+	 * @param \Fab\Vidi\Domain\Model\Content $object
 	 * @param string $fieldNameAndPath
 	 * @return string
 	 */
@@ -160,7 +161,7 @@ class Row extends AbstractComponentView {
 
 		// Resolve the identifier in case of "select" or "radio button".
 		$fieldType = Tca::table($object->getDataType())->field($fieldNameAndPath)->getType();
-		if ($fieldType !== TcaService::TEXTAREA) {
+		if ($fieldType !== FieldType::TEXTAREA) {
 			$value = htmlspecialchars($value);
 //		} elseif ($fieldType === Tca::TEXTAREA && !$this->isClean($value)) {
 //			$value = htmlspecialchars($value); // Avoid bad surprise, converts characters to HTML.
@@ -184,7 +185,7 @@ class Row extends AbstractComponentView {
 		}
 		$className = $configuration['format'];
 
-		/** @var \TYPO3\CMS\Vidi\Formatter\FormatterInterface $formatter */
+		/** @var \Fab\Vidi\Formatter\FormatterInterface $formatter */
 		$formatter = GeneralUtility::makeInstance($className);
 		$value = $formatter->format($value);
 
@@ -192,10 +193,10 @@ class Row extends AbstractComponentView {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Vidi\Resolver\FieldPathResolver
+	 * @return \Fab\Vidi\Resolver\FieldPathResolver
 	 */
 	protected function getFieldPathResolver() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Resolver\FieldPathResolver');
+		return GeneralUtility::makeInstance('Fab\Vidi\Resolver\FieldPathResolver');
 	}
 
 	/**
@@ -217,10 +218,10 @@ class Row extends AbstractComponentView {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Vidi\Resolver\ContentObjectResolver
+	 * @return \Fab\Vidi\Resolver\ContentObjectResolver
 	 */
 	protected function getContentObjectResolver() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Resolver\ContentObjectResolver');
+		return GeneralUtility::makeInstance('Fab\Vidi\Resolver\ContentObjectResolver');
 	}
 
 }

@@ -18,10 +18,10 @@ use Fab\VidiFrontend\Plugin\PluginParameter;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Vidi\Domain\Model\Content;
-use TYPO3\CMS\Vidi\Persistence\PagerObjectFactory;
-use TYPO3\CMS\VidiFrontend\Persistence\MatcherFactory;
-use TYPO3\CMS\VidiFrontend\Persistence\OrderFactory;
+use Fab\Vidi\Domain\Model\Content;
+use Fab\Vidi\Persistence\PagerObjectFactory;
+use Fab\VidiFrontend\Persistence\MatcherFactory;
+use Fab\VidiFrontend\Persistence\OrderFactory;
 
 /**
  * Controller which handles actions related to Vidi in the Backend.

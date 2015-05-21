@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\VidiFrontend\Persistence;
+namespace Fab\VidiFrontend\Persistence;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -26,17 +26,17 @@ class OrderFactory implements SingletonInterface {
 	/**
 	 * Gets a singleton instance of this class.
 	 *
-	 * @return \TYPO3\CMS\VidiFrontend\Persistence\OrderFactory
+	 * @return \Fab\VidiFrontend\Persistence\OrderFactory
 	 */
 	static public function getInstance() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\VidiFrontend\Persistence\OrderFactory');
+		return GeneralUtility::makeInstance('Fab\VidiFrontend\Persistence\OrderFactory');
 	}
 
 	/**
 	 * Returns an order object.
 	 *
 	 * @param string $dataType
-	 * @return \TYPO3\CMS\Vidi\Persistence\Order
+	 * @return \Fab\Vidi\Persistence\Order
 	 */
 	public function getOrder($dataType) {
 
@@ -52,7 +52,7 @@ class OrderFactory implements SingletonInterface {
 			$field => strtoupper($direction)
 		);
 
-		return GeneralUtility::makeInstance('TYPO3\CMS\Vidi\Persistence\Order', $order);
+		return GeneralUtility::makeInstance('Fab\Vidi\Persistence\Order', $order);
 	}
 
 }

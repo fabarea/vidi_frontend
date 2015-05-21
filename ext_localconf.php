@@ -17,7 +17,7 @@ if (!defined('TYPO3_MODE')) {
 // Connect "preProcessTca" signal slot with the metadata service.
 $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
 $signalSlotDispatcher->connect(
-	'TYPO3\CMS\Vidi\Tca\Tca',
+	'Fab\Vidi\Tca\Tca',
 	'preProcessTca',
 	'Fab\VidiFrontend\Configuration\TcaTweak',
 	'tweakFileReferences',
