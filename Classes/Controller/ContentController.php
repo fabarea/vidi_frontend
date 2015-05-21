@@ -29,7 +29,7 @@ use Fab\VidiFrontend\Persistence\OrderFactory;
 class ContentController extends ActionController {
 
 	/**
-	 * @throws \TYPO3\CMS\Media\Exception\StorageNotOnlineException
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
 	 */
 	public function initializeAction() {
 
