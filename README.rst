@@ -138,7 +138,7 @@ Install the required Web Components::
 
 	cd typo3conf/ext/vidi_upload
 
-	# This will populate the directory Resources/Public/WebComponents.
+	# This will populate the directory Resources/Public/BowerComponents.
 	bower install
 
 	# Install the necessary NodeJS package.
@@ -161,8 +161,8 @@ Patch VisualSearch
 To improve the User experience, `Visual Search`_ plugin has been patched avoiding the drop down menu to appear inopportunely.
 It means when making a fresh build, the patch must be (for now) manually added::
 
-	cd Resources/Public/WebComponents/visualsearch/
-	grep -lr "options.app.searchBox.searchEvent(e)"
+	cd Resources/Public/BowerComponents/visualsearch/
+	grep -lr "options.app.searchBox.searchEvent(e)" .
 
 	-> it must be 2 occurrences
 
