@@ -56,9 +56,20 @@ class TceForms {
 			$parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
 		} else {
 
+			$configuredDataType = '';
+			if (!empty($parameters['row']['pi_flexform'])) {
+				$flexform = GeneralUtility::xml2array($parameters['row']['pi_flexform']);
+				if (!empty($flexform['data']['sDEF']['lDEF']['settings.dataType'])) {
+					$configuredDataType = $flexform['data']['sDEF']['lDEF']['settings.dataType']['vDEF'];
+				}
+			}
+
+			$parameters['items'][] = ''; // Empty value
 			foreach ($configuration['settings']['templates'] as $template) {
 				$values = array($template['title'], $template['path'], NULL);
-				$parameters['items'][] = $values;
+				if (empty($template['dataType']) || $template['dataType'] === $configuredDataType) {
+					$parameters['items'][] = $values;
+				}
 			}
 		}
 	}

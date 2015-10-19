@@ -14,12 +14,15 @@ plugin.tx_vidifrontend {
 			className = {$plugin.tx_vidifrontend.settings.grid.className}
 		}
 
+
 		templates {
 			1 {
 				title = Default detail view
 				path = EXT:vidi_frontend/Resources/Private/Templates/Content/Show.html
 			}
 			2 {
+				# Restrict visibility of this template for "fe_users" only.
+				dataType = fe_users
 				title = User detail view
 				path = EXT:vidi_frontend/Resources/Private/Templates/Content/ShowUser.html
 			}

@@ -5,47 +5,22 @@
 	<ROOT>
 		<type>array</type>
 		<el>
-			<!--<switchableControllerActions>-->
-			<!--<TCEforms>-->
-			<!--<label>Actions</label>-->
-			<!--<onChange>reload</onChange>-->
-			<!--<config>-->
-			<!--<type>select</type>-->
-			<!--<items type="array">-->
-			<!--<numIndex index="1">-->
-			<!--<numIndex index="0">-->
-			<!--New request-->
-			<!--</numIndex>-->
-			<!--<numIndex index="1">Content->index;Content->list;Content->show;</numIndex>-->
-			<!--</numIndex>-->
-			<!--</items>-->
-			<!--<size>1</size>-->
-			<!--</config>-->
-			<!--</TCEforms>-->
-			<!--</switchableControllerActions>-->
 			<settings.dataType>
 				<TCEforms>
 					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.content_type</label>
+					<onChange>reload</onChange>
 					<config>
 						<type>select</type>
+						<!--on reload-->
 						<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->fetchDataTypes</itemsProcFunc>
 						<size>1</size>
 						<maxitems>1</maxitems>
 					</config>
 				</TCEforms>
 			</settings.dataType>
-			<settings.isVisualSearchBar>
-				<TCEforms>
-					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.is_visual_search_bar</label>
-					<config>
-						<type>check</type>
-						<default>0</default>
-					</config>
-				</TCEforms>
-			</settings.isVisualSearchBar>
 			<settings.template>
 				<TCEforms>
-					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.templateForDetailView</label>
+					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.template_for_detail_view</label>
 					<config>
 						<type>select</type>
 						<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->fetchTemplatesForActionShow</itemsProcFunc>

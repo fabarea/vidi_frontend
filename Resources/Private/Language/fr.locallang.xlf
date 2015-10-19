@@ -21,14 +21,13 @@
 				<target>Afficher la barre de recherche visuelle</target>
 			</trans-unit>
 			<trans-unit id="flexform.templateForDetailView">
-				<source>Template for the "detail" view</source>
+				<source>Template for the "detail" view. If let blank, no link to a detail view will be made.</source>
 				<target>Template pour la vue de "détail"</target>
 			</trans-unit>
 			<trans-unit id="showDetail">
 				<source>Show detail</source>
 				<target>Afficher le détail</target>
 			</trans-unit>
-
 			<trans-unit id="grid.processing">
 				<source>Processing...</source>
 				<target>Traitement en cours...</target>
