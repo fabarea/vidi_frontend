@@ -10,18 +10,12 @@ if (TYPO3_MODE == 'BE') {
 		'Generic List Component'
 	);
 
-	$TCA['tt_content']['types']['list']['subtypes_addlist']['vidifrontend_pi1'] = 'pi_flexform';
+	$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['vidifrontend_pi1'] = 'pi_flexform';
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
 		'vidifrontend_pi1',
 		sprintf('FILE:EXT:vidi_frontend/Configuration/FlexForm/VidiFrontend.xml')
 	);
 
+	$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['vidifrontend_pi1']='layout, select_key, pages, recursive';
+	$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['vidifrontend_pi1']='pi_flexform';
 }
-
-// Register cache for this extension
-//if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['vidi_frontend_cache'])) {
-//	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['vidi_frontend_cache'] = array();
-//	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['vidi_frontend_cache']['frontend'] = 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend';
-//	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['vidi_frontend_cache']['backend'] = 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend';
-//	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['vidi_frontend_cache']['options']['compression'] = 1;
-//}
