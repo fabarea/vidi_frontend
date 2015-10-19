@@ -32,6 +32,29 @@ plugin.tx_vidifrontend {
 		fluidVariables {
 			fe_users = user
 		}
+
+		asset {
+
+			vidiCss {
+				# For none Bootstrap replace by EXT:vidi_frontend/Resources/Public/Build/StyleSheets/vidi_frontend.min.css
+				path = EXT:vidi_frontend/Resources/Public/Build/StyleSheets/vidi_frontend.bootstrap.min.css
+				type = css
+
+				# Optional key if loading assets through EXT:vhs.
+				dependencies = mainCss
+			}
+
+			vidiJs {
+				# For none Bootstrap replace by EXT:vidi_frontend/Resources/Public/Build/JavaScript/vidi_frontend.min.js
+				path = EXT:vidi_frontend/Resources/Public/Build/JavaScript/vidi_frontend.bootstrap.min.js
+				type = js
+
+				# Optional key if loading assets through EXT:vhs.
+				dependencies = mainJs
+			}
+		}
+
+		loadAssetWithVhsIfAvailable = 1
 	}
 }
 

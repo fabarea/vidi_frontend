@@ -29,71 +29,24 @@
 					</config>
 				</TCEforms>
 			</settings.template>
-			<settings.loadJsFile>
+			<settings.isVisualSearchBar>
 				<TCEforms>
-					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.loadJsFile</label>
+					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.is_visual_search_bar</label>
 					<config>
-						<type>select</type>
-						<items type="array">
-							<numIndex index="0">
-								<numIndex index="0"></numIndex>
-								<numIndex index="1"></numIndex>
-							</numIndex>
-							<numIndex index="1">
-								<numIndex index="0">vidi_frontend.min.js</numIndex>
-								<numIndex index="1">vidi_frontend.min.js</numIndex>
-							</numIndex>
-							<numIndex index="2">
-								<numIndex index="0">vidi_frontend.js</numIndex>
-								<numIndex index="1">vidi_frontend.js</numIndex>
-							</numIndex>
-							<numIndex index="3">
-								<numIndex index="0">vidi_frontend.bootstrap.min.js</numIndex>
-								<numIndex index="1">vidi_frontend.bootstrap.min.js</numIndex>
-							</numIndex>
-							<numIndex index="4">
-								<numIndex index="0">vidi_frontend.bootstrap.js</numIndex>
-								<numIndex index="1">vidi_frontend.bootstrap.js</numIndex>
-							</numIndex>
-						</items>
-						<size>1</size>
-						<maxitems>1</maxitems>
+						<type>check</type>
+						<default>0</default>
 					</config>
 				</TCEforms>
-			</settings.loadJsFile>
-			<settings.loadCssFile>
+			</settings.isVisualSearchBar>
+			<settings.defaultNumberOfItems>
 				<TCEforms>
-					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.loadCssFile</label>
+					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.number_of_items</label>
 					<config>
-						<type>select</type>
-						<items type="array">
-							<numIndex index="0">
-								<numIndex index="0"></numIndex>
-								<numIndex index="1"></numIndex>
-							</numIndex>
-							<numIndex index="1">
-								<numIndex index="0">vidi_frontend.min.css</numIndex>
-								<numIndex index="1">vidi_frontend.min.css</numIndex>
-							</numIndex>
-							<numIndex index="2">
-								<numIndex index="0">vidi_frontend.bootstrap.min.css</numIndex>
-								<numIndex index="1">vidi_frontend.bootstrap.min.css</numIndex>
-							</numIndex>
-						</items>
-						<size>1</size>
-						<maxitems>1</maxitems>
+						<type>input</type>
+						<default>10</default>
 					</config>
 				</TCEforms>
-			</settings.loadCssFile>
-			<!--<settings.defaultNumberOfItems>-->
-			<!--<TCEforms>-->
-			<!--<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.number_of_items</label>-->
-			<!--<config>-->
-			<!--<type>input</type>-->
-			<!--<default>10</default>-->
-			<!--</config>-->
-			<!--</TCEforms>-->
-			<!--</settings.defaultNumberOfItems>-->
+			</settings.defaultNumberOfItems>
 		</el>
 	</ROOT>
 </T3DataStructure>

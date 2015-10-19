@@ -14,12 +14,7 @@
 		</style>
 	</f:if>
 
-	<f:if condition="{settings.loadJsFile}">
-		<vf:script file="{f:uri.resource(path:'Build/JavaScript/{settings.loadJsFile}')}" />
-	</f:if>
-	<f:if condition="{settings.loadCssFile}">
-		<vf:style file="{f:uri.resource(path:'Build/StyleSheets/{settings.loadCssFile}')}" />
-	</f:if>
+	<vf:loadAssets/>
 
 	<script>
 		var dataType = "{dataType}";
