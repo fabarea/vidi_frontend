@@ -43,7 +43,7 @@
 					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.number_of_items</label>
 					<config>
 						<type>input</type>
-						<default>10</default>
+						<default>10, 20, 50, 100, -1</default>
 					</config>
 				</TCEforms>
 			</settings.defaultNumberOfItems>

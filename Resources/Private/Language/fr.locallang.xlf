@@ -94,6 +94,10 @@
 				<source>: activate to sort column descending</source>
 				<target>: activer pour trier la colonne par ordre décroissant</target>
 			</trans-unit>
+			<trans-unit id="grid.lengthMenu.all">
+				<source>All</source>
+				<target>Tous</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -23,6 +23,7 @@ VidiFrontend.Grid = {
 			var options = {
 				columns: settings.columns,
 				language: settings.language,
+				lengthMenu: settings.lengthMenu,
 				stateSave: true,
 
 

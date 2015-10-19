@@ -10,7 +10,7 @@
 				<source>Content Type</source>
 			</trans-unit>
 			<trans-unit id="flexform.number_of_items">
-				<source>Table CSS class</source>
+				<source>Menu "number of records"</source>
 			</trans-unit>
 			<trans-unit id="flexform.is_visual_search_bar">
 				<source>Display the Visual Search bar</source>
@@ -71,6 +71,9 @@
 			</trans-unit>
 			<trans-unit id="grid.aria.sortDescending">
 				<source>: activate to sort column descending</source>
+			</trans-unit>
+			<trans-unit id="grid.lengthMenu.all">
+				<source>All</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -31,6 +31,7 @@
 
 		// Facets
 		var facets = {vf:grid.facets()};
+		var lengthMenu = {vf:grid.lengthMenu()};
 
 		// Facet suggestions
 		var suggestions = {vf:grid.suggestions()};
@@ -50,12 +51,14 @@
 			};
 		}
 
+
 		VidiFrontend.settings[gridIdentifier] = {
 			id: gridIdentifier,
 			dataType: dataType,
 			columns: columns,
 			language: labels,
 			facets: facets,
+			lengthMenu: lengthMenu,
 			suggestions: suggestions
 		};
 
