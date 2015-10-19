@@ -12,11 +12,11 @@ Project info and releases
 .. http://typo3.org/extensions/repository/view/vidi
 
 Development version:
-https://github.com/fudriot/vidi_frontend
+https://github.com/fabarea/vidi_frontend
 
 ::
 
-	git clone https://github.com/fudriot/vidi_frontend.git
+	git clone https://github.com/fabarea/vidi_frontend.git
 
 Flash news about latest development are also announced on
 http://twitter.com/fudriot
@@ -25,55 +25,58 @@ http://twitter.com/fudriot
 Installation and requirement
 ============================
 
-Install the extension as normal in the Extension Manager or download the Git version as follows::
+
+The extension **requires TYPO3 6.2**. Install the extension as normal in the Extension Manager from the `TER`_ or download the Git version::
 
 	# local installation
 	cd typo3conf/ext
 
 	# download the source
-	git clone https://github.com/fudriot/vidi_frontend.git
+	git clone https://github.com/fabarea/vidi_frontend.git
 
 	-> next step, is to open the Extension Manager in the BE.
 
 .. _TER: typo3.org/extensions/repository/
 .. _master branch: https://github.com/TYPO3-extensions/vidi.git
 
+You are almost there! Load the static TS file
 
-You are almost there! Check out next paragraph how to load the JavaScript and CSS and then create a Content Element of type "Vidi Frontend" in General Plugin > "Generic List Component".
+SCREENHSOT!!
 
-Load assets files (JS / CSS)
-----------------------------
-
-In order the plugin to work, it is required to load some JavaScript and CSS. It will transform the raw list of content into a smart Grid thanks to the jQuery `DataTable`_.
-
-Having `Bootstrap`_ integration, you can use::
-
-	# CSS
-	EXT:vidi_frontend/Resources/Public/Build/StyleSheets/vidi_frontend.bootstrap.min.css
-
-	# JavaScript
-	EXT:vidi_frontend/Resources/Public/Build/JavaScript/vidi_frontend.bootstrap.min.js
-
-For your information there is an un-compressed JavaScript version for debug purpose, simply remove the ``min`` segment at the end of the file:
-
-
-For layout not relying on Bootstrap, simply use the following. However, note this version has be less tested as of this writing::
-
-	# CSS
-	EXT:vidi_frontend/Resources/Public/Build/StyleSheets/vidi_frontend.min.css
-
-	# JavaScript
-	EXT:vidi_frontend/Resources/Public/Build/JavaScript/vidi_frontend.min.js
-
-.. _DataTable: http://www.datatables.net/
-.. _Bootstrap: http://getbootstrap.com/
-
+Finally create a Content Element of type "Vidi Frontend" in General Plugin > "Generic List Component".
 
 Configuration
 =============
 
 The plugin can be configured in various places such as TypoScript, PHP or in the plugin record itself.
 
+Please make sure jQuery is well loaded.
+
+Configure the Assets::
+
+
+	#############################
+	# plugin.tx_vidifrontend
+	#############################
+	plugin.tx_vidifrontend {
+
+		settings {
+
+			asset {
+
+				vidiCss {
+					# For none Bootstrap replace "vidi_frontend.bootstrap.min.css" by "vidi_frontend.min.css"
+					type = css
+				}
+
+				vidiJs {
+					# For none Bootstrap replace "vidi_frontend.bootstrap.min.js" by "vidi_frontend.min.js"
+					path = EXT:vidi_frontend/Resources/Public/Build/JavaScript/vidi_frontend.bootstrap.min.js
+					type = js
+				}
+			}
+		}
+	}
 
 Register a new Content type
 ---------------------------
@@ -122,6 +125,7 @@ This TypoScript will typically be put under within ``EXT:foo/Configuration/TypoS
 				10 {
 					title = Foo detail view
 					path = EXT:foo/Resources/Private/Templates/VidiFrontend/ShowFoo.html
+					dataType = fe_users
 				}
 			}
 		}
@@ -169,3 +173,4 @@ It means when making a fresh build, the patch must be (for now) manually added::
 .. _Bower: http://bower.io/
 .. _Grunt: http://gruntjs.com/
 .. _Visual Search: http://documentcloud.github.io/visualsearch/
+.. _DataTable: http://www.datatables.net/
