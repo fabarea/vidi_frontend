@@ -16,6 +16,10 @@
 				<source>Table CSS class</source>
 				<target>Classe CSS pour la grille</target>
 			</trans-unit>
+			<trans-unit id="flexform.columns">
+				<source>Displayed columns. Attention! Some columns may not work on the Frontend.</source>
+				<target>Colonnes affichées. Attention! Certaines colonnes peuvent ne pas s'afficher en Frontend.</target>
+			</trans-unit>
 			<trans-unit id="flexform.is_visual_search_bar">
 				<source>Display the Visual Search bar</source>
 				<target>Afficher la barre de recherche visuelle</target>
@@ -31,10 +35,6 @@
 			<trans-unit id="grid.processing">
 				<source>Processing...</source>
 				<target>Traitement en cours...</target>
-			</trans-unit>
-			<trans-unit id="grid.search">
-				<source></source>
-				<target></target>
 			</trans-unit>
 			<trans-unit id="grid.searchPlaceholder">
 				<source>Search...</source>

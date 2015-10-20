@@ -13,6 +13,8 @@ namespace Fab\VidiFrontend\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Tca\Tca;
 
@@ -27,7 +29,7 @@ class TceForms {
 	 * @param array $parameters
 	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject
 	 */
-	public function fetchDataTypes(&$parameters, $parentObject = NULL) {
+	public function feedItemsForSettingsDataTypes(&$parameters, $parentObject = NULL) {
 
 		foreach ($GLOBALS['TCA'] as $dataType => $tca) {
 			if (isset($GLOBALS['TCA'][$dataType]['grid_frontend'])) {
@@ -49,7 +51,7 @@ class TceForms {
 	 * @param array $parameters
 	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject
 	 */
-	public function fetchTemplatesForActionShow(&$parameters, $parentObject = NULL) {
+	public function feedItemsForSettingsTemplateShow(&$parameters, $parentObject = NULL) {
 		$configuration = $this->getPluginConfiguration();
 
 		if (empty($configuration) || empty($configuration['settings']['templates'])) {
@@ -71,6 +73,39 @@ class TceForms {
 					$parameters['items'][] = $values;
 				}
 			}
+		}
+	}
+
+	/**
+	 * This method modifies the list of items for FlexForm "template".
+	 *
+	 * @param array $parameters
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject
+	 */
+	public function feedItemsForSettingsColumns(&$parameters, $parentObject = NULL) {
+		$configuration = $this->getPluginConfiguration();
+
+		if (empty($configuration) || empty($configuration['settings']['templates'])) {
+			$parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
+		} else {
+
+			$configuredDataType = '';
+			if (!empty($parameters['row']['pi_flexform'])) {
+				$flexform = GeneralUtility::xml2array($parameters['row']['pi_flexform']);
+				if (!empty($flexform['data']['sDEF']['lDEF']['settings.dataType'])) {
+					$configuredDataType = $flexform['data']['sDEF']['lDEF']['settings.dataType']['vDEF'];
+				}
+			}
+
+			if (empty($configuredDataType)) {
+				$parameters['items'][] = array('No content type has been saved yet!', '', NULL);
+			} else {
+				foreach(FrontendTca::grid($configuredDataType)->getFields() as $fieldNameAndPath => $configuration) {
+					$values = array($fieldNameAndPath, $fieldNameAndPath, NULL);
+					$parameters['items'][] = $values;
+				}
+			}
+
 		}
 	}
 

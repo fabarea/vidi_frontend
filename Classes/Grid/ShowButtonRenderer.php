@@ -14,16 +14,16 @@ namespace Fab\VidiFrontend\Grid;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\Vidi\Grid\ColumnRendererAbstract;
 use Fab\VidiFrontend\Plugin\PluginParameter;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use Fab\Vidi\Grid\GridRendererAbstract;
 
 /**
  * Class for editing mm relation between objects.
  */
-class ShowButtonRenderer extends GridRendererAbstract {
+class ShowButtonRenderer extends ColumnRendererAbstract {
 
 	/**
 	 * Render a representation of the relation on the GUI.

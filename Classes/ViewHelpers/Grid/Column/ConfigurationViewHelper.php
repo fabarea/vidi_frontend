@@ -14,6 +14,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid\Column;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -31,8 +32,9 @@ class ConfigurationViewHelper extends AbstractViewHelper {
 	public function render() {
 		$output = '';
 		$dataType = $this->templateVariableContainer->get('dataType');
+		$settings = $this->templateVariableContainer->get('settings');
 
-		foreach(FrontendTca::grid($dataType)->getFields() as $fieldNameAndPath => $configuration) {
+		foreach(ColumnsConfiguration::getInstance()->get($dataType, $settings['columns']) as $fieldNameAndPath => $configuration) {
 
 			// mData vs columnName
 			// -------------------

@@ -14,6 +14,7 @@ namespace Fab\VidiFrontend\Domain\Validator;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
@@ -30,10 +31,10 @@ class ColumnsValidator extends AbstractValidator {
 	 * @return void
 	 */
 	public function isValid($columns) {
-		$dataType = GeneralUtility::_GP('dataType');
+		$columnNames = ContentElementConfiguration::getInstance()->getColumnsNames();
 
 		foreach ($columns as $columnName) {
-			if (FrontendTca::grid($dataType)->hasNotField($columnName)) {
+			if (!in_array($columnName, $columnNames)) {
 				$message = sprintf('Column "%s" is not allowed. Actually, it was not configured to be displayed in the grid.', $columnName);
 				$this->addError($message , 1380019718);
 			}

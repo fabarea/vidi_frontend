@@ -107,7 +107,9 @@ class FrontendGridService extends GridService { // implements TcaServiceInterfac
 	 * @return array
 	 */
 	public function getFields() {
-		return is_array($this->tca['columns']) ? $this->tca['columns'] : array();
+		$allFields = Tca::grid($this->tableName)->getAllFields();
+		$frontendFields = is_array($this->tca['columns']) ? $this->tca['columns'] : array();
+		return array_merge($allFields, $frontendFields);
 	}
 
 	/**
@@ -118,16 +120,6 @@ class FrontendGridService extends GridService { // implements TcaServiceInterfac
 	 */
 	public function hasField($fieldName) {
 		return isset($this->tca['columns'][$fieldName]);
-	}
-
-	/**
-	 * Tell whether the field does not exist.
-	 *
-	 * @param string $fieldName
-	 * @return bool
-	 */
-	public function hasNotField($fieldName) {
-		return !$this->hasField($fieldName);
 	}
 
 	/**

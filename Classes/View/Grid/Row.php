@@ -15,6 +15,8 @@ namespace Fab\VidiFrontend\View\Grid;
  */
 
 use Fab\Vidi\Tca\FieldType;
+use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
+use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Domain\Model\Content;
@@ -63,7 +65,7 @@ class Row extends AbstractComponentView {
 		$output = array();
 		$dataType = $object->getDataType();
 
-		foreach(FrontendTca::grid($dataType)->getFields() as $fieldNameAndPath => $configuration) {
+		foreach(ContentElementConfiguration::getInstance()->getColumns() as $fieldNameAndPath => $configuration) {
 
 			// Fetch value
 			if (FrontendTca::grid($dataType)->hasRenderers($fieldNameAndPath)) {

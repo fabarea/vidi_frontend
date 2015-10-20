@@ -1,9 +1,16 @@
 Vidi for TYPO3 CMS
 ==================
 
-Generic List Component for the Frontend where Content can be filtered in an advanced way... Veni, vidi, vici!
+Generic List Component where Content can be filtered in an advanced way... Veni, vidi, vici! This extension is based on Vidi with
+the aim to provide the same feature set but for the Frontend.
 
-In the Plugin record, you can configure what content type to render along with a template that you can customize to your need.
+In the plugin record in the Backend, it can be configured what content type to render associated with a customizable template.
+
+SCREENSHOT!
+
+For the Grid, we use the excellent `Data Tables`_ which is a powerful jQuery plugin smart and fast to sort and filter data.
+The Filter bar is provided by the `Visual Search`_ jQuery plugin which offers nice facet capabilities and intuitive search.
+
 
 Project info and releases
 -------------------------

@@ -13,6 +13,7 @@ namespace Fab\VidiFrontend\Configuration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use Fab\Vidi\Tca\TcaServiceInterface;
 
 /**

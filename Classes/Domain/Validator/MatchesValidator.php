@@ -14,7 +14,7 @@ namespace Fab\VidiFrontend\Domain\Validator;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Fab\VidiFrontend\Tca\FrontendTca;
+use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
@@ -30,10 +30,10 @@ class MatchesValidator extends AbstractValidator {
 	 * @return void
 	 */
 	public function isValid($matches) {
-		$dataType = GeneralUtility::_GP('dataType');
+		$columnNames = ContentElementConfiguration::getInstance()->getColumnsNames();
 
 		foreach ($matches as $fieldName => $value) {
-			if (FrontendTca::grid($dataType)->hasNotField($fieldName)) {
+			if (!in_array($fieldName, $columnNames)) {
 				$message = sprintf('Field "%s" is not allowed. Actually, it is not configured in the TCA.', $fieldName);
 				$this->addError($message, 1380019718);
 			}

@@ -11,8 +11,7 @@
 					<onChange>reload</onChange>
 					<config>
 						<type>select</type>
-						<!--on reload-->
-						<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->fetchDataTypes</itemsProcFunc>
+						<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsDataTypes</itemsProcFunc>
 						<size>1</size>
 						<maxitems>1</maxitems>
 					</config>
@@ -23,7 +22,7 @@
 					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.template_for_detail_view</label>
 					<config>
 						<type>select</type>
-						<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->fetchTemplatesForActionShow</itemsProcFunc>
+						<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsTemplateShow</itemsProcFunc>
 						<size>1</size>
 						<maxitems>1</maxitems>
 					</config>
@@ -47,6 +46,17 @@
 					</config>
 				</TCEforms>
 			</settings.defaultNumberOfItems>
+			<settings.columns>
+				<TCEforms>
+					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.columns</label>
+					<config>
+						<type>select</type>
+						<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsColumns</itemsProcFunc>
+						<size>10</size>
+						<maxitems>100</maxitems>
+					</config>
+				</TCEforms>
+			</settings.columns>
 		</el>
 	</ROOT>
 </T3DataStructure>

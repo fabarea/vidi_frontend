@@ -12,6 +12,9 @@
 			<trans-unit id="flexform.number_of_items">
 				<source>Menu "number of records"</source>
 			</trans-unit>
+			<trans-unit id="flexform.columns">
+				<source>Displayed columns. Attention! Some columns may not work on the Frontend.</source>
+			</trans-unit>
 			<trans-unit id="flexform.is_visual_search_bar">
 				<source>Display the Visual Search bar</source>
 			</trans-unit>
@@ -24,9 +27,6 @@
 
 			<trans-unit id="grid.processing">
 				<source>Processing...</source>
-			</trans-unit>
-			<trans-unit id="grid.search">
-				<source></source>
 			</trans-unit>
 			<trans-unit id="grid.searchPlaceholder">
 				<source>Search...</source>

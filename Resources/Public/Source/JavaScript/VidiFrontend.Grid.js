@@ -72,6 +72,7 @@ VidiFrontend.Grid = {
 				serverData: function(source, data, callback, settings) {
 
 					source += "&dataType=" + VidiFrontend.settings[identifier].dataType;
+					source += "&identifier=" + identifier;
 					source += "&format=json";
 
 					settings.jqXHR = $.ajax({

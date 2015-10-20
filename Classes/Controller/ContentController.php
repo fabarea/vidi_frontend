@@ -14,7 +14,7 @@ namespace Fab\VidiFrontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Fab\VidiFrontend\Plugin\PluginParameter;
+use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -68,7 +68,8 @@ class ContentController extends ActionController {
 		$this->view->assign('settings', $this->settings);
 		$this->view->assign('gridIdentifier', $this->configurationManager->getContentObject()->data['uid']);
 		$this->view->assign('dataType', $dataType);
-		$this->view->assign('columns', FrontendTca::grid($dataType)->getFields());
+		$columns = ColumnsConfiguration::getInstance()->get($dataType, $this->settings['columns']);
+		$this->view->assign('columns', $columns);
 	}
 
 	/**

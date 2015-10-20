@@ -22,12 +22,6 @@ $tca = array(
 			'uid' => array(
 				'width' => '5px',
 			),
-			'username' => array(
-			),
-			'name' => array(
-			),
-			'email' => array(
-			),
 			'usergroup' => array(
 				'renderers' => array(
 					'Fab\Vidi\Grid\RelationRenderer',
