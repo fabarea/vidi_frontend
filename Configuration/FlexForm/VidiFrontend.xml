@@ -17,7 +17,7 @@
 					</config>
 				</TCEforms>
 			</settings.dataType>
-			<settings.template>
+			<settings.templateDetail>
 				<TCEforms>
 					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.template_for_detail_view</label>
 					<config>
@@ -27,7 +27,7 @@
 						<maxitems>1</maxitems>
 					</config>
 				</TCEforms>
-			</settings.template>
+			</settings.templateDetail>
 			<settings.isVisualSearchBar>
 				<TCEforms>
 					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.is_visual_search_bar</label>

@@ -17,26 +17,6 @@
 	<vf:loadAssets/>
 
 	<script>
-		var dataType = "{dataType}";
-		var gridIdentifier = '{gridIdentifier}' - 0;
-		var dataTableDom = "{vf:visualSearch.configuration()}";
-
-		// Columns configuration
-		var columns = [];
-		{vf:grid.column.configuration()}
-
-		// Labels
-		var labels = {};
-		{vf:grid.column.localization()}
-
-		// Facets
-		var facets = {vf:grid.facets()};
-		var lengthMenu = {vf:grid.lengthMenu()};
-
-		// Facet suggestions
-		var suggestions = {vf:grid.suggestions()};
-
-		<![CDATA[
 
 		window.VidiFrontend = !window.VidiFrontend ? {} : window.VidiFrontend;
 
@@ -46,24 +26,38 @@
 			VidiFrontend.settings = {};
 			VidiFrontend.bars = {};
 			VidiFrontend.grids = {};
-			VidiFrontend.dataTable = {
-				dom: dataTableDom
-			};
+			VidiFrontend.dataTable = {};
+			VidiFrontend.dataTable['dom'] = "{vf:visualSearch.configuration()}";
 		}
 
+		// Columns configuration
+		var columns = [];
+		{vf:grid.column.configuration()}
 
-		VidiFrontend.settings[gridIdentifier] = {
-			id: gridIdentifier,
-			dataType: dataType,
-			columns: columns,
-			language: labels,
-			facets: facets,
-			lengthMenu: lengthMenu,
-			suggestions: suggestions
-		};
+		// Labels
+		var labels = {};
+		{vf:grid.column.localization()}
 
-		]]>
+		var gridIdentifier =  parseInt('{gridIdentifier}');
+		VidiFrontend.settings[gridIdentifier] = {};
+		VidiFrontend.settings[gridIdentifier]['id'] = gridIdentifier;
+		VidiFrontend.settings[gridIdentifier]['dataType'] = "{dataType}";
+		VidiFrontend.settings[gridIdentifier]['columns'] = columns;
+		VidiFrontend.settings[gridIdentifier]['language'] = labels;
+		VidiFrontend.settings[gridIdentifier]['facets'] = {vf:grid.facets()};
+		VidiFrontend.settings[gridIdentifier]['lengthMenu'] = {vf:grid.lengthMenu()};
+		VidiFrontend.settings[gridIdentifier]['suggestions'] = {vf:grid.suggestions()};
+		VidiFrontend.settings[gridIdentifier]['hasDetailView'] = {f:if(condition: "{settings.templateDetail}", then: 'true', else: 'false')};
 	</script>
+
+	<f:comment><!--Conditional style whether there is a detail view --></f:comment>
+	<f:if condition="{settings.templateDetail}">
+		<style>
+			#grid-{gridIdentifier} tbody tr td {
+				cursor: pointer;
+			}
+		</style>
+	</f:if>
 
 	<table id="grid-{gridIdentifier}" class="{settings.grid.className}" cellspacing="0" width="100%">
 		<thead>

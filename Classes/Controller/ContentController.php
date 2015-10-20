@@ -115,14 +115,14 @@ class ContentController extends ActionController {
 	public function showAction(Content $content) {
 
 		// Configure the template path according to the Plugin settings.
-		$pathAbs = GeneralUtility::getFileAbsFileName($this->settings['template']);
+		$pathAbs = GeneralUtility::getFileAbsFileName($this->settings['templateDetail']);
 		if (!is_file($pathAbs)) {
 			return sprintf('I could not find the template file <strong>%s</strong>', $pathAbs);
 		}
 
 		$variableName = 'object';
 		$dataType = $this->getContentType()->getCurrentType();
-		if (isset($this->settings['fluidVariables'][$dataType]) && basename($this->settings['template']) !== 'Show.html') {
+		if (isset($this->settings['fluidVariables'][$dataType]) && basename($this->settings['templateDetail']) !== 'Show.html') {
 			$variableName = $this->settings['fluidVariables'][$dataType];
 		}
 
