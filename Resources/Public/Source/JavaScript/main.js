@@ -11,6 +11,19 @@
 
 		_.each(VidiFrontend.settings, function(settings, identifier) {
 
+			/**
+			 * Select or deselect all rows at once.
+			 */
+			$('#grid-' + settings.id + ' .checkbox-row-top').click(function() {
+				var $table = $(this).closest('table');
+				var checkboxes = $($table).find('.checkbox-row');
+				if ($(this).is(':checked')) {
+					checkboxes.filter(':not(:checked)').click();
+				} else {
+					checkboxes.filter(':checked').click();
+				}
+			});
+
 			if (settings.hasDetailView) {
 
 				/**
