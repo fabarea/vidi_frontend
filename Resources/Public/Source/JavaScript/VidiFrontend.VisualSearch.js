@@ -158,7 +158,12 @@ VidiFrontend.VisualSearch = {
 			// In case the search expression has been fetched from the URL.
 			searchExpression = decodeURIComponent(searchExpression);
 
-			var facets = JSON.parse(searchExpression);
+			var facets = [{text: searchExpression}];
+			try {
+				facets = JSON.parse(searchExpression);
+			} catch(e) {
+
+			}
 			_.each(facets, function(facet) {
 
 				_.each(facet, function(searchTerm, facetLabel) {
@@ -197,4 +202,5 @@ VidiFrontend.VisualSearch = {
 
 		return value;
 	}
+
 };

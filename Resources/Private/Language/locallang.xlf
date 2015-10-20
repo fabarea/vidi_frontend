@@ -16,7 +16,10 @@
 				<source>Displayed columns. Attention! Some columns may not work on the Frontend.</source>
 			</trans-unit>
 			<trans-unit id="flexform.is_visual_search_bar">
-				<source>Display the Visual Search bar</source>
+				<source>Display the Visual Search bar to enable search by facets.</source>
+			</trans-unit>
+			<trans-unit id="flexform.load_content_by_ajax">
+				<source>Load content by Ajax, advised for long list or required for the Visual Search bar.</source>
 			</trans-unit>
 			<trans-unit id="flexform.template_for_detail_view">
 				<source>Template for the "detail" view. If let blank, no link to a detail view will be made.</source>

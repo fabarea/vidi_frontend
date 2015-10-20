@@ -20,12 +20,12 @@ VidiFrontend.Grid = {
 	initialize: function($) {
 
 		_.each(VidiFrontend.settings, function(settings, identifier) {
+
 			var options = {
 				columns: settings.columns,
 				language: settings.language,
 				lengthMenu: settings.lengthMenu,
 				stateSave: true,
-
 
 				/**
 				 * @param {object} settings
@@ -131,7 +131,7 @@ VidiFrontend.Grid = {
 					});
 
 					var settings = VidiFrontend.settings[identifier];
-					data.push({ 'name': VidiFrontend.parameterPrefix + '[contentElement]', 'value': identifier });
+					data.push({ 'name': VidiFrontend.parameterPrefix + '[contentData]', 'value': identifier });
 
 					// Handle the search term parameter coming from the Visual Search bar.
 					$.each(data, function(index, object) {
@@ -145,9 +145,9 @@ VidiFrontend.Grid = {
 					//VidiFrontend.Session.set('lastEditedUid' + identifier, 1);
 					$('#grid-' + identifier).css('opacity', 0.3);
 				},
-				processing: true,
-				serverSide: true,
-				ajaxSource: '?type=1416239670',
+				processing: settings.loadContentByAjax,
+				serverSide: settings.loadContentByAjax,
+				ajaxSource: settings.loadContentByAjax ? '?type=1416239670' : '',
 
 				/**
 				 *
@@ -156,7 +156,9 @@ VidiFrontend.Grid = {
 					//Vidi.VisualSearch.initialize();
 
 					var query = VidiFrontend.Session.get('visualSearch.query' + identifier);
-					VidiFrontend.bars[identifier].searchBox.setQuery(query);
+					if (VidiFrontend.bars[identifier]) {
+						VidiFrontend.bars[identifier].searchBox.setQuery(query);
+					}
 				},
 
 				/**
@@ -173,6 +175,7 @@ VidiFrontend.Grid = {
 					VidiFrontend.Grid.animateRow($, identifier);
 				}
 			};
+
 
 			options = VidiFrontend.Grid.initializeDefaultSearch(options, identifier);
 			VidiFrontend.grids[identifier] = $('#grid-' + identifier).dataTable(options);

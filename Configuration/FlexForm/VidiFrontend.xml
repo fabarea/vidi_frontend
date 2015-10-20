@@ -28,6 +28,15 @@
 					</config>
 				</TCEforms>
 			</settings.templateDetail>
+			<settings.loadContentByAjax>
+				<TCEforms>
+					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.load_content_by_ajax</label>
+					<config>
+						<type>check</type>
+						<default>0</default>
+					</config>
+				</TCEforms>
+			</settings.loadContentByAjax>
 			<settings.isVisualSearchBar>
 				<TCEforms>
 					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.is_visual_search_bar</label>

@@ -30,7 +30,6 @@ class ToJsonViewHelper extends AbstractViewHelper {
 	public function render() {
 
 		$objects = $this->templateVariableContainer->get('objects');
-		$columns = $this->templateVariableContainer->get('columns');
 		$output = array(
 			'sEcho' => $this->getNextTransactionId(),
 			'iTotalRecords' => $this->templateVariableContainer->get('numberOfObjects'),
@@ -38,7 +37,7 @@ class ToJsonViewHelper extends AbstractViewHelper {
 			'iNumberOfRecords' => count($objects),
 			'aaData' => $this->getRowsViewHelper()
 				->setControllerContext($this->controllerContext)
-				->render($objects, $columns),
+				->render($objects),
 		);
 
 		$this->setHttpHeaders();
@@ -72,4 +71,5 @@ class ToJsonViewHelper extends AbstractViewHelper {
 	protected function getRowsViewHelper() {
 		return $this->objectManager->get('Fab\VidiFrontend\ViewHelpers\Grid\RowsViewHelper');
 	}
+
 }

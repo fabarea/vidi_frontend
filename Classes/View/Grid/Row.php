@@ -48,7 +48,7 @@ class Row extends AbstractComponentView {
 	/**
 	 * @param array $columns
 	 */
-	public function __construct($columns = array()){
+	public function __construct(array $columns = array()){
 		$this->columns = $columns;
 	}
 
@@ -65,7 +65,7 @@ class Row extends AbstractComponentView {
 		$output = array();
 		$dataType = $object->getDataType();
 
-		foreach(ContentElementConfiguration::getInstance()->getColumns() as $fieldNameAndPath => $configuration) {
+		foreach($this->columns as $fieldNameAndPath => $configuration) {
 
 			// Fetch value
 			if (FrontendTca::grid($dataType)->hasRenderers($fieldNameAndPath)) {

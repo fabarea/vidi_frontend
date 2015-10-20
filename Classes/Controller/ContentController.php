@@ -15,7 +15,6 @@ namespace Fab\VidiFrontend\Controller;
  */
 
 use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
-use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Fab\Vidi\Domain\Model\Content;
@@ -53,6 +52,16 @@ class ContentController extends ActionController {
 				->setTypeConverter($typeConverter);
 		}
 
+		if ($this->arguments->hasArgument('contentData')) {
+
+			/** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
+			$typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\ContentDataConverter');
+
+			$this->arguments->getArgument('contentData')
+				->getPropertyMappingConfiguration()
+				->setTypeConverter($typeConverter);
+		}
+
 	}
 
 	/**
@@ -68,6 +77,20 @@ class ContentController extends ActionController {
 		$this->view->assign('settings', $this->settings);
 		$this->view->assign('gridIdentifier', $this->configurationManager->getContentObject()->data['uid']);
 		$this->view->assign('dataType', $dataType);
+		$this->view->assign('objects', array());
+
+		if (!$this->settings['loadContentByAjax']) {
+
+			// Initialize some objects related to the query.
+			$matcher = MatcherFactory::getInstance()->getMatcher(array(), $dataType);
+			$order = OrderFactory::getInstance()->getOrder($dataType);
+
+			// Fetch objects via the Content Service.
+			$contentService = $this->getContentService($dataType)->findBy($matcher, $order);
+			$this->view->assign('objects', $contentService->getObjects());
+
+		}
+
 		$columns = ColumnsConfiguration::getInstance()->get($dataType, $this->settings['columns']);
 		$this->view->assign('columns', $columns);
 	}
@@ -75,18 +98,14 @@ class ContentController extends ActionController {
 	/**
 	 * List Row action for this controller. Output a json list of contents
 	 *
-	 * @param array $columns corresponds to columns to be rendered.
-	 * @param array $matches
-	 * @validate $columns Fab\VidiFrontend\Domain\Validator\ColumnsValidator
-	 * @validate $matches Fab\VidiFrontend\Domain\Validator\MatchesValidator
-	 * @param int $contentElement
+	 * @param array $contentData
 	 * @return void
 	 */
-	public function listAction(array $columns = array(), $matches = array(), $contentElement = 0) {
+	public function listAction(array $contentData) {
 		$dataType = GeneralUtility::_GP('dataType');
 
 		// In the context of Ajax, we must define manually the current Content Element object.
-		$contentObjectRenderer = $this->getContentElementService($dataType)->getContentObjectRender($contentElement);
+		$contentObjectRenderer = $this->getContentElementService($dataType)->getContentObjectRender($contentData);
 		$this->configurationManager->setContentObject($contentObjectRenderer);
 
 		// Initialize some objects related to the query.
@@ -102,7 +121,6 @@ class ContentController extends ActionController {
 		$this->request->setFormat('json');
 
 		// Assign values.
-		$this->view->assign('columns', $columns);
 		$this->view->assign('objects', $contentService->getObjects());
 		$this->view->assign('numberOfObjects', $contentService->getNumberOfObjects());
 		$this->view->assign('pager', $pager);
@@ -111,6 +129,7 @@ class ContentController extends ActionController {
 
 	/**
 	 * @param Content $content
+	 * @return void|string
 	 */
 	public function showAction(Content $content) {
 

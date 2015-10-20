@@ -14,6 +14,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
 use Fab\VidiFrontend\View\Grid\Row;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -38,11 +39,12 @@ class RowsViewHelper extends AbstractViewHelper {
 	 * Returns rows of content as array.
 	 *
 	 * @param array $objects
-	 * @param array $columns
 	 * @return string
 	 */
-	public function render(array $objects = array(), array $columns = array()) {
+	public function render(array $objects = array()) {
 		$rows = array();
+
+		$columns = ContentElementConfiguration::getInstance()->getColumns();
 
 		/** @var Row $row */
 		$row = GeneralUtility::makeInstance('Fab\VidiFrontend\View\Grid\Row', $columns);

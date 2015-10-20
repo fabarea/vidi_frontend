@@ -65,7 +65,6 @@ class FrontendGridService extends GridService { // implements TcaServiceInterfac
 		return $label;
 	}
 
-
 	/**
 	 * Returns the "sortable" value of the column.
 	 *
@@ -84,22 +83,6 @@ class FrontendGridService extends GridService { // implements TcaServiceInterfac
 		}
 		return $isSortable;
 	}
-
-//	/**
-//	 * Returns the field name given its position.
-//	 *
-//	 * @param string $position the position of the field in the grid
-//	 * @throws InvalidKeyInArrayException
-//	 * @return int
-//	 */
-//	public function getFieldNameByPosition($position) {
-//		$fields = array_keys($this->getFields());
-//		if (empty($fields[$position])) {
-//			throw new InvalidKeyInArrayException('No field exist for position: ' . $position, 1356945119);
-//		}
-//
-//		return $fields[$position];
-//	}
 
 	/**
 	 * Returns an array containing column names.

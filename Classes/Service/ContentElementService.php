@@ -13,7 +13,7 @@ namespace Fab\VidiFrontend\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service related to the Content Element (tt_content.
@@ -36,52 +36,17 @@ class ContentElementService {
 	}
 
 	/**
-	 * Fetch the Content Element data.
-	 *
-	 * @param int $contentIdentifier
-	 * @return array
-	 */
-	public function fetchContentData($contentIdentifier) {
-		$tableName = 'tt_content';
-		$clause = 'uid = ' . $contentIdentifier;
-		$clause .= $this->getPageRepository()->enableFields($tableName);
-		$clause .= $this->getPageRepository()->deleteClause($tableName);
-		return $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $tableName, $clause);
-	}
-
-	/**
 	 * Return a Content Element object.
 	 *
-	 * @param int $contentIdentifier
+	 * @param array $contentData
 	 * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
-	public function getContentObjectRender($contentIdentifier) {
-
-		$contentElementData = $this->fetchContentData($contentIdentifier);
+	public function getContentObjectRender(array $contentData) {
 
 		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer */
-		$contentObjectRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
-		$contentObjectRenderer->start($contentElementData, $this->dataType);
+		$contentObjectRenderer = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+		$contentObjectRenderer->start($contentData, $this->dataType);
 		return $contentObjectRenderer;
-	}
-
-
-	/**
-	 * Returns a pointer to the database.
-	 *
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
-	/**
-	 * Returns an instance of the page repository.
-	 *
-	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
-	 */
-	protected function getPageRepository() {
-		return $GLOBALS['TSFE']->sys_page;
 	}
 
 }

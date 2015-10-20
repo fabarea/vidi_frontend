@@ -47,6 +47,7 @@
 		VidiFrontend.settings[gridIdentifier]['facets'] = {vf:grid.facets()};
 		VidiFrontend.settings[gridIdentifier]['lengthMenu'] = {vf:grid.lengthMenu()};
 		VidiFrontend.settings[gridIdentifier]['suggestions'] = {vf:grid.suggestions()};
+		VidiFrontend.settings[gridIdentifier]['loadContentByAjax'] = parseInt('{settings.loadContentByAjax}');
 		VidiFrontend.settings[gridIdentifier]['hasDetailView'] = {f:if(condition: "{settings.templateDetail}", then: 'true', else: 'false')};
 	</script>
 
@@ -76,7 +77,13 @@
 			</f:for>
 		</tr>
 		</thead>
-		<tbody></tbody>
+		<tbody>
+		<f:if condition="!{settings.loadContentByAjax}">
+			<f:for each="{objects}" as="object" iteration="iterator">
+				<vf:grid.row object="{object}" index="{iterator.index}"/>
+			</f:for>
+		</f:if>
+		</tbody>
 	</table>
 
 </f:section>
