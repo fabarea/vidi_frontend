@@ -1,0 +1,2 @@
+# cat=basic//; type=string; label= Available Content types: Comma separated list of Content types to be displayed in the plugin configuration in the Backend. If let empty, all Content will be available.
+content_types = fe_groups, fe_users, sys_file

@@ -3,6 +3,18 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="" product-name="local lang module">
 		<header/>
 		<body>
+			<trans-unit id="flexform.tab.general">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="flexform.tab.filter">
+				<source>Filter</source>
+			</trans-unit>
+			<trans-unit id="flexform.tab.sorting">
+				<source>Sorting</source>
+			</trans-unit>
+			<trans-unit id="flexform.tab.facets">
+				<source>Facets</source>
+			</trans-unit>
 			<trans-unit id="flexform.select">
 				<source>Select one...</source>
 			</trans-unit>
@@ -15,14 +27,35 @@
 			<trans-unit id="flexform.columns">
 				<source>Displayed columns. Attention! Some columns may not work on the Frontend.</source>
 			</trans-unit>
+			<trans-unit id="flexform.selection">
+				<source>Selection coming from the Backend module to be used as pre-filter</source>
+			</trans-unit>
+			<trans-unit id="flexform.categories">
+				<source>Comma separated list of categories</source>
+			</trans-unit>
+			<trans-unit id="flexform.facets">
+				<source>Pick available Facets to be displayed the Visual Search bar.</source>
+			</trans-unit>
 			<trans-unit id="flexform.is_visual_search_bar">
-				<source>Display the Visual Search bar to enable search by facets.</source>
+				<source>Display the Visual Search bar to search by facets.</source>
 			</trans-unit>
 			<trans-unit id="flexform.load_content_by_ajax">
-				<source>Load content by Ajax, advised for long list or required for the Visual Search bar.</source>
+				<source>Load content by Ajax e.g. for long lists. Implicitly set if the Visual Search bar is activated.</source>
 			</trans-unit>
 			<trans-unit id="flexform.template_for_detail_view">
 				<source>Template for the "detail" view. If let blank, no link to a detail view will be made.</source>
+			</trans-unit>
+			<trans-unit id="flexform.sorting">
+				<source>Default sorting</source>
+			</trans-unit>
+			<trans-unit id="flexform.direction">
+				<source>Default direction</source>
+			</trans-unit>
+			<trans-unit id="flexform.additionalEquals">
+				<source>Additional comma separated constraints, e.g. storage = 1</source>
+			</trans-unit>
+			<trans-unit id="flexform.additionalLikes">
+				<source>Additional comma separated "like", e.g. /images/%</source>
 			</trans-unit>
 			<trans-unit id="showDetail">
 				<source>Show detail</source>

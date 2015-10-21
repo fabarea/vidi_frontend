@@ -36,13 +36,11 @@ class FrontendGridService extends GridService { // implements TcaServiceInterfac
 	 */
 	public function __construct($tableName) {
 
-		$this->tableName = $tableName;
+		parent::__construct($tableName);
 
-		if (empty($GLOBALS['TCA'][$this->tableName])) {
-			throw new InvalidKeyInArrayException('No TCA existence for table name: ' . $this->tableName, 1413965764);
+		if (!empty($GLOBALS['TCA'][$this->tableName]['grid_frontend'])) {
+			$this->tca = $GLOBALS['TCA'][$this->tableName]['grid_frontend'];
 		}
-
-		$this->tca = $GLOBALS['TCA'][$this->tableName]['grid_frontend'];
 	}
 
 	/**
@@ -63,25 +61,6 @@ class FrontendGridService extends GridService { // implements TcaServiceInterfac
 			$label = Tca::grid($this->tableName)->getLabel($fieldNameAndPath);
 		}
 		return $label;
-	}
-
-	/**
-	 * Returns the "sortable" value of the column.
-	 *
-	 * @param string $fieldName
-	 * @return int|string
-	 */
-	public function isSortable($fieldName) {
-
-		// Fetch Frontend configuration first and check if a value is defined there.
-		$field = $this->getField($fieldName);
-
-		if (isset($field['sortable'])) {
-			$isSortable = $field['sortable'];
-		} else {
-			$isSortable = Tca::grid($this->tableName)->isSortable($fieldName);
-		}
-		return $isSortable;
 	}
 
 	/**
@@ -111,12 +90,42 @@ class FrontendGridService extends GridService { // implements TcaServiceInterfac
 	 * @return array
 	 */
 	public function getFacets() {
+		$frontendFacets = array();
 		if (is_array($this->tca['facets'])) {
-			$facets = $this->tca['facets'];
-		} else {
-			$facets = Tca::grid($this->tableName)->getFacets();
+			$frontendFacets = $this->tca['facets'];
 		}
-		return $facets;
+
+		$allFacets = Tca::grid($this->tableName)->getFacets();
+		return array_merge($allFacets, $frontendFacets);
+	}
+
+	/**
+	 * Returns an array containing facets fields.
+	 *
+	 * @return array
+	 */
+	public function getFacetNames() {
+		$facetNames = array();
+
+		if (is_array($this->tca['facets'])) {
+			foreach ($this->tca['facets'] as $facet) {
+				if ($facet instanceof StandardFacet) {
+					$facet = $facet->getName();
+				}
+				$facetNames[] = $facet;
+			}
+		}
+
+		foreach (Tca::grid($this->tableName)->getFacets() as $facet) {
+			if ($facet instanceof StandardFacet) {
+				$facet = $facet->getName();
+			}
+
+			if (!in_array($facet, $facetNames)) {
+				$facetNames[] = $facet;
+			}
+		}
+		return $facetNames;
 	}
 
 	/**

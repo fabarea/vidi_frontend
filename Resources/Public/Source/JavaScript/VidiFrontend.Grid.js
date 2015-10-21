@@ -26,6 +26,7 @@ VidiFrontend.Grid = {
 				language: settings.language,
 				lengthMenu: settings.lengthMenu,
 				stateSave: true,
+				sorting: [], // default is not sorted.
 
 				/**
 				 * @param {object} settings
@@ -72,7 +73,7 @@ VidiFrontend.Grid = {
 				serverData: function(source, data, callback, settings) {
 
 					source += "&dataType=" + VidiFrontend.settings[identifier].dataType;
-					source += "&identifier=" + identifier;
+					source += "&identifier=" + VidiFrontend.settings[identifier].contentElementIdentifier;
 					source += "&format=json";
 
 					settings.jqXHR = $.ajax({
@@ -131,7 +132,7 @@ VidiFrontend.Grid = {
 					});
 
 					var settings = VidiFrontend.settings[identifier];
-					data.push({ 'name': VidiFrontend.parameterPrefix + '[contentData]', 'value': identifier });
+					data.push({ 'name': VidiFrontend.parameterPrefix + '[contentData]', 'value': settings.contentElementIdentifier });
 
 					// Handle the search term parameter coming from the Visual Search bar.
 					$.each(data, function(index, object) {
@@ -175,7 +176,6 @@ VidiFrontend.Grid = {
 					VidiFrontend.Grid.animateRow($, identifier);
 				}
 			};
-
 
 			options = VidiFrontend.Grid.initializeDefaultSearch(options, identifier);
 			VidiFrontend.grids[identifier] = $('#grid-' + identifier).dataTable(options);

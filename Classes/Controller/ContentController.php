@@ -28,6 +28,12 @@ use Fab\VidiFrontend\Persistence\OrderFactory;
 class ContentController extends ActionController {
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Service\FlexFormService
+	 * @inject
+	 */
+	protected $flexFormService;
+
+	/**
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
 	 */
 	public function initializeAction() {
@@ -61,13 +67,12 @@ class ContentController extends ActionController {
 				->getPropertyMappingConfiguration()
 				->setTypeConverter($typeConverter);
 		}
-
 	}
 
 	/**
 	 * List action for this controller.
 	 *
-	 * @return void
+	 * @return string|void
 	 */
 	public function indexAction() {
 
@@ -75,7 +80,8 @@ class ContentController extends ActionController {
 
 		// Assign values.
 		$this->view->assign('settings', $this->settings);
-		$this->view->assign('gridIdentifier', $this->configurationManager->getContentObject()->data['uid']);
+		$this->view->assign('gridIdentifier', $this->getGridIdentifier());
+		$this->view->assign('contentElementIdentifier', $this->configurationManager->getContentObject()->data['uid']);
 		$this->view->assign('dataType', $dataType);
 		$this->view->assign('objects', array());
 
@@ -83,15 +89,18 @@ class ContentController extends ActionController {
 
 			// Initialize some objects related to the query.
 			$matcher = MatcherFactory::getInstance()->getMatcher(array(), $dataType);
-			$order = OrderFactory::getInstance()->getOrder($dataType);
+			$order = OrderFactory::getInstance($this->settings)->getOrder($dataType);
 
 			// Fetch objects via the Content Service.
 			$contentService = $this->getContentService($dataType)->findBy($matcher, $order);
 			$this->view->assign('objects', $contentService->getObjects());
-
 		}
 
 		$columns = ColumnsConfiguration::getInstance()->get($dataType, $this->settings['columns']);
+		if (empty($columns)) {
+			return '<strong style="color: red">Please select at least one column to be displayed!</strong>';
+		}
+
 		$this->view->assign('columns', $columns);
 	}
 
@@ -108,9 +117,11 @@ class ContentController extends ActionController {
 		$contentObjectRenderer = $this->getContentElementService($dataType)->getContentObjectRender($contentData);
 		$this->configurationManager->setContentObject($contentObjectRenderer);
 
+		$settings = $this->flexFormService->convertFlexFormContentToArray($contentData['pi_flexform']);
+
 		// Initialize some objects related to the query.
 		$matcher = MatcherFactory::getInstance()->getMatcher(array(), $dataType);
-		$order = OrderFactory::getInstance()->getOrder($dataType);
+		$order = OrderFactory::getInstance($settings['settings'])->getOrder($dataType);
 		$pager = PagerObjectFactory::getInstance()->getPager();
 
 		// Fetch objects via the Content Service.
@@ -129,14 +140,14 @@ class ContentController extends ActionController {
 
 	/**
 	 * @param Content $content
-	 * @return void|string
+	 * @return string|void
 	 */
 	public function showAction(Content $content) {
 
 		// Configure the template path according to the Plugin settings.
 		$pathAbs = GeneralUtility::getFileAbsFileName($this->settings['templateDetail']);
 		if (!is_file($pathAbs)) {
-			return sprintf('I could not find the template file <strong>%s</strong>', $pathAbs);
+			return sprintf('<strong style="color:red;">I could not find the template file %s.</strong>', $pathAbs);
 		}
 
 		$variableName = 'object';
@@ -147,6 +158,25 @@ class ContentController extends ActionController {
 
 		$this->view->setTemplatePathAndFilename($pathAbs);
 		$this->view->assign($variableName, $content);
+	}
+
+	/**
+	 * Take some specific values and transform as as unique md5 identifier.
+	 *
+	 * @return string
+	 */
+	protected function getGridIdentifier() {
+
+		$key = $this->configurationManager->getContentObject()->data['uid'];
+		$key .= $this->settings['dataType'];
+		$key .= $this->settings['columns'];
+		$key .= $this->settings['sorting'];
+		$key .= $this->settings['direction'];
+		$key .= $this->settings['defaultNumberOfItems'];
+		$key .= $this->settings['loadContentByAjax'];
+		$key .= $this->settings['facets'];
+		$key .= $this->settings['isVisualSearchBar'];
+		return md5($key);
 	}
 
 	/**

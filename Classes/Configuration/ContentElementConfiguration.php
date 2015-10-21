@@ -71,8 +71,8 @@ class ContentElementConfiguration implements SingletonInterface {
 
 		if (empty($this->configuration['columns'])) {
 			$columns = '';
-			if (!empty($this->flexform['data']['sDEF']['lDEF']['settings.columns']['vDEF'])) {
-				$columns = $this->flexform['data']['sDEF']['lDEF']['settings.columns']['vDEF'];
+			if (!empty($this->flexform['data']['general']['lDEF']['settings.columns']['vDEF'])) {
+				$columns = $this->flexform['data']['general']['lDEF']['settings.columns']['vDEF'];
 			}
 			$this->configuration['columns'] = $columns;
 		}
@@ -88,8 +88,8 @@ class ContentElementConfiguration implements SingletonInterface {
 
 		if (empty($this->configuration['dataType'])) {
 			$columns = '';
-			if (!empty($this->flexform['data']['sDEF']['lDEF']['settings.dataType']['vDEF'])) {
-				$columns = $this->flexform['data']['sDEF']['lDEF']['settings.dataType']['vDEF'];
+			if (!empty($this->flexform['data']['general']['lDEF']['settings.dataType']['vDEF'])) {
+				$columns = $this->flexform['data']['general']['lDEF']['settings.dataType']['vDEF'];
 			}
 			$this->configuration['dataType'] = $columns;
 		}

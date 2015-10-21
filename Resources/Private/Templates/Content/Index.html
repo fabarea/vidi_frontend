@@ -38,19 +38,26 @@
 		var labels = {};
 		{vf:grid.column.localization()}
 
-		var gridIdentifier =  parseInt('{gridIdentifier}');
+		var gridIdentifier =  '{gridIdentifier}';
 		VidiFrontend.settings[gridIdentifier] = {};
-		VidiFrontend.settings[gridIdentifier]['id'] = gridIdentifier;
+		VidiFrontend.settings[gridIdentifier]['contentElementIdentifier'] = parseInt('{contentElementIdentifier}');
+		VidiFrontend.settings[gridIdentifier]['gridIdentifier'] = gridIdentifier;
 		VidiFrontend.settings[gridIdentifier]['dataType'] = "{dataType}";
 		VidiFrontend.settings[gridIdentifier]['columns'] = columns;
 		VidiFrontend.settings[gridIdentifier]['language'] = labels;
-		VidiFrontend.settings[gridIdentifier]['facets'] = {vf:grid.facets()};
+		VidiFrontend.settings[gridIdentifier]['facets'] = {};
 		VidiFrontend.settings[gridIdentifier]['lengthMenu'] = {vf:grid.lengthMenu()};
-		VidiFrontend.settings[gridIdentifier]['suggestions'] = {vf:grid.suggestions()};
+		VidiFrontend.settings[gridIdentifier]['suggestions'] = [];
 		VidiFrontend.settings[gridIdentifier]['loadContentByAjax'] = parseInt('{settings.loadContentByAjax}');
 		VidiFrontend.settings[gridIdentifier]['hasDetailView'] = {f:if(condition: "{settings.templateDetail}", then: 'true', else: 'false')};
 	</script>
 
+	<f:if condition="{settings.isVisualSearchBar}">
+		<script>
+			VidiFrontend.settings[gridIdentifier]['facets'] = {vf:grid.facets()};
+			VidiFrontend.settings[gridIdentifier]['suggestions'] = {vf:grid.suggestions()};
+		</script>
+	</f:if>
 	<f:comment><!--Conditional style whether there is a detail view --></f:comment>
 	<f:if condition="{settings.templateDetail}">
 		<style>

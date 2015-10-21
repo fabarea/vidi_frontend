@@ -2,70 +2,196 @@
 	<meta>
 		<langDisable>1</langDisable>
 	</meta>
-	<ROOT>
-		<type>array</type>
-		<el>
-			<settings.dataType>
+	<sheets>
+		<general>
+			<ROOT>
 				<TCEforms>
-					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.content_type</label>
-					<onChange>reload</onChange>
-					<config>
-						<type>select</type>
-						<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsDataTypes</itemsProcFunc>
-						<size>1</size>
-						<maxitems>1</maxitems>
-					</config>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.general</sheetTitle>
 				</TCEforms>
-			</settings.dataType>
-			<settings.templateDetail>
+				<type>array</type>
+				<el>
+					<settings.dataType>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.content_type</label>
+							<onChange>reload</onChange>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsDataTypes</itemsProcFunc>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.dataType>
+					<settings.columns>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.columns</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsColumns</itemsProcFunc>
+								<size>10</size>
+								<maxitems>100</maxitems>
+							</config>
+						</TCEforms>
+					</settings.columns>
+					<settings.loadContentByAjax>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.load_content_by_ajax
+							</label>
+							<config>
+								<type>check</type>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</settings.loadContentByAjax>
+					<settings.defaultNumberOfItems>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.number_of_items</label>
+							<config>
+								<type>input</type>
+								<default>10, 20, 50, 100, -1</default>
+							</config>
+						</TCEforms>
+					</settings.defaultNumberOfItems>
+					<settings.templateDetail>
+						<TCEforms>
+							<label>
+								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.template_for_detail_view
+							</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsTemplateShow</itemsProcFunc>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.templateDetail>
+				</el>
+			</ROOT>
+		</general>
+
+		<facet>
+			<ROOT>
 				<TCEforms>
-					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.template_for_detail_view</label>
-					<config>
-						<type>select</type>
-						<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsTemplateShow</itemsProcFunc>
-						<size>1</size>
-						<maxitems>1</maxitems>
-					</config>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.facets</sheetTitle>
 				</TCEforms>
-			</settings.templateDetail>
-			<settings.loadContentByAjax>
+				<type>array</type>
+				<el>
+					<settings.isVisualSearchBar>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.is_visual_search_bar
+							</label>
+							<config>
+								<type>check</type>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</settings.isVisualSearchBar>
+					<settings.facets>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.facets</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsFacets</itemsProcFunc>
+								<size>10</size>
+								<maxitems>100</maxitems>
+							</config>
+						</TCEforms>
+					</settings.facets>
+				</el>
+			</ROOT>
+		</facet>
+		<filter>
+			<ROOT>
 				<TCEforms>
-					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.load_content_by_ajax</label>
-					<config>
-						<type>check</type>
-						<default>0</default>
-					</config>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.filter
+					</sheetTitle>
 				</TCEforms>
-			</settings.loadContentByAjax>
-			<settings.isVisualSearchBar>
+				<type>array</type>
+				<el>
+					<settings.selection>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.selection</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsSelection</itemsProcFunc>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.selection>
+					<settings.categories>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.categories</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</settings.categories>
+					<settings.additionalEquals>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.additionalEquals</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</settings.additionalEquals>
+					<settings.additionalLikes>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.additionalLikes</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</settings.additionalLikes>
+				</el>
+			</ROOT>
+		</filter>
+		<sorting>
+			<ROOT>
 				<TCEforms>
-					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.is_visual_search_bar</label>
-					<config>
-						<type>check</type>
-						<default>0</default>
-					</config>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.sorting
+					</sheetTitle>
 				</TCEforms>
-			</settings.isVisualSearchBar>
-			<settings.defaultNumberOfItems>
-				<TCEforms>
-					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.number_of_items</label>
-					<config>
-						<type>input</type>
-						<default>10, 20, 50, 100, -1</default>
-					</config>
-				</TCEforms>
-			</settings.defaultNumberOfItems>
-			<settings.columns>
-				<TCEforms>
-					<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.columns</label>
-					<config>
-						<type>select</type>
-						<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsColumns</itemsProcFunc>
-						<size>10</size>
-						<maxitems>100</maxitems>
-					</config>
-				</TCEforms>
-			</settings.columns>
-		</el>
-	</ROOT>
+				<type>array</type>
+				<el>
+					<settings.sorting>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.sorting</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsSorting</itemsProcFunc>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.sorting>
+					<settings.direction>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.direction</label>
+							<config>
+								<type>select</type>
+								<items>
+									<numIndex index="0" type="array">
+										<numIndex index="0"></numIndex>
+										<numIndex index="1"></numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">ASC</numIndex>
+										<numIndex index="1">ASC</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">DESC</numIndex>
+										<numIndex index="1">DESC</numIndex>
+									</numIndex>
+								</items>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.direction>
+				</el>
+			</ROOT>
+		</sorting>
+	</sheets>
+
 </T3DataStructure>

@@ -40,10 +40,9 @@ class ConfigurationViewHelper extends AbstractViewHelper {
 			// -------------------
 			// mData: internal name of DataTable plugin and can not contains a path, e.g. metadata.title
 			// columnName: whole field name with path
-			$output .= sprintf('columns.push({ "data": "%s", "sortable": %s, "visible": %s, "width": "%s", "class": "%s", "columnName": "%s" });' . PHP_EOL,
+			$output .= sprintf('columns.push({ "data": "%s", "sortable": %s, "visible": true, "width": "%s", "class": "%s", "columnName": "%s" });' . PHP_EOL,
 				$this->getFieldPathResolver()->stripFieldPath($fieldNameAndPath, $dataType), // Suitable field name for the DataTable plugin.
 				FrontendTca::grid($dataType)->isSortable($fieldNameAndPath) ? 'true' : 'false',
-				FrontendTca::grid($dataType)->isVisible($fieldNameAndPath) ? 'true' : 'false',
 				FrontendTca::grid($dataType)->getWidth($fieldNameAndPath),
 				FrontendTca::grid($dataType)->getClass($fieldNameAndPath),
 				$fieldNameAndPath

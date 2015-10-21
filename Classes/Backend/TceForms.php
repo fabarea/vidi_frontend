@@ -14,12 +14,14 @@ namespace Fab\VidiFrontend\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\Vidi\Domain\Model\Selection;
+use Fab\Vidi\Facet\StandardFacet;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Tca\Tca;
 
 /**
- * A class to interact with TCEForms
+ * A class to interact with TCEForms.
  */
 class TceForms {
 
@@ -31,14 +33,19 @@ class TceForms {
 	 */
 	public function feedItemsForSettingsDataTypes(&$parameters, $parentObject = NULL) {
 
-		foreach ($GLOBALS['TCA'] as $dataType => $tca) {
-			if (isset($GLOBALS['TCA'][$dataType]['grid_frontend'])) {
+		/** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
+		$configurationUtility = $this->getObjectManager()->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
+		$configuration = $configurationUtility->getCurrentConfiguration('vidi_frontend');
+		$availableContentTypes = GeneralUtility::trimExplode(',', $configuration['content_types']['value'], TRUE);
+
+		foreach ($GLOBALS['TCA'] as $contentType => $tca) {
+			if (isset($GLOBALS['TCA'][$contentType]['grid']) && (empty($availableContentTypes) || in_array($contentType, $availableContentTypes))) {
 				$label = sprintf(
 					'%s (%s)',
-					Tca::table($dataType)->getTitle(),
-					$dataType
+					Tca::table($contentType)->getTitle(),
+					$contentType
 				);
-				$values = array($label, $dataType, NULL);
+				$values = array($label, $contentType, NULL);
 
 				$parameters['items'][] = $values;
 			}
@@ -58,13 +65,7 @@ class TceForms {
 			$parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
 		} else {
 
-			$configuredDataType = '';
-			if (!empty($parameters['row']['pi_flexform'])) {
-				$flexform = GeneralUtility::xml2array($parameters['row']['pi_flexform']);
-				if (!empty($flexform['data']['sDEF']['lDEF']['settings.dataType'])) {
-					$configuredDataType = $flexform['data']['sDEF']['lDEF']['settings.dataType']['vDEF'];
-				}
-			}
+			$configuredDataType = $this->getDataTypeFromFlexform($parameters);
 
 			$parameters['items'][] = ''; // Empty value
 			foreach ($configuration['settings']['templates'] as $template) {
@@ -89,24 +90,119 @@ class TceForms {
 			$parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
 		} else {
 
-			$configuredDataType = '';
-			if (!empty($parameters['row']['pi_flexform'])) {
-				$flexform = GeneralUtility::xml2array($parameters['row']['pi_flexform']);
-				if (!empty($flexform['data']['sDEF']['lDEF']['settings.dataType'])) {
-					$configuredDataType = $flexform['data']['sDEF']['lDEF']['settings.dataType']['vDEF'];
-				}
-			}
+			$configuredDataType = $this->getDataTypeFromFlexform($parameters);
 
 			if (empty($configuredDataType)) {
-				$parameters['items'][] = array('No content type has been saved yet!', '', NULL);
+				$parameters['items'][] = array('No columns to display yet! Save this record.', '', NULL);
 			} else {
 				foreach(FrontendTca::grid($configuredDataType)->getFields() as $fieldNameAndPath => $configuration) {
 					$values = array($fieldNameAndPath, $fieldNameAndPath, NULL);
 					$parameters['items'][] = $values;
 				}
 			}
-
 		}
+	}
+
+	/**
+	 * This method modifies the list of items for FlexForm "facets".
+	 *
+	 * @param array $parameters
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject
+	 */
+	public function feedItemsForSettingsFacets(&$parameters, $parentObject = NULL) {
+		$configuration = $this->getPluginConfiguration();
+
+		if (empty($configuration) || empty($configuration['settings']['templates'])) {
+			$parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
+		} else {
+
+			$configuredDataType = $this->getDataTypeFromFlexform($parameters);
+
+			if (!empty($configuredDataType)) {
+				foreach (FrontendTca::grid($configuredDataType)->getFacetNames() as $facet) {
+					$values = array($facet, $facet, NULL);
+					if ($facet instanceof StandardFacet) {
+						$values = array($facet->getName(), $facet->getName(), NULL);
+					}
+					$parameters['items'][] = $values;
+				}
+			}
+		}
+	}
+
+	/**
+	 * This method modifies the list of items for FlexForm "selection".
+	 *
+	 * @param array $parameters
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject
+	 */
+	public function feedItemsForSettingsSelection(&$parameters, $parentObject = NULL) {
+		$configuration = $this->getPluginConfiguration();
+
+		if (empty($configuration) || empty($configuration['settings']['templates'])) {
+			$parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
+		} else {
+
+			$parameters['items'][] = array('', '', NULL);
+
+			/** @var \Fab\Vidi\Domain\Repository\SelectionRepository $selectionRepository */
+			$selectionRepository = $this->getObjectManager()->get('Fab\Vidi\Domain\Repository\SelectionRepository');
+			$configuredDataType = $this->getDataTypeFromFlexform($parameters);
+			if ($configuredDataType) {
+
+				$selections = $selectionRepository->findForEveryone($configuredDataType);
+
+				if ($selections) {
+					foreach($selections as $selection) {
+						/** @var Selection $selection */
+						$values = array($selection->getName(), $selection->getUid(), NULL);
+						$parameters['items'][] = $values;
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * This method modifies the list of items for FlexForm "sorting".
+	 *
+	 * @param array $parameters
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject
+	 */
+	public function feedItemsForSettingsSorting(&$parameters, $parentObject = NULL) {
+		$configuration = $this->getPluginConfiguration();
+
+		if (empty($configuration) || empty($configuration['settings']['templates'])) {
+			$parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
+		} else {
+
+			$configuredDataType = $this->getDataTypeFromFlexform($parameters);
+
+			$parameters['items'][] = array('', '', NULL);
+			if (!empty($configuredDataType)) {
+				foreach(FrontendTca::grid($configuredDataType)->getFields() as $fieldNameAndPath => $configuration) {
+					if (FALSE === strpos($fieldNameAndPath, '__')) {
+						$values = array($fieldNameAndPath, $fieldNameAndPath, NULL);
+						$parameters['items'][] = $values;
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param $parameters
+	 * @return string
+	 */
+	protected function getDataTypeFromFlexform($parameters) {
+		$configuredDataType = '';
+		if (!empty($parameters['row']['pi_flexform'])) {
+			$flexform = GeneralUtility::xml2array($parameters['row']['pi_flexform']);
+			if (!empty($flexform['data']['general']['lDEF']['settings.dataType'])) {
+				$configuredDataType = $flexform['data']['general']['lDEF']['settings.dataType']['vDEF'];
+			}
+		}
+		return $configuredDataType;
 	}
 
 	/**
@@ -130,8 +226,15 @@ class TceForms {
 	 * @return \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager
 	 */
 	protected function getConfigurationManager() {
-		$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-		return $objectManager->get('Tx_Extbase_Configuration_BackendConfigurationManager');
+		return $this->getObjectManager()->get('Tx_Extbase_Configuration_BackendConfigurationManager');
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+	 */
+	protected function getObjectManager() {
+		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+		return GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 	}
 
 }

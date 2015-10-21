@@ -52,8 +52,8 @@ class ContentType implements SingletonInterface {
 
 			$xml = GeneralUtility::xml2array($contentElement['pi_flexform']);
 
-			if (!empty($xml['data']['sDEF']['lDEF']['settings.dataType']['vDEF'])) {
-				$dataType = $xml['data']['sDEF']['lDEF']['settings.dataType']['vDEF'];
+			if (!empty($xml['data']['general']['lDEF']['settings.dataType']['vDEF'])) {
+				$dataType = $xml['data']['general']['lDEF']['settings.dataType']['vDEF'];
 			} else {
 				throw new \Exception('I could find data type in Content Element: ' . $contentElementIdentifier, 1413992029);
 			}

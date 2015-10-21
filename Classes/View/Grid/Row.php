@@ -75,6 +75,7 @@ class Row extends AbstractComponentView {
 
 				// if is relation has one
 				foreach ($renderers as $rendererClassName => $rendererConfiguration) {
+
 					$rendererConfiguration['uriBuilder'] = $this->controllerContext->getUriBuilder();
 					$rendererConfiguration['contentElement'] = $this->configurationManager->getContentObject();
 
@@ -100,7 +101,7 @@ class Row extends AbstractComponentView {
 			#$value = $this->wrapValue($value, $configuration);
 
 			// Get the first part of the field name.
-			$fieldName = $this->getFieldPathResolver()->stripFieldName($fieldNameAndPath, $object->getDataType());
+			$fieldName = $this->getFieldPathResolver()->stripFieldPath($fieldNameAndPath, $object->getDataType());
 			$output[$fieldName] = $value;
 		}
 

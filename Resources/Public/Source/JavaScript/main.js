@@ -14,7 +14,7 @@
 			/**
 			 * Select or deselect all rows at once.
 			 */
-			$('#grid-' + settings.id + ' .checkbox-row-top').click(function() {
+			$('#grid-' + settings.gridIdentifier + ' .checkbox-row-top').click(function() {
 				var $table = $(this).closest('table');
 				var checkboxes = $($table).find('.checkbox-row');
 				if ($(this).is(':checked')) {
@@ -29,7 +29,7 @@
 				/**
 				 * Clicking on a icon "detail" view should store the row id.
 				 */
-				$(document).on('click', '#grid-' + settings.id + ' tbody tr a.link-show', function(e) {
+				$(document).on('click', '#grid-' + settings.gridIdentifier + ' tbody tr a.link-show', function(e) {
 					// Store the last opened row to allow an fancy animation on link back to "list" view from "detail" view.
 					var lastEditedUid = $(this).closest('tr').attr('id').replace('row-', '');
 					var gridIdentifier = $(this).closest('table').attr('id').replace('grid-', '');
@@ -39,7 +39,7 @@
 				/**
 				 * Clicking on a row will open the detail view and store the row id.
 				 */
-				$(document).on('click', '#grid-' + settings.id + ' tbody tr', function (e) {
+				$(document).on('click', '#grid-' + settings.gridIdentifier + ' tbody tr', function (e) {
 
 					// Store the last opened row to allow an fancy animation on link back to "list" view from "detail" view.
 					var lastEditedUid = this.id.replace('row-', '');

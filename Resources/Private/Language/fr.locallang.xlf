@@ -3,103 +3,111 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="" product-name="local lang module" target-language="fr">
 		<header/>
 		<body>
-
+			<trans-unit id="flexform.tab.general">
+				<target>Général</target>
+			</trans-unit>
+			<trans-unit id="flexform.tab.filter">
+				<target>Filtre</target>
+			</trans-unit>
+			<trans-unit id="flexform.tab.sorting">
+				<target>Tri</target>
+			</trans-unit>
+			<trans-unit id="flexform.tab.facets">
+				<target>Facettes</target>
+			</trans-unit>
 			<trans-unit id="flexform.select">
-				<source>Select one...</source>
 				<target>Sélectionner une entrée...</target>
 			</trans-unit>
 			<trans-unit id="flexform.content_type">
-				<source>Content Type</source>
 				<target>Type de contenu</target>
 			</trans-unit>
 			<trans-unit id="flexform.number_of_items">
-				<source>Table CSS class</source>
 				<target>Classe CSS pour la grille</target>
 			</trans-unit>
 			<trans-unit id="flexform.columns">
-				<source>Displayed columns. Attention! Some columns may not work on the Frontend.</source>
 				<target>Colonnes affichées. Attention! Certaines colonnes peuvent ne pas s'afficher en Frontend.</target>
 			</trans-unit>
+			<trans-unit id="flexform.selection">
+				<target>Préfiltre avec une Sélection venant du module Backend.</target>
+			</trans-unit>
+			<trans-unit id="flexform.categories">
+				<target>Préfiltre avec une liste de catégorie séparée par des virgules.</target>
+			</trans-unit>
+			<trans-unit id="flexform.facets">
+				<target>Sélectionner les facettes de la barre de recherche visuelle</target>
+			</trans-unit>
 			<trans-unit id="flexform.is_visual_search_bar">
-				<source>Display the Visual Search bar to enable search by facets.</source>
 				<target>Afficher la barre de recherche visuelle pour des recherches par facettes.</target>
 			</trans-unit>
 			<trans-unit id="flexform.load_content_by_ajax">
-				<source>Load content by Ajax, advised for long list or required for the Visual Search bar.</source>
-				<target>Charger le contenu par Ajax, conseillé pour des longues listes ou requis pour la bar de recherche "visuelle".</target>
+				<target>Charger le contenu par Ajax, pour des longues listes par exemple. Implicitement activé pour la bar de recherche "visuelle".</target>
 			</trans-unit>
 			<trans-unit id="flexform.templateForDetailView">
-				<source>Template for the "detail" view. If let blank, no link to a detail view will be made.</source>
 				<target>Template pour la vue de "détail"</target>
 			</trans-unit>
+			<trans-unit id="flexform.sorting">
+				<target>Tri par défaut</target>
+			</trans-unit>
+			<trans-unit id="flexform.direction">
+				<target>Direction par défault</target>
+			</trans-unit>
+			<trans-unit id="flexform.additionalEquals">
+				<target>Contraintes supplémentaires séparées par des virgules</target>
+			</trans-unit>
+			<trans-unit id="flexform.additionalLikes">
+				<target>SQL "like" supplémentaires séparés par des virgules</target>
+			</trans-unit>
 			<trans-unit id="showDetail">
-				<source>Show detail</source>
 				<target>Afficher le détail</target>
 			</trans-unit>
 			<trans-unit id="grid.processing">
-				<source>Processing...</source>
 				<target>Traitement en cours...</target>
 			</trans-unit>
 			<trans-unit id="grid.searchPlaceholder">
-				<source>Search...</source>
 				<target>Recherche...</target>
 			</trans-unit>
 			<trans-unit id="grid.lengthMenu">
-				<source>Show _MENU_</source>
 				<target>Afficher _MENU_</target>
 			</trans-unit>
 			<trans-unit id="grid.info">
-				<source>Showing _START_ to _END_ of _TOTAL_ entries</source>
 				<target>Affichage de l'élement _START_ à _END_ sur _TOTAL_ éléments</target>
 			</trans-unit>
 			<trans-unit id="grid.infoEmpty">
-				<source>Showing 0 to 0 of 0 entries</source>
 				<target>Affichage de l'élement 0 à 0 sur 0 éléments</target>
 			</trans-unit>
 			<trans-unit id="grid.infoFiltered">
-				<source>(filtered from _MAX_ total entries)</source>
 				<target>(filtré de _MAX_ éléments au total)</target>
 			</trans-unit>
 			<trans-unit id="grid.loadingRecords">
-				<source>Loading...</source>
 				<target>Chargement en cours...</target>
 			</trans-unit>
 			<trans-unit id="grid.zeroRecords">
-				<source>No matching records found</source>
 				<target>Aucun élément à afficher</target>
 			</trans-unit>
 			<trans-unit id="grid.emptyTable">
-				<source>No data available in table</source>
 				<target>Aucune donnée disponible dans le tableau</target>
 			</trans-unit>
 
 			<trans-unit id="grid.paginate.first">
-				<source>First</source>
 				<target>Premier</target>
 			</trans-unit>
 			<trans-unit id="grid.paginate.previous">
-				<source>Previous</source>
 				<target>Précédent</target>
 			</trans-unit>
 			<trans-unit id="grid.paginate.next">
-				<source>Next</source>
 				<target>Suivant</target>
 			</trans-unit>
 			<trans-unit id="grid.paginate.last">
-				<source>Last</source>
 				<target>Dernier</target>
 			</trans-unit>
 
 			<trans-unit id="grid.aria.sortAscending">
-				<source>: activate to sort column ascending</source>
 				<target>: activer pour trier la colonne par ordre croissant</target>
 			</trans-unit>
 			<trans-unit id="grid.aria.sortDescending">
-				<source>: activate to sort column descending</source>
 				<target>: activer pour trier la colonne par ordre décroissant</target>
 			</trans-unit>
 			<trans-unit id="grid.lengthMenu.all">
-				<source>All</source>
 				<target>Tous</target>
 			</trans-unit>
 		</body>

@@ -25,12 +25,27 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class OrderFactory implements SingletonInterface {
 
 	/**
+	 * @var array
+	 */
+	protected $settings = array();
+
+	/**
+	 * Constructor
+	 *
+	 * @param array $settings
+	 */
+	public function __construct(array $settings) {
+		$this->settings = $settings;
+	}
+
+	/**
 	 * Gets a singleton instance of this class.
 	 *
-	 * @return \Fab\VidiFrontend\Persistence\OrderFactory
+	 * @param $settings
+	 * @return OrderFactory
 	 */
-	static public function getInstance() {
-		return GeneralUtility::makeInstance('Fab\VidiFrontend\Persistence\OrderFactory');
+	static public function getInstance($settings = array()) {
+		return GeneralUtility::makeInstance('Fab\VidiFrontend\Persistence\OrderFactory', $settings);
 	}
 
 	/**
@@ -48,13 +63,22 @@ class OrderFactory implements SingletonInterface {
 		$columnPosition = GeneralUtility::_GP('iSortCol_0');
 
 		if ($columnPosition) {
-			$fieldName = FrontendTca::grid($dataType)->getFieldNameByPosition($columnPosition);
-			if (FrontendTca::grid($dataType)->isSortable($fieldName)) {
-				$direction = GeneralUtility::_GP('sSortDir_0');
-				$order = array(
-					$fieldName => strtoupper($direction)
-				);
+			$columns = GeneralUtility::trimExplode(',', $this->settings['columns'], TRUE);
+
+			if (isset($columns[$columnPosition])) {
+				$fieldName = $columns[$columnPosition];
+				if (FrontendTca::grid($dataType)->isSortable($fieldName)) {
+					$direction = GeneralUtility::_GP('sSortDir_0');
+					$order = array(
+						$fieldName => strtoupper($direction)
+					);
+				}
 			}
+		} elseif (!empty($this->settings['sorting'])) {
+			$direction = empty($this->settings['direction']) ? 'ASC' : $this->settings['direction'];
+			$order = array(
+				$this->settings['sorting'] => $direction
+			);
 		}
 
 		return GeneralUtility::makeInstance('Fab\Vidi\Persistence\Order', $order);
