@@ -30,9 +30,6 @@
 			<trans-unit id="flexform.selection">
 				<target>Préfiltre avec une Sélection venant du module Backend.</target>
 			</trans-unit>
-			<trans-unit id="flexform.categories">
-				<target>Préfiltre avec une liste de catégorie séparée par des virgules.</target>
-			</trans-unit>
 			<trans-unit id="flexform.facets">
 				<target>Sélectionner les facettes de la barre de recherche visuelle</target>
 			</trans-unit>
@@ -52,10 +49,7 @@
 				<target>Direction par défault</target>
 			</trans-unit>
 			<trans-unit id="flexform.additionalEquals">
-				<target>Contraintes supplémentaires séparées par des virgules</target>
-			</trans-unit>
-			<trans-unit id="flexform.additionalLikes">
-				<target>SQL "like" supplémentaires séparés par des virgules</target>
+				<target>Contraintes supplémentaires séparées par des virgules. Exemple pour Files: storage= 1, identifier like /images/%, metadata.categories = 1</target>
 			</trans-unit>
 			<trans-unit id="showDetail">
 				<target>Afficher le détail</target>

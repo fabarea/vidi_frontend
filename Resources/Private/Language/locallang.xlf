@@ -30,9 +30,6 @@
 			<trans-unit id="flexform.selection">
 				<source>Selection coming from the Backend module to be used as pre-filter</source>
 			</trans-unit>
-			<trans-unit id="flexform.categories">
-				<source>Comma separated list of categories</source>
-			</trans-unit>
 			<trans-unit id="flexform.facets">
 				<source>Pick available Facets to be displayed the Visual Search bar.</source>
 			</trans-unit>
@@ -52,10 +49,7 @@
 				<source>Default direction</source>
 			</trans-unit>
 			<trans-unit id="flexform.additionalEquals">
-				<source>Additional comma separated constraints, e.g. storage = 1</source>
-			</trans-unit>
-			<trans-unit id="flexform.additionalLikes">
-				<source>Additional comma separated "like", e.g. /images/%</source>
+				<source>Additional comma separated constraints. Example for Files: storage= 1, identifier like /images/%, metadata.categories = 1</source>
 			</trans-unit>
 			<trans-unit id="showDetail">
 				<source>Show detail</source>

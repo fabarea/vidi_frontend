@@ -41,10 +41,10 @@ class OrderFactory implements SingletonInterface {
 	/**
 	 * Gets a singleton instance of this class.
 	 *
-	 * @param $settings
+	 * @param array $settings
 	 * @return OrderFactory
 	 */
-	static public function getInstance($settings = array()) {
+	static public function getInstance(array $settings) {
 		return GeneralUtility::makeInstance('Fab\VidiFrontend\Persistence\OrderFactory', $settings);
 	}
 

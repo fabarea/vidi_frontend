@@ -119,14 +119,6 @@
 							</config>
 						</TCEforms>
 					</settings.selection>
-					<settings.categories>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.categories</label>
-							<config>
-								<type>input</type>
-							</config>
-						</TCEforms>
-					</settings.categories>
 					<settings.additionalEquals>
 						<TCEforms>
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.additionalEquals</label>
@@ -135,14 +127,6 @@
 							</config>
 						</TCEforms>
 					</settings.additionalEquals>
-					<settings.additionalLikes>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.additionalLikes</label>
-							<config>
-								<type>input</type>
-							</config>
-						</TCEforms>
-					</settings.additionalLikes>
 				</el>
 			</ROOT>
 		</filter>

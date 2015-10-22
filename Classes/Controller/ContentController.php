@@ -88,7 +88,7 @@ class ContentController extends ActionController {
 		if (!$this->settings['loadContentByAjax']) {
 
 			// Initialize some objects related to the query.
-			$matcher = MatcherFactory::getInstance()->getMatcher(array(), $dataType);
+			$matcher = MatcherFactory::getInstance($this->settings)->getMatcher(array(), $dataType);
 			$order = OrderFactory::getInstance($this->settings)->getOrder($dataType);
 
 			// Fetch objects via the Content Service.
@@ -120,7 +120,7 @@ class ContentController extends ActionController {
 		$settings = $this->flexFormService->convertFlexFormContentToArray($contentData['pi_flexform']);
 
 		// Initialize some objects related to the query.
-		$matcher = MatcherFactory::getInstance()->getMatcher(array(), $dataType);
+		$matcher = MatcherFactory::getInstance($settings['settings'])->getMatcher(array(), $dataType);
 		$order = OrderFactory::getInstance($settings['settings'])->getOrder($dataType);
 		$pager = PagerObjectFactory::getInstance()->getPager();
 
