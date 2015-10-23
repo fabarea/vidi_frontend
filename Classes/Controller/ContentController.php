@@ -76,7 +76,21 @@ class ContentController extends ActionController {
 	 */
 	public function indexAction() {
 
-		$dataType = empty($this->settings['dataType']) ? 'fe_users' : $this->settings['dataType'];
+		if (empty($this->settings['dataType'])) {
+			return '<strong style="color: red">Please select a content type to be displayed!</strong>';
+		}
+		$dataType = $this->settings['dataType'];
+
+		// Set dynamic value for the sake of the Visual Search.
+		if ($this->settings['isVisualSearchBar']) {
+			$this->settings['loadContentByAjax'] = 1;
+		}
+
+		$columns = ColumnsConfiguration::getInstance()->get($dataType, $this->settings['columns']);
+		if (empty($columns)) {
+			return '<strong style="color: red">Please select at least one column to be displayed!</strong>';
+		}
+		$this->view->assign('columns', $columns);
 
 		// Assign values.
 		$this->view->assign('settings', $this->settings);
@@ -95,13 +109,6 @@ class ContentController extends ActionController {
 			$contentService = $this->getContentService($dataType)->findBy($matcher, $order);
 			$this->view->assign('objects', $contentService->getObjects());
 		}
-
-		$columns = ColumnsConfiguration::getInstance()->get($dataType, $this->settings['columns']);
-		if (empty($columns)) {
-			return '<strong style="color: red">Please select at least one column to be displayed!</strong>';
-		}
-
-		$this->view->assign('columns', $columns);
 	}
 
 	/**

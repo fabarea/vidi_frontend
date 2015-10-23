@@ -46,11 +46,12 @@ class FrontendTca implements SingletonInterface, TcaServiceInterface {
 
 			if (!class_exists($className)) {
 				throw new NotExistingClassException('Class does not exit: ' . $className, 1357060937);
-
 			}
+
 			$instance = GeneralUtility::makeInstance($className, $tableName, $serviceType);
 			self::$instances[$tableName][$serviceType] = $instance;
 		}
+
 		return self::$instances[$tableName][$serviceType];
 	}
 

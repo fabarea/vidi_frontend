@@ -38,9 +38,21 @@ class FrontendGridService extends GridService { // implements TcaServiceInterfac
 
 		parent::__construct($tableName);
 
-		if (!empty($GLOBALS['TCA'][$this->tableName]['grid_frontend'])) {
-			$this->tca = $GLOBALS['TCA'][$this->tableName]['grid_frontend'];
+		if (empty($GLOBALS['TCA'][$this->tableName]['grid_frontend'])) {
+			$GLOBALS['TCA'][$this->tableName]['grid_frontend'] = array();
 		}
+
+		if (empty($GLOBALS['TCA'][$this->tableName]['grid_frontend']['columns'])) {
+			$GLOBALS['TCA'][$this->tableName]['grid_frontend']['columns'] = array();
+		}
+
+		if (empty($GLOBALS['TCA'][$this->tableName]['grid_frontend']['columns']['__buttons'])) {
+			$GLOBALS['TCA'][$this->tableName]['grid_frontend']['columns']['__buttons'] = array(
+				'renderer' => 'Fab\VidiFrontend\Grid\ShowButtonRenderer',
+			);
+		}
+
+		$this->tca = $GLOBALS['TCA'][$this->tableName]['grid_frontend'];
 	}
 
 	/**

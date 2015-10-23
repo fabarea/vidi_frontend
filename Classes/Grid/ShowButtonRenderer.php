@@ -38,7 +38,7 @@ class ShowButtonRenderer extends ColumnRendererAbstract {
 		$tagBuilder->setTagName('a');
 		#$tagBuilder->setContent('<span class="glyphicon glyphicon-eye-open"></span>'); // Only if Font Awesome is installed.
 		$icon = sprintf(
-			'<img src="%sResources/Public/Build/Images/show_property.png" alt="" width="16">',
+			'<img src="/%sResources/Public/Build/Images/show_property.png" alt="" width="16">',
 			ExtensionManagementUtility::extRelPath('vidi_frontend')
 		);
 		$tagBuilder->setContent($icon);

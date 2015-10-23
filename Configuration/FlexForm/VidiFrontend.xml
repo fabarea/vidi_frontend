@@ -52,19 +52,6 @@
 							</config>
 						</TCEforms>
 					</settings.defaultNumberOfItems>
-					<settings.templateDetail>
-						<TCEforms>
-							<label>
-								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.template_for_detail_view
-							</label>
-							<config>
-								<type>select</type>
-								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsTemplateShow</itemsProcFunc>
-								<size>1</size>
-								<maxitems>1</maxitems>
-							</config>
-						</TCEforms>
-					</settings.templateDetail>
 				</el>
 			</ROOT>
 		</general>
@@ -176,6 +163,56 @@
 				</el>
 			</ROOT>
 		</sorting>
+		<detailView>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.detail_view
+					</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.templateDetail>
+						<TCEforms>
+							<label>
+								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.template_for_detail_view
+							</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsTemplateShow</itemsProcFunc>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.templateDetail>
+					<settings.targetPageDetail>
+						<TCEforms>
+							<label>
+								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.target_page_detail
+							</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>pages</allowed>
+								<size>1</size>
+								<maxitems>1</maxitems>
+								<minitems>0</minitems>
+								<show_thumbs>1</show_thumbs>
+							</config>
+						</TCEforms>
+					</settings.targetPageDetail>
+					<settings.parameterPrefix>
+						<TCEforms>
+							<label>
+								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.parameter_prefix
+							</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</settings.parameterPrefix>
+				</el>
+			</ROOT>
+		</detailView>
 	</sheets>
 
 </T3DataStructure>

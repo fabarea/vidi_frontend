@@ -15,6 +15,9 @@
 			<trans-unit id="flexform.tab.facets">
 				<source>Facets</source>
 			</trans-unit>
+			<trans-unit id="flexform.tab.detail_view">
+				<source>Detail view</source>
+			</trans-unit>
 			<trans-unit id="flexform.select">
 				<source>Select one...</source>
 			</trans-unit>
@@ -25,7 +28,7 @@
 				<source>Menu "number of records"</source>
 			</trans-unit>
 			<trans-unit id="flexform.columns">
-				<source>Displayed columns. Attention! Some columns may not work on the Frontend.</source>
+				<source>Displayed columns. Attention! Some columns may not work on the Frontend out of the box. Override in TCA['grid_frontend'] in case.</source>
 			</trans-unit>
 			<trans-unit id="flexform.selection">
 				<source>Selection coming from the Backend module to be used as pre-filter</source>
@@ -41,6 +44,12 @@
 			</trans-unit>
 			<trans-unit id="flexform.template_for_detail_view">
 				<source>Template for the "detail" view. If let blank, no link to a detail view will be made.</source>
+			</trans-unit>
+			<trans-unit id="flexform.target_page_detail">
+				<source>Target page for detail view. Let blank for current page. (not yet implemented)</source>
+			</trans-unit>
+			<trans-unit id="flexform.parameter_prefix">
+				<source>Parameter prefix for detail view. Default value is "tx_vidifrontend_pi1". (not yet implemented)</source>
 			</trans-unit>
 			<trans-unit id="flexform.sorting">
 				<source>Default sorting</source>

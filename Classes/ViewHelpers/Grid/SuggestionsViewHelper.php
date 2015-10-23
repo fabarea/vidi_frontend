@@ -30,9 +30,11 @@ class SuggestionsViewHelper extends AbstractViewHelper {
 	 */
 	public function render() {
 		$dataType = $this->templateVariableContainer->get('dataType');
+		$settings = $this->templateVariableContainer->get('settings');
 
 		$suggestions = array();
-		foreach (FrontendTca::grid($dataType)->getFacets() as $facet) {
+		$facets = GeneralUtility::trimExplode(',', $settings['facets'], TRUE);
+		foreach ($facets as $facet) {
 			$name = FrontendTca::grid($dataType)->facet($facet)->getName();
 			$suggestions[$name] = $this->getFacetSuggestionService()->getSuggestions($name);
 		}
@@ -41,10 +43,9 @@ class SuggestionsViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * @return \Fab\Vidi\Facet\FacetSuggestionService
+	 * @return \Fab\VidiFrontend\Facet\FacetSuggestionService
 	 */
 	protected function getFacetSuggestionService () {
-		#$settings = $this->templateVariableContainer->get('settings'); (?)
 		$settings = array();
 		$dataType = $this->templateVariableContainer->get('dataType');
 		return GeneralUtility::makeInstance('Fab\VidiFrontend\Facet\FacetSuggestionService', $settings, $dataType);

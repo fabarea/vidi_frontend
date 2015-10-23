@@ -15,6 +15,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid;
  */
 
 use Fab\VidiFrontend\Tca\FrontendTca;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -29,10 +30,11 @@ class FacetsViewHelper extends AbstractViewHelper {
 	 */
 	public function render() {
 		$dataType = $this->templateVariableContainer->get('dataType');
+		$settings = $this->templateVariableContainer->get('settings');
 
+		$facetIdentifiers = GeneralUtility::trimExplode(',', $settings['facets'], TRUE);
 		$facets = array();
-
-		foreach (FrontendTca::grid($dataType)->getFacets() as $facetName) {
+		foreach ($facetIdentifiers as $facetName) {
 			$name = FrontendTca::grid($dataType)->facet($facetName)->getName();
 			$facets[$name] = FrontendTca::grid($dataType)->facet($facetName)->getLabel();
 		}
