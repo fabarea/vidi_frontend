@@ -46,6 +46,9 @@
 		VidiFrontend.settings[gridIdentifier]['columns'] = columns;
 		VidiFrontend.settings[gridIdentifier]['language'] = labels;
 		VidiFrontend.settings[gridIdentifier]['facets'] = {};
+		VidiFrontend.settings[gridIdentifier]['search'] = {};
+		VidiFrontend.settings[gridIdentifier]['search']['labels'] = {}; // Used by VidiFrontend.VisualSearch
+		VidiFrontend.settings[gridIdentifier]['search']['values'] = {};
 		VidiFrontend.settings[gridIdentifier]['lengthMenu'] = {vf:grid.lengthMenu()};
 		VidiFrontend.settings[gridIdentifier]['suggestions'] = [];
 		VidiFrontend.settings[gridIdentifier]['loadContentByAjax'] = parseInt('{settings.loadContentByAjax}');

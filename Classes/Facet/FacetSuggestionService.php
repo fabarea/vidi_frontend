@@ -80,7 +80,7 @@ class FacetSuggestionService {
 					$contents = $contentRepository->findBy($matcher);
 
 					foreach ($contents as $content) {
-						$values[$content->getUid()] = $content[$table->getLabelField()];
+						$values[] = array($content->getUid() => $content[$table->getLabelField()]);
 					}
 				}
 			} elseif (!Tca::table($dataType)->field($fieldName)->isTextArea()) { // We don't want suggestion if field is text area.
@@ -108,7 +108,7 @@ class FacetSuggestionService {
 							$label = Tca::table($dataType)->field($fieldName)->getLabelForItem($value);
 						}
 
-						$values[$value] = $label;
+						$values[] = $label;
 					}
 				}
 			}

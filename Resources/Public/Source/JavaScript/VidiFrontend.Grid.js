@@ -21,6 +21,37 @@ VidiFrontend.Grid = {
 
 		_.each(VidiFrontend.settings, function(settings, identifier) {
 
+			// Initialize labels and values for the search
+			_.each(settings.suggestions, function(values, facetName) {
+
+				var labels = [];
+				var valueObject = {};
+
+				_.each(values, function(value) {
+
+					if (typeof(value) === 'object') {
+						// retrieve keys.
+						var keys = Object.keys(value);
+						var key = keys[0];
+						var label = value[key];
+
+						// Feed array labels.
+						labels.push(label);
+
+						// Feed value object.
+						valueObject[key] = label;
+
+						// Feed value object.
+						labels.push(valueObject);
+					} else {
+						labels.push(value);
+					}
+				});
+
+				settings.search.labels[facetName] = labels;
+				settings.search.values[facetName] = valueObject; // store for retrieving ID of facet when searching
+			});
+
 			var options = {
 				columns: settings.columns,
 				language: settings.language,
@@ -240,5 +271,58 @@ VidiFrontend.Grid = {
 				VidiFrontend.Session.reset('lastEditedUid' + identifier);
 			}, 500);
 		}
+	},
+
+	/**
+	 * @return void
+	 */
+	attachHandler: function($) {
+		_.each(VidiFrontend.settings, function(settings, identifier) {
+
+			/**
+			 * Select or deselect all rows at once.
+			 */
+			$('#grid-' + settings.gridIdentifier + ' .checkbox-row-top').click(function() {
+				var $table = $(this).closest('table');
+				var checkboxes = $($table).find('.checkbox-row');
+				if ($(this).is(':checked')) {
+					checkboxes.filter(':not(:checked)').click();
+				} else {
+					checkboxes.filter(':checked').click();
+				}
+			});
+
+			if (settings.hasDetailView) {
+
+				/**
+				 * Clicking on a icon "detail" view should store the row id.
+				 */
+				$(document).on('click', '#grid-' + settings.gridIdentifier + ' tbody tr a.link-show', function(e) {
+					// Store the last opened row to allow an fancy animation on link back to "list" view from "detail" view.
+					var lastEditedUid = $(this).closest('tr').attr('id').replace('row-', '');
+					var gridIdentifier = $(this).closest('table').attr('id').replace('grid-', '');
+					VidiFrontend.Session.set('lastEditedUid' + gridIdentifier, lastEditedUid);
+				});
+
+				/**
+				 * Clicking on a row will open the detail view and store the row id.
+				 */
+				$(document).on('click', '#grid-' + settings.gridIdentifier + ' tbody tr', function (e) {
+
+					// Store the last opened row to allow an fancy animation on link back to "list" view from "detail" view.
+					var lastEditedUid = this.id.replace('row-', '');
+					var gridIdentifier = $(this).closest('table').attr('id').replace('grid-', '');
+					VidiFrontend.Session.set('lastEditedUid' + gridIdentifier, lastEditedUid);
+
+					// Redirect to the detail view
+					var url;
+					if (e.target instanceof HTMLInputElement || e.target instanceof HTMLAnchorElement) {
+						return;
+					}
+					url = $(this).closest('tr').find('.link-show').attr('href');
+					window.location.href = url;
+				});
+			}
+		});
 	}
 };

@@ -11,6 +11,9 @@ SCREENSHOT!
 For the Grid, we use the excellent `Data Tables`_ which is a powerful jQuery plugin smart and fast to sort and filter data.
 The Filter bar is provided by the `Visual Search`_ jQuery plugin which offers nice facet capabilities and intuitive search.
 
+Live example:
+
+- http://...
 
 Project info and releases
 -------------------------
@@ -173,9 +176,9 @@ To improve the User experience, `Visual Search`_ plugin has been patched avoidin
 It means when making a fresh build, the patch must be (for now) manually added::
 
 	cd Resources/Public/BowerComponents/visualsearch/
-	grep -lr "options.app.searchBox.searchEvent(e)" .
+	grep -lr "app.searchBox.searchEvent(e)" .
 
-	-> it must be 2 occurrences
+	-> There should be 2 occurrences. Comment lines below related to "_.defer".
 
 .. _Bower: http://bower.io/
 .. _Grunt: http://gruntjs.com/

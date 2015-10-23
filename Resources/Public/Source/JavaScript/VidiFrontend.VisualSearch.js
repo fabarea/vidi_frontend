@@ -18,6 +18,7 @@ VidiFrontend.VisualSearch = {
 	 * @return void
 	 */
 	initialize: function($) {
+
 		_.each(VidiFrontend.settings, function(settings, identifier) {
 
 			/**
@@ -26,6 +27,7 @@ VidiFrontend.VisualSearch = {
 			VidiFrontend.bars[identifier] = VS.init({
 				container: $('.visual-search-container-' + identifier),
 				query: '',
+				showFacets: true,
 				callbacks: {
 
 					/**
@@ -55,7 +57,7 @@ VidiFrontend.VisualSearch = {
 						_.each(settings.facets, function(label) {
 							facets.push(label);
 						});
-						callback(facets);
+						callback(facets, {preserveOrder: true});
 					},
 
 					/**
@@ -118,28 +120,7 @@ VidiFrontend.VisualSearch = {
 	 * @private
 	 */
 	suggest: function(facetName, searchTerm, callback, settings) {
-
-		if (settings.suggestions[facetName] === undefined) {
-
-			// BEWARE! This code is never used as implemented but should be in the future.
-			// @todo suggestions[facetName] must be destroyed in some cases after inline editing.
-
-			// Fetch the suggestion values for the facet.
-			//$.ajax({
-			//	url: $('#link-facet-suggest').attr('href'),
-			//	dataType: "json",
-			//	data: Vidi.VisualSearch.getParameters(facetName, searchTerm),
-			//	success: function(data) {
-			//		Vidi.module.grid.suggestions[facetName] = data;
-			//		callback(Vidi.module.grid.suggestions[facetName])
-			//	},
-			//	error: function() {
-			//		Vidi.VisualSearch.showError();
-			//	}
-			//});
-		} else {
-			callback(settings.suggestions[facetName]);
-		}
+		callback(settings.search.labels[facetName]);
 	},
 
 	/**
@@ -161,7 +142,7 @@ VidiFrontend.VisualSearch = {
 			var facets = [{text: searchExpression}];
 			try {
 				facets = JSON.parse(searchExpression);
-			} catch(e) {
+			} catch (e) {
 
 			}
 			_.each(facets, function(facet) {
@@ -194,7 +175,7 @@ VidiFrontend.VisualSearch = {
 		var value = searchTerm;
 
 		// Search for an equivalence label <-> value.
-		_.each(settings.suggestions[facetName], function(label, _value) {
+		_.each(settings.search.values[facetName], function(label, _value) {
 			if (label === searchTerm) {
 				value = _value;
 			}

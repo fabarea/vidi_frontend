@@ -39,7 +39,7 @@ class SuggestionsViewHelper extends AbstractViewHelper {
 			$suggestions[$name] = $this->getFacetSuggestionService()->getSuggestions($name);
 		}
 
-		return json_encode($suggestions, JSON_FORCE_OBJECT);
+		return json_encode($suggestions);
 	}
 
 	/**
