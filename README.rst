@@ -16,8 +16,8 @@ Live example http://www.washinhcf.org/resources/publications/
 Project info and releases
 -------------------------
 
-.. Stable version:
-.. http://typo3.org/extensions/repository/view/vidi
+Stable version:
+http://typo3.org/extensions/repository/view/vidi_frontend
 
 Development version:
 https://github.com/fabarea/vidi_frontend
@@ -28,10 +28,8 @@ https://github.com/fabarea/vidi_frontend
 
 News about latest development are also announced on http://twitter.com/fudriot
 
-
 Installation and requirement
 ============================
-
 
 The extension **requires TYPO3 6.2**. Install the extension as normal in the Extension Manager from the `TER`_ or download the Git version::
 
@@ -43,23 +41,19 @@ The extension **requires TYPO3 6.2**. Install the extension as normal in the Ext
 
 	-> next step, is to open the Extension Manager in the BE.
 
-.. _TER: typo3.org/extensions/repository/
-.. _master branch: https://github.com/TYPO3-extensions/vidi.git
+.. _TER: http://typo3.org/extensions/repository/view/vidi_frontend
 
-You are almost there! Load the static TS file
+You are almost there! Create a Content Element of type "Vidi Frontend" in General Plugin > "Generic List Component" and configure at your convenience.
 
 .. image:: https://raw.github.com/fabarea/vidi_frontend/master/Documentation/Backend-01.png
-
-Finally create a Content Element of type "Vidi Frontend" in General Plugin > "Generic List Component".
 
 Configuration
 =============
 
 The plugin can be configured in various places such as TypoScript, PHP or in the plugin record itself.
 
-**Important** by default, the CSS + JS files are loaded for Bootstrap. For not Bootstrap related, edit the `path` by TypoScript.
-
-Configure the Assets::
+**Important** by default, the CSS + JS files are loaded for Bootstrap. For a more Vanilla flavor, edit the `path` in the `settings` key in TypoScript and
+load the right assets for you. See below the comments::
 
 	#############################
 	# plugin.tx_vidifrontend
@@ -85,8 +79,8 @@ Configure the Assets::
 		}
 	}
 
-Register a new Content type
----------------------------
+Custom columns
+--------------
 
 In order to customize columns for the Frontend, configuration can be added in the TCA. Best is to learn by example and get inspired by
 ``EXT:vidi_frontend/Configuration/TCA/fe_users.php``::
@@ -101,6 +95,11 @@ In order to customize columns for the Frontend, configuration can be added in th
 		),
 	);
 
+
+Custom Facets
+-------------
+
+Facets are visible in the Visual Search and enable the search by criteria. Facets are generally mapped to a field but it is not mandatory ; it can be arbitrary values. To provide a custom Facet, the interface `\Fab\Vidi\Facet\FacetInterface` must be implemented. Best is to take inspiration of the `\Fab\Vidi\Facet\StandardFacet` and provide your own implementation.
 
 Register a new template
 -----------------------
