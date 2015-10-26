@@ -15798,9 +15798,6 @@ VidiFrontend.Grid = {
 
 						// Feed value object.
 						valueObject[key] = label;
-
-						// Feed value object.
-						labels.push(valueObject);
 					} else {
 						labels.push(value);
 					}
