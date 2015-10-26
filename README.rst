@@ -4,16 +4,14 @@ Vidi for TYPO3 CMS
 Generic List Component where Content can be filtered in an advanced way... Veni, vidi, vici! This extension is based on Vidi with
 the aim to provide the same feature set but for the Frontend.
 
+.. image:: https://raw.github.com/fabarea/vidi/master/Documentation/Frontend-01.png
+
 In the plugin record in the Backend, it can be configured what content type to render associated with a customizable template.
 
-SCREENSHOT!
-
-For the Grid, we use the excellent `Data Tables`_ which is a powerful jQuery plugin smart and fast to sort and filter data.
+For the Grid, we use the excellent `DataTables`_ which is a powerful jQuery plugin smart and fast to sort and filter data.
 The Filter bar is provided by the `Visual Search`_ jQuery plugin which offers nice facet capabilities and intuitive search.
 
-Live example:
-
-- http://...
+Live example http://www.washinhcf.org/resources/publications/
 
 Project info and releases
 -------------------------
@@ -28,8 +26,7 @@ https://github.com/fabarea/vidi_frontend
 
 	git clone https://github.com/fabarea/vidi_frontend.git
 
-Flash news about latest development are also announced on
-http://twitter.com/fudriot
+News about latest development are also announced on http://twitter.com/fudriot
 
 
 Installation and requirement
@@ -51,7 +48,7 @@ The extension **requires TYPO3 6.2**. Install the extension as normal in the Ext
 
 You are almost there! Load the static TS file
 
-SCREENHSOT!!
+.. image:: https://raw.github.com/fabarea/vidi/master/Documentation/Backend-01.png
 
 Finally create a Content Element of type "Vidi Frontend" in General Plugin > "Generic List Component".
 
@@ -60,10 +57,9 @@ Configuration
 
 The plugin can be configured in various places such as TypoScript, PHP or in the plugin record itself.
 
-Please make sure jQuery is well loaded.
+**Important** by default, the CSS + JS files are loaded for Bootstrap. For not Bootstrap related, edit the `path` by TypoScript.
 
 Configure the Assets::
-
 
 	#############################
 	# plugin.tx_vidifrontend
@@ -76,6 +72,7 @@ Configure the Assets::
 
 				vidiCss {
 					# For none Bootstrap replace "vidi_frontend.bootstrap.min.css" by "vidi_frontend.min.css"
+					path = EXT:vidi_frontend/Resources/Public/Build/StyleSheets/vidi_frontend.bootstrap.min.css
 					type = css
 				}
 
@@ -91,30 +88,15 @@ Configure the Assets::
 Register a new Content type
 ---------------------------
 
-In order to have a new Content Type (such as fe_users, ...), some configuration must be added in the TCA.
-Best is to learn by example and look at the example provided within file ``EXT:vidi_frontend/Configuration/TCA/fe_users.php``.
-
-Basically, what you have to do is to create a file into your extension, **if not yet existing**::
-
-	touch EXT:foo/Configuration/TCA/tx_domain_model_foo.php
-
-
-And copy & paste and adjust the dummy example. It will declare a new Grid for the Frontend::
+In order to customize columns for the Frontend, configuration can be added in the TCA. Best is to learn by example and get inspired by
+``EXT:vidi_frontend/Configuration/TCA/fe_users.php``::
 
 	$tca = array(
 		'grid_frontend' => array(
 			'columns' => array(
 
-				# The field "title" of your table.
+				# Custom fields for the FE goes here
 				'title' => array(),
-
-				... <-- add your fields
-
-				# System column where to contain some
-				'__buttons' => array(
-					'renderer' => 'Fab\VidiFrontend\Grid\ShowButtonRenderer',
-					'sortable' => FALSE
-				),
 			),
 		),
 	);
@@ -183,4 +165,4 @@ It means when making a fresh build, the patch must be (for now) manually added::
 .. _Bower: http://bower.io/
 .. _Grunt: http://gruntjs.com/
 .. _Visual Search: http://documentcloud.github.io/visualsearch/
-.. _DataTable: http://www.datatables.net/
+.. _DataTables: http://www.datatables.net/
