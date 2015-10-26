@@ -25,7 +25,7 @@ use Fab\Vidi\Tca\Tca;
 /**
  * A class to handle TCA grid configuration
  */
-class FrontendGridService extends GridService { // implements TcaServiceInterface (?)
+class FrontendGridService extends GridService {
 
 	/**
 	 * __construct
@@ -138,35 +138,6 @@ class FrontendGridService extends GridService { // implements TcaServiceInterfac
 			}
 		}
 		return $facetNames;
-	}
-
-	/**
-	 * Returns a "facet" service instance.
-	 *
-	 * @param string|FacetInterface $facet
-	 * @return \Fab\Vidi\Tca\FacetService
-	 */
-	public function facet($facet = '') {
-		if (!$facet instanceof StandardFacet) {
-			$label = $this->getLabel($facet);
-
-			/** @var StandardFacet $facet */
-			$facet = GeneralUtility::makeInstance('Fab\Vidi\Facet\StandardFacet', $facet, $label);
-		}
-
-		if (empty($this->instances[$facet->getName()])) {
-
-			/** @var \Fab\Vidi\Tca\FacetService $instance */
-			$instance = GeneralUtility::makeInstance(
-				'Fab\Vidi\Tca\FacetService',
-				$facet,
-				$this->tableName
-			);
-
-			$this->instances[$facet->getName()] = $instance;
-		}
-
-		return $this->instances[$facet->getName()];
 	}
 
 }

@@ -60,8 +60,8 @@ class FacetSuggestionService {
 		$dataType = $this->getFieldPathResolver()->getDataType($fieldNameAndPath, $this->dataType);
 		$fieldName = $this->getFieldPathResolver()->stripFieldPath($fieldNameAndPath, $this->dataType);
 
-		if (FrontendTca::grid($dataType)->facet($fieldName)->hasSuggestions()) {
-			$values = FrontendTca::grid($dataType)->facet($fieldName)->getSuggestions();
+		if (FrontendTca::grid($this->dataType)->facet($fieldNameAndPath)->hasSuggestions()) {
+			$values = FrontendTca::grid($this->dataType)->facet($fieldNameAndPath)->getSuggestions();
 		} else if (Tca::table($dataType)->hasField($fieldName)) {
 
 			if (Tca::table($dataType)->field($fieldName)->hasRelation()) {

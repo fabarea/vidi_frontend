@@ -15,6 +15,7 @@ namespace Fab\VidiFrontend\Persistence;
  */
 
 use Fab\Vidi\Domain\Model\Selection;
+use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -123,7 +124,7 @@ class MatcherFactory implements SingletonInterface {
 			$queryParts = json_decode($query, TRUE);
 
 			if (is_array($queryParts)) {
-				$this->parseQuery($queryParts, $matcher, $dataType);
+				$matcher = $this->parseQuery($queryParts, $matcher, $dataType);
 			} else {
 				$matcher->setSearchTerm($query);
 			}
@@ -149,7 +150,7 @@ class MatcherFactory implements SingletonInterface {
 			/** @var Selection $selection */
 			$selection = $selectionRepository->findByUid($selectionIdentifier);
 			$queryParts = json_decode($selection->getQuery(), TRUE);
-			$this->parseQuery($queryParts, $matcher, $dataType);
+			$matcher = $this->parseQuery($queryParts, $matcher, $dataType);
 		}
 		return $matcher;
 	}
@@ -173,8 +174,10 @@ class MatcherFactory implements SingletonInterface {
 			// Retrieve the value.
 			$value = current($queryPart);
 
-			// Check whether the field exists and set it as "equal" or "like".
-			if (Tca::table($resolvedDataType)->hasField($fieldName)) {
+			if (FrontendTca::grid($resolvedDataType)->hasFacet($fieldName) && FrontendTca::grid($resolvedDataType)->facet($fieldName)->canModifyMatcher()) {
+				$matcher = FrontendTca::grid($resolvedDataType)->facet($fieldName)->modifyMatcher($matcher, $value);
+			} elseif (Tca::table($resolvedDataType)->hasField($fieldName)) {
+				// Check whether the field exists and set it as "equal" or "like".
 				if ($this->isOperatorEquals($fieldNameAndPath, $dataType, $value)) {
 					$matcher->equals($fieldNameAndPath, $value);
 				} else {
@@ -187,6 +190,8 @@ class MatcherFactory implements SingletonInterface {
 				$matcher->setSearchTerm($value);
 			}
 		}
+
+		return $matcher;
 	}
 
 	/**
@@ -234,4 +239,5 @@ class MatcherFactory implements SingletonInterface {
 	protected function getFieldPathResolver() {
 		return GeneralUtility::makeInstance('Fab\Vidi\Resolver\FieldPathResolver');
 	}
+
 }

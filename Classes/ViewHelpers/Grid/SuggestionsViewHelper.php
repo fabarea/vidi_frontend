@@ -34,9 +34,8 @@ class SuggestionsViewHelper extends AbstractViewHelper {
 
 		$suggestions = array();
 		$facets = GeneralUtility::trimExplode(',', $settings['facets'], TRUE);
-		foreach ($facets as $facet) {
-			$name = FrontendTca::grid($dataType)->facet($facet)->getName();
-			$suggestions[$name] = $this->getFacetSuggestionService()->getSuggestions($name);
+		foreach ($facets as $facetName) {
+			$suggestions[$facetName] = $this->getFacetSuggestionService()->getSuggestions($facetName);
 		}
 
 		return json_encode($suggestions);

@@ -15,7 +15,7 @@ namespace Fab\VidiFrontend\Backend;
  */
 
 use Fab\Vidi\Domain\Model\Selection;
-use Fab\Vidi\Facet\StandardFacet;
+use Fab\Vidi\Facet\FacetInterface;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Tca\Tca;
@@ -121,7 +121,7 @@ class TceForms {
 			if (!empty($configuredDataType)) {
 				foreach (FrontendTca::grid($configuredDataType)->getFacetNames() as $facet) {
 					$values = array($facet, $facet, NULL);
-					if ($facet instanceof StandardFacet) {
+					if ($facet instanceof FacetInterface) {
 						$values = array($facet->getName(), $facet->getName(), NULL);
 					}
 					$parameters['items'][] = $values;
