@@ -4,7 +4,7 @@ Vidi for TYPO3 CMS
 Generic List Component where Content can be filtered in an advanced way... Veni, vidi, vici! This extension is based on Vidi with
 the aim to provide the same feature set but for the Frontend.
 
-.. image:: https://raw.github.com/fabarea/vidi/master/Documentation/Frontend-01.png
+.. image:: https://raw.github.com/fabarea/vidi_frontend/master/Documentation/Frontend-01.png
 
 In the plugin record in the Backend, it can be configured what content type to render associated with a customizable template.
 
@@ -48,7 +48,7 @@ The extension **requires TYPO3 6.2**. Install the extension as normal in the Ext
 
 You are almost there! Load the static TS file
 
-.. image:: https://raw.github.com/fabarea/vidi/master/Documentation/Backend-01.png
+.. image:: https://raw.github.com/fabarea/vidi_frontend/master/Documentation/Backend-01.png
 
 Finally create a Content Element of type "Vidi Frontend" in General Plugin > "Generic List Component".
 
