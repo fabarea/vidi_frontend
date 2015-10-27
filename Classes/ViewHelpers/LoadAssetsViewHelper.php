@@ -32,8 +32,9 @@ class LoadAssetsViewHelper extends AbstractViewHelper {
 		$settings = $this->templateVariableContainer->get('settings');
 
 		if ($settings['asset']) {
-			foreach ($settings['asset'] as $asset) {
+			foreach ($settings['asset'] as $assetName => $asset) {
 				if ($this->shouldLoadByVhs($settings)) {
+					$asset['name'] = $assetName;
 					$this->loadByVhs($asset);
 
 				} else {
