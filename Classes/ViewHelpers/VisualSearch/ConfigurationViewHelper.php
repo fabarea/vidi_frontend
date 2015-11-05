@@ -64,7 +64,7 @@ class ConfigurationViewHelper extends AbstractViewHelper {
 	 * @return string
 	 */
 	public function getBottomBarWithVisualSearchEnabled() {
-		return "<'col-xs-4'i><'col-xs-4'f><'col-xs-4'p>";
+		return "<'col-sm-4'i><'col-sm-4'f><'col-sm-4'p>";
 	}
 
 	/**
