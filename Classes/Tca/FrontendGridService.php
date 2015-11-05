@@ -99,16 +99,27 @@ class FrontendGridService extends GridService {
 	/**
 	 * Returns an array containing facets fields.
 	 *
-	 * @return array
+	 * @return FacetInterface[]
 	 */
 	public function getFacets() {
-		$frontendFacets = array();
-		if (is_array($this->tca['facets'])) {
-			$frontendFacets = $this->tca['facets'];
-		}
+		if (is_null($this->facets)) {
 
-		$allFacets = Tca::grid($this->tableName)->getFacets();
-		return array_merge($allFacets, $frontendFacets);
+			// Default facets
+			$this->facets = Tca::grid($this->tableName)->getFacets();
+
+			// Override with facets for the Frontend
+			if (is_array($this->tca['facets'])) {
+				foreach ($this->tca['facets'] as $facetNameOrObject) {
+
+					if ($facetNameOrObject instanceof FacetInterface) {
+						$this->facets[$facetNameOrObject->getName()] = $facetNameOrObject;
+					} else {
+						$this->facets[$facetNameOrObject] = $this->instantiateStandardFacet($facetNameOrObject);
+					}
+				}
+			}
+		}
+		return $this->facets;
 	}
 
 	/**
