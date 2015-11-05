@@ -41,7 +41,7 @@ class ConfigurationViewHelper extends AbstractViewHelper {
 		 * r - processing
 		 */
 		$dom = sprintf(
-			"<'row'%s<'col-xs-2'l>r><'row'<'col-xs-12't>><'row'%s>",
+			"<'row'%s<'col-xs-2 hidden-xs'l>r><'row'<'col-xs-12't>><'row'%s>",
 			(bool)$settings['isVisualSearchBar'] ? $this->getTopBarWithVisualSearchEnabled() : $this->getTopBarDefault(),
 			(bool)$settings['isVisualSearchBar'] ? $this->getBottomBarWithVisualSearchEnabled() : $this->getBottomBarDefault()
 		);
@@ -57,7 +57,7 @@ class ConfigurationViewHelper extends AbstractViewHelper {
 
 		$gridIdentifier = $this->templateVariableContainer->get('gridIdentifier');
 
-		return sprintf("<'col-xs-10 visual-search-container-%s'>", $gridIdentifier);
+		return sprintf("<'col-sm-10 visual-search-container-%s'>", $gridIdentifier);
 	}
 
 	/**
