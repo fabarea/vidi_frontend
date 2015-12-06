@@ -8,5 +8,10 @@
 	"support": {
 		"issues": "https://github.com/fudriot/vidi_frontend/issues"
 	},
+	"autoload": {
+		"psr-4": {
+			"Fab\\VidiFrontend\\": "Classes/"
+		}
+	},
 	"version": "1.0.0-dev"
 }
