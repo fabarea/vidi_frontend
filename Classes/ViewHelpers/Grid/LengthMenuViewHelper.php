@@ -20,26 +20,28 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * View helper which returns the configuration for the length menu in the Grid.
  */
-class LengthMenuViewHelper extends AbstractViewHelper {
+class LengthMenuViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Returns the configuration for the length menu in the Grid.
-	 *
-	 * @return boolean
-	 */
-	public function render() {
-		$settings = $this->templateVariableContainer->get('settings');
+    /**
+     * Returns the configuration for the length menu in the Grid.
+     *
+     * @return boolean
+     */
+    public function render()
+    {
+        $settings = $this->templateVariableContainer->get('settings');
 
-		$configuration = '';
-		if (!empty($settings['defaultNumberOfItems'])) {
-			$values = trim($settings['defaultNumberOfItems'], ',');
+        $configuration = '';
+        if (!empty($settings['defaultNumberOfItems'])) {
+            $values = trim($settings['defaultNumberOfItems'], ',');
 
-			$label = sprintf("'%s'", LocalizationUtility::translate('grid.lengthMenu.all', 'vidi_frontend'));
-			$labels = str_replace('-1', $label, $values);
-			$configuration = sprintf('[[%s], [%s]]', $values, $labels);
-		}
+            $label = sprintf("'%s'", LocalizationUtility::translate('grid.lengthMenu.all', 'vidi_frontend'));
+            $labels = str_replace('-1', $label, $values);
+            $configuration = sprintf('[[%s], [%s]]', $values, $labels);
+        }
 
-		return $configuration;
-	}
+        return $configuration;
+    }
 
 }

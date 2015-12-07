@@ -21,25 +21,27 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * View helper which returns the json serialization of the search fields.
  */
-class FacetsViewHelper extends AbstractViewHelper {
+class FacetsViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Returns the json serialization of the search fields.
-	 *
-	 * @return boolean
-	 */
-	public function render() {
-		$dataType = $this->templateVariableContainer->get('dataType');
-		$settings = $this->templateVariableContainer->get('settings');
+    /**
+     * Returns the json serialization of the search fields.
+     *
+     * @return boolean
+     */
+    public function render()
+    {
+        $dataType = $this->templateVariableContainer->get('dataType');
+        $settings = $this->templateVariableContainer->get('settings');
 
-		$facetIdentifiers = GeneralUtility::trimExplode(',', $settings['facets'], TRUE);
-		$facets = array();
-		foreach ($facetIdentifiers as $facetName) {
-			$name = FrontendTca::grid($dataType)->facet($facetName)->getName();
-			$facets[$name] = FrontendTca::grid($dataType)->facet($facetName)->getLabel();
-		}
+        $facetIdentifiers = GeneralUtility::trimExplode(',', $settings['facets'], TRUE);
+        $facets = array();
+        foreach ($facetIdentifiers as $facetName) {
+            $name = FrontendTca::grid($dataType)->facet($facetName)->getName();
+            $facets[$name] = FrontendTca::grid($dataType)->facet($facetName)->getLabel();
+        }
 
-		return json_encode($facets);
-	}
+        return json_encode($facets);
+    }
 
 }

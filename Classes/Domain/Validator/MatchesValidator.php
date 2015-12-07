@@ -21,22 +21,24 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 /**
  * Validate "matches" to be used to filter the repository.
  */
-class MatchesValidator extends AbstractValidator {
+class MatchesValidator extends AbstractValidator
+{
 
-	/**
-	 * Check if $matches is valid. If it is not valid, throw an exception.
-	 *
-	 * @param mixed $matches
-	 * @return void
-	 */
-	public function isValid($matches) {
-		$columnNames = ContentElementConfiguration::getInstance()->getColumnsNames();
+    /**
+     * Check if $matches is valid. If it is not valid, throw an exception.
+     *
+     * @param mixed $matches
+     * @return void
+     */
+    public function isValid($matches)
+    {
+        $columnNames = ContentElementConfiguration::getInstance()->getColumnsNames();
 
-		foreach ($matches as $fieldName => $value) {
-			if (!in_array($fieldName, $columnNames)) {
-				$message = sprintf('Field "%s" is not allowed. Actually, it is not configured in the TCA.', $fieldName);
-				$this->addError($message, 1380019718);
-			}
-		}
-	}
+        foreach ($matches as $fieldName => $value) {
+            if (!in_array($fieldName, $columnNames)) {
+                $message = sprintf('Field "%s" is not allowed. Actually, it is not configured in the TCA.', $fieldName);
+                $this->addError($message, 1380019718);
+            }
+        }
+    }
 }

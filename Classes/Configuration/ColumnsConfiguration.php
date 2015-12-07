@@ -21,38 +21,41 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Retrieve columns configuration given CSV list of columns.
  */
-class ColumnsConfiguration implements SingletonInterface {
+class ColumnsConfiguration implements SingletonInterface
+{
 
-	/**
-	 * @var array
-	 */
-	protected $configuration = array();
+    /**
+     * @var array
+     */
+    protected $configuration = array();
 
-	/**
-	 * Returns the configuration of a content element.
-	 *
-	 * @return \Fab\VidiFrontend\Configuration\ColumnsConfiguration
-	 */
-	static public function getInstance() {
-		return GeneralUtility::makeInstance('Fab\VidiFrontend\Configuration\ColumnsConfiguration');
-	}
+    /**
+     * Returns the configuration of a content element.
+     *
+     * @return \Fab\VidiFrontend\Configuration\ColumnsConfiguration
+     */
+    static public function getInstance()
+    {
+        return GeneralUtility::makeInstance('Fab\VidiFrontend\Configuration\ColumnsConfiguration');
+    }
 
-	/**
-	 * Returns the columns configuration given CSV list of columns.
-	 *
-	 * @param string $dataType
-	 * @param string $columnList
-	 * @return array
-	 */
-	public function get($dataType, $columnList = '') {
+    /**
+     * Returns the columns configuration given CSV list of columns.
+     *
+     * @param string $dataType
+     * @param string $columnList
+     * @return array
+     */
+    public function get($dataType, $columnList = '')
+    {
 
-		if (empty($this->configuration)) {
-			$columns = GeneralUtility::trimExplode(',', $columnList, TRUE);
-			foreach ($columns as $fieldNameAndPath) {
-				$this->configuration[$fieldNameAndPath] = FrontendTca::grid($dataType)->getField($fieldNameAndPath);
-			}
-		}
-		return $this->configuration;
-	}
+        if (empty($this->configuration)) {
+            $columns = GeneralUtility::trimExplode(',', $columnList, TRUE);
+            foreach ($columns as $fieldNameAndPath) {
+                $this->configuration[$fieldNameAndPath] = FrontendTca::grid($dataType)->getField($fieldNameAndPath);
+            }
+        }
+        return $this->configuration;
+    }
 
 }

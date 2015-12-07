@@ -22,22 +22,24 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 /**
  * Validate "columns" to be displayed in the BE module.
  */
-class ColumnsValidator extends AbstractValidator {
+class ColumnsValidator extends AbstractValidator
+{
 
-	/**
-	 * Check if $columns is valid. If it is not valid, throw an exception.
-	 *
-	 * @param mixed $columns
-	 * @return void
-	 */
-	public function isValid($columns) {
-		$columnNames = ContentElementConfiguration::getInstance()->getColumnsNames();
+    /**
+     * Check if $columns is valid. If it is not valid, throw an exception.
+     *
+     * @param mixed $columns
+     * @return void
+     */
+    public function isValid($columns)
+    {
+        $columnNames = ContentElementConfiguration::getInstance()->getColumnsNames();
 
-		foreach ($columns as $columnName) {
-			if (!in_array($columnName, $columnNames)) {
-				$message = sprintf('Column "%s" is not allowed. Actually, it was not configured to be displayed in the grid.', $columnName);
-				$this->addError($message , 1380019718);
-			}
-		}
-	}
+        foreach ($columns as $columnName) {
+            if (!in_array($columnName, $columnNames)) {
+                $message = sprintf('Column "%s" is not allowed. Actually, it was not configured to be displayed in the grid.', $columnName);
+                $this->addError($message, 1380019718);
+            }
+        }
+    }
 }

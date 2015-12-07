@@ -21,33 +21,36 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * View helper which returns suggestion for the Visual Search bar.
  */
-class SuggestionsViewHelper extends AbstractViewHelper {
+class SuggestionsViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Returns the json serialization of the search fields.
-	 *
-	 * @return boolean
-	 */
-	public function render() {
-		$dataType = $this->templateVariableContainer->get('dataType');
-		$settings = $this->templateVariableContainer->get('settings');
+    /**
+     * Returns the json serialization of the search fields.
+     *
+     * @return boolean
+     */
+    public function render()
+    {
+        $dataType = $this->templateVariableContainer->get('dataType');
+        $settings = $this->templateVariableContainer->get('settings');
 
-		$suggestions = array();
-		$facets = GeneralUtility::trimExplode(',', $settings['facets'], TRUE);
-		foreach ($facets as $facetName) {
-			$suggestions[$facetName] = $this->getFacetSuggestionService()->getSuggestions($facetName);
-		}
+        $suggestions = array();
+        $facets = GeneralUtility::trimExplode(',', $settings['facets'], TRUE);
+        foreach ($facets as $facetName) {
+            $suggestions[$facetName] = $this->getFacetSuggestionService()->getSuggestions($facetName);
+        }
 
-		return json_encode($suggestions);
-	}
+        return json_encode($suggestions);
+    }
 
-	/**
-	 * @return \Fab\VidiFrontend\Facet\FacetSuggestionService
-	 */
-	protected function getFacetSuggestionService () {
-		$settings = array();
-		$dataType = $this->templateVariableContainer->get('dataType');
-		return GeneralUtility::makeInstance('Fab\VidiFrontend\Facet\FacetSuggestionService', $settings, $dataType);
-	}
+    /**
+     * @return \Fab\VidiFrontend\Facet\FacetSuggestionService
+     */
+    protected function getFacetSuggestionService()
+    {
+        $settings = array();
+        $dataType = $this->templateVariableContainer->get('dataType');
+        return GeneralUtility::makeInstance('Fab\VidiFrontend\Facet\FacetSuggestionService', $settings, $dataType);
+    }
 
 }

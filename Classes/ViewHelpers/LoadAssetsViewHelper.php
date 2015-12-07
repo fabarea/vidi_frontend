@@ -23,112 +23,121 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * View helper to load a JavaScript file
  */
-class LoadAssetsViewHelper extends AbstractViewHelper {
+class LoadAssetsViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function render() {
-		$settings = $this->templateVariableContainer->get('settings');
+    /**
+     * @return void
+     */
+    public function render()
+    {
+        $settings = $this->templateVariableContainer->get('settings');
 
-		if ($settings['asset']) {
-			foreach ($settings['asset'] as $assetName => $asset) {
-				if ($this->shouldLoadByVhs($settings)) {
-					$asset['name'] = $assetName;
-					$this->loadByVhs($asset);
+        if ($settings['asset']) {
+            foreach ($settings['asset'] as $assetName => $asset) {
+                if ($this->shouldLoadByVhs($settings)) {
+                    $asset['name'] = $assetName;
+                    $this->loadByVhs($asset);
 
-				} else {
-					$this->loadByCorePageRender($asset);
-				}
-			}
-		}
-	}
+                } else {
+                    $this->loadByCorePageRender($asset);
+                }
+            }
+        }
+    }
 
-	/**
-	 * @param array $asset
-	 * @return void
-	 */
-	protected function loadByVhs(array $asset) {
+    /**
+     * @param array $asset
+     * @return void
+     */
+    protected function loadByVhs(array $asset)
+    {
 
-		if (GeneralUtility::getApplicationContext()->isDevelopment()) {
-			$developmentFile = $this->getDevelopmentFile($asset);
-			if ($developmentFile) {
-				$asset['path'] = str_replace('.min.', '.', $asset['path']);
-			}
-		}
-		Asset::createFromSettings($asset);
-	}
+        if (GeneralUtility::getApplicationContext()->isDevelopment()) {
+            $developmentFile = $this->getDevelopmentFile($asset);
+            if ($developmentFile) {
+                $asset['path'] = str_replace('.min.', '.', $asset['path']);
+            }
+        }
+        Asset::createFromSettings($asset);
+    }
 
-	/**
-	 * @param array $asset
-	 * @return void
-	 */
-	protected function loadByCorePageRender(array $asset) {
+    /**
+     * @param array $asset
+     * @return void
+     */
+    protected function loadByCorePageRender(array $asset)
+    {
 
-		$file = $this->resolveFileForApplicationContext($asset);
+        $file = $this->resolveFileForApplicationContext($asset);
 
-		$fileNameAndPath = GeneralUtility::getFileAbsFileName($file);
-		$fileNameAndPath = PathUtility::stripPathSitePrefix($fileNameAndPath);
+        $fileNameAndPath = GeneralUtility::getFileAbsFileName($file);
+        $fileNameAndPath = PathUtility::stripPathSitePrefix($fileNameAndPath);
 
-		if ($asset['type'] === 'js') {
-			$this->getPageRenderer()->addJsFooterFile($fileNameAndPath);
-		} elseif ($asset['type'] === 'css') {
-			$this->getPageRenderer()->addCssFile($fileNameAndPath);
-		}
-	}
+        if ($asset['type'] === 'js') {
+            $this->getPageRenderer()->addJsFooterFile($fileNameAndPath);
+        } elseif ($asset['type'] === 'css') {
+            $this->getPageRenderer()->addCssFile($fileNameAndPath);
+        }
+    }
 
-	/**
-	 * @param array $settings
-	 * @return bool
-	 */
-	protected function shouldLoadByVhs(array $settings) {
-		return ExtensionManagementUtility::isLoaded('vhs') && $settings['loadAssetWithVhsIfAvailable'];
-	}
+    /**
+     * @param array $settings
+     * @return bool
+     */
+    protected function shouldLoadByVhs(array $settings)
+    {
+        return ExtensionManagementUtility::isLoaded('vhs') && $settings['loadAssetWithVhsIfAvailable'];
+    }
 
-	/**
-	 * @param array $asset
-	 * @return string|NULL
-	 */
-	protected function getDevelopmentFile(array $asset) {
-		$possibleDevelopmentFile = str_replace('.min.', '.', $asset['path']);
-		$developmentFile = GeneralUtility::getFileAbsFileName($possibleDevelopmentFile);
-		if (!file_exists($developmentFile)) {
-			$developmentFile = NULL;
-		}
-		return $developmentFile;
-	}
+    /**
+     * @param array $asset
+     * @return string|NULL
+     */
+    protected function getDevelopmentFile(array $asset)
+    {
+        $possibleDevelopmentFile = str_replace('.min.', '.', $asset['path']);
+        $developmentFile = GeneralUtility::getFileAbsFileName($possibleDevelopmentFile);
+        if (!file_exists($developmentFile)) {
+            $developmentFile = NULL;
+        }
+        return $developmentFile;
+    }
 
-	/**
-	 * @param array $asset
-	 * @return string
-	 */
-	protected function resolveFileForApplicationContext(array $asset) {
-		$resolvedFile = $asset['path']; // default value
+    /**
+     * @param array $asset
+     * @return string
+     */
+    protected function resolveFileForApplicationContext(array $asset)
+    {
+        $resolvedFile = $asset['path']; // default value
 
-		// check if there is a non minimized file for context Development
-		if (GeneralUtility::getApplicationContext()->isDevelopment()) {
-			$developmentFile = $this->getDevelopmentFile($asset);
-			if ($developmentFile) {
-				$resolvedFile = $developmentFile;
-			}
-		}
-		return $resolvedFile;
-	}
+        // check if there is a non minimized file for context Development
+        if (GeneralUtility::getApplicationContext()->isDevelopment()) {
+            $developmentFile = $this->getDevelopmentFile($asset);
+            if ($developmentFile) {
+                $resolvedFile = $developmentFile;
+            }
+        }
+        return $resolvedFile;
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Core\Page\PageRenderer
-	 */
-	protected function getPageRenderer() {
-		return $this->getFrontendObject()->getPageRenderer();
-	}
+    /**
+     * @return \TYPO3\CMS\Core\Page\PageRenderer
+     */
+    protected function getPageRenderer()
+    {
+        return $this->getFrontendObject()->getPageRenderer();
+    }
 
-	/**
-	 * Returns an instance of the Frontend object.
-	 *
-	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-	 */
-	protected function getFrontendObject() {
-		return $GLOBALS['TSFE'];
-	}
+    /**
+     * Returns an instance of the Frontend object.
+     *
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    protected function getFrontendObject()
+    {
+        return $GLOBALS['TSFE'];
+    }
 
 }

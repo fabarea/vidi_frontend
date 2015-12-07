@@ -20,29 +20,31 @@ use Fab\Vidi\Domain\Model\Content;
 /**
  * View helper for rendering multiple rows.
  */
-class ShowViewHelper extends AbstractViewHelper {
+class ShowViewHelper extends AbstractViewHelper
+{
 
 
-	/**
-	 * Display the object
-	 *
-	 * @return string
-	 */
-	public function render() {
+    /**
+     * Display the object
+     *
+     * @return string
+     */
+    public function render()
+    {
 
-		/** @var Content $object */
-		$object = $this->templateVariableContainer->get('object');
+        /** @var Content $object */
+        $object = $this->templateVariableContainer->get('object');
 
-		$output = array();
-		foreach ($object->toArray() as $fieldName => $value) {
-			$output[] = sprintf(
-				'<tr><td>%s</td><td>%s</td></tr>',
-				$fieldName,
-				$value
-			);
-		}
+        $output = array();
+        foreach ($object->toArray() as $fieldName => $value) {
+            $output[] = sprintf(
+                '<tr><td>%s</td><td>%s</td></tr>',
+                $fieldName,
+                $value
+            );
+        }
 
-		return '<table class="table table-striped table-hover">' . implode("\n", $output) . '</table>';
-	}
+        return '<table class="table table-striped table-hover">' . implode("\n", $output) . '</table>';
+    }
 
 }

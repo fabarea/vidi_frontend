@@ -25,192 +25,201 @@ use Fab\VidiFrontend\Persistence\OrderFactory;
 /**
  * Controller which handles actions related to Vidi in the Backend.
  */
-class ContentController extends ActionController {
+class ContentController extends ActionController
+{
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Service\FlexFormService
-	 * @inject
-	 */
-	protected $flexFormService;
+    /**
+     * @var \TYPO3\CMS\Extbase\Service\FlexFormService
+     * @inject
+     */
+    protected $flexFormService;
 
-	/**
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-	 */
-	public function initializeAction() {
+    /**
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     */
+    public function initializeAction()
+    {
 
-		if ($this->arguments->hasArgument('content')) {
+        if ($this->arguments->hasArgument('content')) {
 
-			/** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
-			$typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\ContentConverter');
+            /** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
+            $typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\ContentConverter');
 
-			$this->arguments->getArgument('content')
-				->getPropertyMappingConfiguration()
-				->setTypeConverter($typeConverter);
-		}
+            $this->arguments->getArgument('content')
+                ->getPropertyMappingConfiguration()
+                ->setTypeConverter($typeConverter);
+        }
 
-		if ($this->arguments->hasArgument('columns')) {
+        if ($this->arguments->hasArgument('columns')) {
 
-			/** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
-			$typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\ArrayConverter');
+            /** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
+            $typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\ArrayConverter');
 
-			$this->arguments->getArgument('columns')
-				->getPropertyMappingConfiguration()
-				->setTypeConverter($typeConverter);
-		}
+            $this->arguments->getArgument('columns')
+                ->getPropertyMappingConfiguration()
+                ->setTypeConverter($typeConverter);
+        }
 
-		if ($this->arguments->hasArgument('contentData')) {
+        if ($this->arguments->hasArgument('contentData')) {
 
-			/** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
-			$typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\ContentDataConverter');
+            /** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
+            $typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\ContentDataConverter');
 
-			$this->arguments->getArgument('contentData')
-				->getPropertyMappingConfiguration()
-				->setTypeConverter($typeConverter);
-		}
-	}
+            $this->arguments->getArgument('contentData')
+                ->getPropertyMappingConfiguration()
+                ->setTypeConverter($typeConverter);
+        }
+    }
 
-	/**
-	 * List action for this controller.
-	 *
-	 * @return string|void
-	 */
-	public function indexAction() {
+    /**
+     * List action for this controller.
+     *
+     * @return string|void
+     */
+    public function indexAction()
+    {
 
-		if (empty($this->settings['dataType'])) {
-			return '<strong style="color: red">Please select a content type to be displayed!</strong>';
-		}
-		$dataType = $this->settings['dataType'];
+        if (empty($this->settings['dataType'])) {
+            return '<strong style="color: red">Please select a content type to be displayed!</strong>';
+        }
+        $dataType = $this->settings['dataType'];
 
-		// Set dynamic value for the sake of the Visual Search.
-		if ($this->settings['isVisualSearchBar']) {
-			$this->settings['loadContentByAjax'] = 1;
-		}
+        // Set dynamic value for the sake of the Visual Search.
+        if ($this->settings['isVisualSearchBar']) {
+            $this->settings['loadContentByAjax'] = 1;
+        }
 
-		$columns = ColumnsConfiguration::getInstance()->get($dataType, $this->settings['columns']);
-		if (empty($columns)) {
-			return '<strong style="color: red">Please select at least one column to be displayed!</strong>';
-		}
-		$this->view->assign('columns', $columns);
+        $columns = ColumnsConfiguration::getInstance()->get($dataType, $this->settings['columns']);
+        if (empty($columns)) {
+            return '<strong style="color: red">Please select at least one column to be displayed!</strong>';
+        }
+        $this->view->assign('columns', $columns);
 
-		// Assign values.
-		$this->view->assign('settings', $this->settings);
-		$this->view->assign('gridIdentifier', $this->getGridIdentifier());
-		$this->view->assign('contentElementIdentifier', $this->configurationManager->getContentObject()->data['uid']);
-		$this->view->assign('dataType', $dataType);
-		$this->view->assign('objects', array());
+        // Assign values.
+        $this->view->assign('settings', $this->settings);
+        $this->view->assign('gridIdentifier', $this->getGridIdentifier());
+        $this->view->assign('contentElementIdentifier', $this->configurationManager->getContentObject()->data['uid']);
+        $this->view->assign('dataType', $dataType);
+        $this->view->assign('objects', array());
 
-		if (!$this->settings['loadContentByAjax']) {
+        if (!$this->settings['loadContentByAjax']) {
 
-			// Initialize some objects related to the query.
-			$matcher = MatcherFactory::getInstance($this->settings)->getMatcher(array(), $dataType);
-			$order = OrderFactory::getInstance($this->settings)->getOrder($dataType);
+            // Initialize some objects related to the query.
+            $matcher = MatcherFactory::getInstance($this->settings)->getMatcher(array(), $dataType);
+            $order = OrderFactory::getInstance($this->settings)->getOrder($dataType);
 
-			// Fetch objects via the Content Service.
-			$contentService = $this->getContentService($dataType)->findBy($matcher, $order);
-			$this->view->assign('objects', $contentService->getObjects());
-		}
-	}
+            // Fetch objects via the Content Service.
+            $contentService = $this->getContentService($dataType)->findBy($matcher, $order);
+            $this->view->assign('objects', $contentService->getObjects());
+        }
+    }
 
-	/**
-	 * List Row action for this controller. Output a json list of contents
-	 *
-	 * @param array $contentData
-	 * @return void
-	 */
-	public function listAction(array $contentData) {
-		$dataType = GeneralUtility::_GP('dataType');
+    /**
+     * List Row action for this controller. Output a json list of contents
+     *
+     * @param array $contentData
+     * @return void
+     */
+    public function listAction(array $contentData)
+    {
+        $dataType = GeneralUtility::_GP('dataType');
 
-		// In the context of Ajax, we must define manually the current Content Element object.
-		$contentObjectRenderer = $this->getContentElementService($dataType)->getContentObjectRender($contentData);
-		$this->configurationManager->setContentObject($contentObjectRenderer);
+        // In the context of Ajax, we must define manually the current Content Element object.
+        $contentObjectRenderer = $this->getContentElementService($dataType)->getContentObjectRender($contentData);
+        $this->configurationManager->setContentObject($contentObjectRenderer);
 
-		$settings = $this->flexFormService->convertFlexFormContentToArray($contentData['pi_flexform']);
+        $settings = $this->flexFormService->convertFlexFormContentToArray($contentData['pi_flexform']);
 
-		// Initialize some objects related to the query.
-		$matcher = MatcherFactory::getInstance($settings['settings'])->getMatcher(array(), $dataType);
-		$order = OrderFactory::getInstance($settings['settings'])->getOrder($dataType);
-		$pager = PagerObjectFactory::getInstance()->getPager();
+        // Initialize some objects related to the query.
+        $matcher = MatcherFactory::getInstance($settings['settings'])->getMatcher(array(), $dataType);
+        $order = OrderFactory::getInstance($settings['settings'])->getOrder($dataType);
+        $pager = PagerObjectFactory::getInstance()->getPager();
 
-		// Fetch objects via the Content Service.
-		$contentService = $this->getContentService($dataType)->findBy($matcher, $order, $pager->getLimit(), $pager->getOffset());
-		$pager->setCount($contentService->getNumberOfObjects());
+        // Fetch objects via the Content Service.
+        $contentService = $this->getContentService($dataType)->findBy($matcher, $order, $pager->getLimit(), $pager->getOffset());
+        $pager->setCount($contentService->getNumberOfObjects());
 
-		// Set format.
-		$this->request->setFormat('json');
+        // Set format.
+        $this->request->setFormat('json');
 
-		// Assign values.
-		$this->view->assign('objects', $contentService->getObjects());
-		$this->view->assign('numberOfObjects', $contentService->getNumberOfObjects());
-		$this->view->assign('pager', $pager);
-		$this->view->assign('response', $this->response);
-	}
+        // Assign values.
+        $this->view->assign('objects', $contentService->getObjects());
+        $this->view->assign('numberOfObjects', $contentService->getNumberOfObjects());
+        $this->view->assign('pager', $pager);
+        $this->view->assign('response', $this->response);
+    }
 
-	/**
-	 * @param Content $content
-	 * @return string|void
-	 */
-	public function showAction(Content $content) {
+    /**
+     * @param Content $content
+     * @return string|void
+     */
+    public function showAction(Content $content)
+    {
 
-		// Configure the template path according to the Plugin settings.
-		$pathAbs = GeneralUtility::getFileAbsFileName($this->settings['templateDetail']);
-		if (!is_file($pathAbs)) {
-			return sprintf('<strong style="color:red;">I could not find the template file %s.</strong>', $pathAbs);
-		}
+        // Configure the template path according to the Plugin settings.
+        $pathAbs = GeneralUtility::getFileAbsFileName($this->settings['templateDetail']);
+        if (!is_file($pathAbs)) {
+            return sprintf('<strong style="color:red;">I could not find the template file %s.</strong>', $pathAbs);
+        }
 
-		$variableName = 'object';
-		$dataType = $this->getContentType()->getCurrentType();
-		if (isset($this->settings['fluidVariables'][$dataType]) && basename($this->settings['templateDetail']) !== 'Show.html') {
-			$variableName = $this->settings['fluidVariables'][$dataType];
-		}
+        $variableName = 'object';
+        $dataType = $this->getContentType()->getCurrentType();
+        if (isset($this->settings['fluidVariables'][$dataType]) && basename($this->settings['templateDetail']) !== 'Show.html') {
+            $variableName = $this->settings['fluidVariables'][$dataType];
+        }
 
-		$this->view->setTemplatePathAndFilename($pathAbs);
-		$this->view->assign($variableName, $content);
-	}
+        $this->view->setTemplatePathAndFilename($pathAbs);
+        $this->view->assign($variableName, $content);
+    }
 
-	/**
-	 * Take some specific values and transform as as unique md5 identifier.
-	 *
-	 * @return string
-	 */
-	protected function getGridIdentifier() {
+    /**
+     * Take some specific values and transform as as unique md5 identifier.
+     *
+     * @return string
+     */
+    protected function getGridIdentifier()
+    {
 
-		$key = $this->configurationManager->getContentObject()->data['uid'];
-		$key .= $this->settings['dataType'];
-		$key .= $this->settings['columns'];
-		$key .= $this->settings['sorting'];
-		$key .= $this->settings['direction'];
-		$key .= $this->settings['defaultNumberOfItems'];
-		$key .= $this->settings['loadContentByAjax'];
-		$key .= $this->settings['facets'];
-		$key .= $this->settings['isVisualSearchBar'];
-		return md5($key);
-	}
+        $key = $this->configurationManager->getContentObject()->data['uid'];
+        $key .= $this->settings['dataType'];
+        $key .= $this->settings['columns'];
+        $key .= $this->settings['sorting'];
+        $key .= $this->settings['direction'];
+        $key .= $this->settings['defaultNumberOfItems'];
+        $key .= $this->settings['loadContentByAjax'];
+        $key .= $this->settings['facets'];
+        $key .= $this->settings['isVisualSearchBar'];
+        return md5($key);
+    }
 
-	/**
-	 * Get the Vidi Module Loader.
-	 *
-	 * @param string $dataType
-	 * @return \Fab\VidiFrontend\Service\ContentService
-	 */
-	protected function getContentService($dataType) {
-		return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentService', $dataType);
-	}
+    /**
+     * Get the Vidi Module Loader.
+     *
+     * @param string $dataType
+     * @return \Fab\VidiFrontend\Service\ContentService
+     */
+    protected function getContentService($dataType)
+    {
+        return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentService', $dataType);
+    }
 
-	/**
-	 * Get the Vidi Module Loader.
-	 *
-	 * @param string $dataType
-	 * @return \Fab\VidiFrontend\Service\ContentElementService
-	 */
-	protected function getContentElementService($dataType) {
-		return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentElementService', $dataType);
-	}
+    /**
+     * Get the Vidi Module Loader.
+     *
+     * @param string $dataType
+     * @return \Fab\VidiFrontend\Service\ContentElementService
+     */
+    protected function getContentElementService($dataType)
+    {
+        return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentElementService', $dataType);
+    }
 
-	/**
-	 * @return \Fab\VidiFrontend\Service\ContentType
-	 */
-	protected function getContentType() {
-		return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentType');
-	}
+    /**
+     * @return \Fab\VidiFrontend\Service\ContentType
+     */
+    protected function getContentType()
+    {
+        return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentType');
+    }
 
 }

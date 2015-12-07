@@ -20,48 +20,51 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Factory class related to Pager object.
  */
-class PagerFactory implements SingletonInterface {
+class PagerFactory implements SingletonInterface
+{
 
-	/**
-	 * Gets a singleton instance of this class.
-	 *
-	 * @return \Fab\VidiFrontend\Persistence\PagerFactory
-	 */
-	static public function getInstance() {
-		return GeneralUtility::makeInstance('Fab\VidiFrontend\Persistence\PagerFactory');
-	}
+    /**
+     * Gets a singleton instance of this class.
+     *
+     * @return \Fab\VidiFrontend\Persistence\PagerFactory
+     */
+    static public function getInstance()
+    {
+        return GeneralUtility::makeInstance('Fab\VidiFrontend\Persistence\PagerFactory');
+    }
 
-	/**
-	 * Returns a pager object.
-	 *
-	 * @return \Fab\Vidi\Persistence\Pager
-	 */
-	public function getPager() {
+    /**
+     * Returns a pager object.
+     *
+     * @return \Fab\Vidi\Persistence\Pager
+     */
+    public function getPager()
+    {
 
-		/** @var $pager \Fab\Vidi\Persistence\Pager */
-		$pager = GeneralUtility::makeInstance('Fab\Vidi\Persistence\Pager');
+        /** @var $pager \Fab\Vidi\Persistence\Pager */
+        $pager = GeneralUtility::makeInstance('Fab\Vidi\Persistence\Pager');
 
-		// Set items per page
-		#if (GeneralUtility::_GET('iDisplayLength') !== NULL) {
-		#	$limit = (int)GeneralUtility::_GET('iDisplayLength');
-		#	$pager->setLimit($limit);
-		#}
+        // Set items per page
+        #if (GeneralUtility::_GET('iDisplayLength') !== NULL) {
+        #	$limit = (int)GeneralUtility::_GET('iDisplayLength');
+        #	$pager->setLimit($limit);
+        #}
 
-		// Set offset
-		$offset = 0;
-		#if (GeneralUtility::_GET('iDisplayStart') !== NULL) {
-		#	$offset = (int)GeneralUtility::_GET('iDisplayStart');
-		#}
-		$pager->setOffset($offset);
+        // Set offset
+        $offset = 0;
+        #if (GeneralUtility::_GET('iDisplayStart') !== NULL) {
+        #	$offset = (int)GeneralUtility::_GET('iDisplayStart');
+        #}
+        $pager->setOffset($offset);
 
-		// set page
-		$page = 1;
-		if ($pager->getLimit() > 0) {
-			$page = round($pager->getOffset() / $pager->getLimit());
-		}
-		$pager->setPage($page);
+        // set page
+        $page = 1;
+        if ($pager->getLimit() > 0) {
+            $page = round($pager->getOffset() / $pager->getLimit());
+        }
+        $pager->setPage($page);
 
-		return $pager;
-	}
+        return $pager;
+    }
 
 }

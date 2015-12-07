@@ -23,65 +23,70 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /**
  * Class for editing mm relation between objects.
  */
-class ShowButtonRenderer extends ColumnRendererAbstract {
+class ShowButtonRenderer extends ColumnRendererAbstract
+{
 
-	/**
-	 * Render a representation of the relation on the GUI.
-	 *
-	 * @return string
-	 */
-	public function render() {
+    /**
+     * Render a representation of the relation on the GUI.
+     *
+     * @return string
+     */
+    public function render()
+    {
 
-		/** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder */
-		$tagBuilder = $this->getObjectManager()->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
-		$tagBuilder->reset();
-		$tagBuilder->setTagName('a');
-		#$tagBuilder->setContent('<span class="glyphicon glyphicon-eye-open"></span>'); // Only if Font Awesome is installed.
-		$icon = sprintf(
-			'<img src="/%sResources/Public/Build/Images/show_property.png" alt="" width="16">',
-			ExtensionManagementUtility::extRelPath('vidi_frontend')
-		);
-		$tagBuilder->setContent($icon);
+        /** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder */
+        $tagBuilder = $this->getObjectManager()->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
+        $tagBuilder->reset();
+        $tagBuilder->setTagName('a');
+        #$tagBuilder->setContent('<span class="glyphicon glyphicon-eye-open"></span>'); // Only if Font Awesome is installed.
+        $icon = sprintf(
+            '<img src="/%sResources/Public/Build/Images/show_property.png" alt="" width="16">',
+            ExtensionManagementUtility::extRelPath('vidi_frontend')
+        );
+        $tagBuilder->setContent($icon);
 
-		$arguments = array(
-			PluginParameter::PREFIX => array(
-				'content' => $this->getObject()->getUid(),
-				'action' => 'show',
-				'contentElement' => $this->getCurrentContentElement()->data['uid'],
-				'controller' => 'Content',
-			),
-		);
-		$this->getUriBuilder()->setArguments($arguments);
-		$uri = $this->getUriBuilder()->build();
+        $arguments = array(
+            PluginParameter::PREFIX => array(
+                'content' => $this->getObject()->getUid(),
+                'action' => 'show',
+                'contentElement' => $this->getCurrentContentElement()->data['uid'],
+                'controller' => 'Content',
+            ),
+        );
+        $this->getUriBuilder()->setArguments($arguments);
+        $uri = $this->getUriBuilder()->build();
 
-		$tagBuilder->addAttribute('href', $uri);
-		$tagBuilder->addAttribute('class', 'link-show');
-		$tagBuilder->addAttribute('title', LocalizationUtility::translate('showDetail', 'vidi_frontend'));
-		return $tagBuilder->render();
-	}
+        $tagBuilder->addAttribute('href', $uri);
+        $tagBuilder->addAttribute('class', 'link-show');
+        $tagBuilder->addAttribute('title', LocalizationUtility::translate('showDetail', 'vidi_frontend'));
+        return $tagBuilder->render();
+    }
 
 
-	/**
-	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
-	 */
-	protected function getObjectManager() {
-		return GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-	}
+    /**
+     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
-	 */
-	public function getUriBuilder() {
-		$configuration = $this->getGridRendererConfiguration();
-		return $configuration['uriBuilder'];
-	}
+    /**
+     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
+     */
+    public function getUriBuilder()
+    {
+        $configuration = $this->getGridRendererConfiguration();
+        return $configuration['uriBuilder'];
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-	 */
-	public function getCurrentContentElement() {
-		$configuration = $this->getGridRendererConfiguration();
-		return $configuration['contentElement'];
-	}
+    /**
+     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     */
+    public function getCurrentContentElement()
+    {
+        $configuration = $this->getGridRendererConfiguration();
+        return $configuration['contentElement'];
+    }
 
 }

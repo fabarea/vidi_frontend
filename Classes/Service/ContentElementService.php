@@ -18,35 +18,38 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Service related to the Content Element (tt_content.
  */
-class ContentElementService {
+class ContentElementService
+{
 
-	/**
-	 * @var string
-	 */
-	protected $dataType;
+    /**
+     * @var string
+     */
+    protected $dataType;
 
-	/**
-	 * Constructor
-	 *
-	 * @param string $dataType
-	 * @return \Fab\VidiFrontend\Service\ContentElementService
-	 */
-	public function __construct($dataType) {
-		$this->dataType = $dataType;
-	}
+    /**
+     * Constructor
+     *
+     * @param string $dataType
+     * @return \Fab\VidiFrontend\Service\ContentElementService
+     */
+    public function __construct($dataType)
+    {
+        $this->dataType = $dataType;
+    }
 
-	/**
-	 * Return a Content Element object.
-	 *
-	 * @param array $contentData
-	 * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-	 */
-	public function getContentObjectRender(array $contentData) {
+    /**
+     * Return a Content Element object.
+     *
+     * @param array $contentData
+     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     */
+    public function getContentObjectRender(array $contentData)
+    {
 
-		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer */
-		$contentObjectRenderer = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
-		$contentObjectRenderer->start($contentData, $this->dataType);
-		return $contentObjectRenderer;
-	}
+        /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer */
+        $contentObjectRenderer = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+        $contentObjectRenderer->start($contentData, $this->dataType);
+        return $contentObjectRenderer;
+    }
 
 }

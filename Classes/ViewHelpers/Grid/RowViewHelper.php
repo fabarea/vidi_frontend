@@ -23,55 +23,58 @@ use Fab\Vidi\Domain\Model\Content;
 /**
  * View helper for rendering multiple rows.
  */
-class RowViewHelper extends AbstractViewHelper {
+class RowViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
-	 */
-	protected $configurationManager;
+    /**
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @inject
+     */
+    protected $configurationManager;
 
-	/**
-	 * Returns rows of content as array.
-	 *
-	 * @param Content $object
-	 * @param int $index
-	 * @return array
-	 */
-	public function render(Content $object, $index = 0) {
-		$settings = $this->templateVariableContainer->get('settings');
+    /**
+     * Returns rows of content as array.
+     *
+     * @param Content $object
+     * @param int $index
+     * @return array
+     */
+    public function render(Content $object, $index = 0)
+    {
+        $settings = $this->templateVariableContainer->get('settings');
 
-		// Initialize returned array
-		$dataType = $object->getDataType();
-		$columnList = $settings['columns'];
+        // Initialize returned array
+        $dataType = $object->getDataType();
+        $columnList = $settings['columns'];
 
-		$columns = ColumnsConfiguration::getInstance()->get($dataType, $columnList);
+        $columns = ColumnsConfiguration::getInstance()->get($dataType, $columnList);
 
-		/** @var Row $row */
-		$row = GeneralUtility::makeInstance('Fab\VidiFrontend\View\Grid\Row', $columns);
-		$row->setConfigurationManager($this->configurationManager)
-			->setControllerContext($this->controllerContext);
+        /** @var Row $row */
+        $row = GeneralUtility::makeInstance('Fab\VidiFrontend\View\Grid\Row', $columns);
+        $row->setConfigurationManager($this->configurationManager)
+            ->setControllerContext($this->controllerContext);
 
-		$cells = $row->render($object, $index);
+        $cells = $row->render($object, $index);
 
-		return $this->format($cells);
-	}
+        return $this->format($cells);
+    }
 
-	/**
-	 * @return string
-	 */
-	protected function format(array $cells) {
+    /**
+     * @return string
+     */
+    protected function format(array $cells)
+    {
 
-		$classNames = $cells['DT_RowId'] . ' ' . $cells['DT_RowClass'];
-		unset($cells['DT_RowId'], $cells['DT_RowClass']);
+        $classNames = $cells['DT_RowId'] . ' ' . $cells['DT_RowClass'];
+        unset($cells['DT_RowId'], $cells['DT_RowClass']);
 
-		return sprintf(
-			'<tr class="%s"><td>%s</td></tr>%s',
-			$classNames,
-			implode('</td><td>', $cells),
-			chr(10)
-		);
+        return sprintf(
+            '<tr class="%s"><td>%s</td></tr>%s',
+            $classNames,
+            implode('</td><td>', $cells),
+            chr(10)
+        );
 
-	}
+    }
 
 }

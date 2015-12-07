@@ -22,48 +22,51 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * View helper for rendering multiple rows.
  */
-class RowsViewHelper extends AbstractViewHelper {
+class RowsViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
-	 */
-	protected $configurationManager;
+    /**
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @inject
+     */
+    protected $configurationManager;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
-	 */
-	protected $controllerContext;
+    /**
+     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+     */
+    protected $controllerContext;
 
-	/**
-	 * Returns rows of content as array.
-	 *
-	 * @param array $objects
-	 * @return string
-	 */
-	public function render(array $objects = array()) {
-		$rows = array();
+    /**
+     * Returns rows of content as array.
+     *
+     * @param array $objects
+     * @return string
+     */
+    public function render(array $objects = array())
+    {
+        $rows = array();
 
-		$columns = ContentElementConfiguration::getInstance()->getColumns();
+        $columns = ContentElementConfiguration::getInstance()->getColumns();
 
-		/** @var Row $row */
-		$row = GeneralUtility::makeInstance('Fab\VidiFrontend\View\Grid\Row', $columns);
-		$row->setConfigurationManager($this->configurationManager)
-			->setControllerContext($this->controllerContext);
+        /** @var Row $row */
+        $row = GeneralUtility::makeInstance('Fab\VidiFrontend\View\Grid\Row', $columns);
+        $row->setConfigurationManager($this->configurationManager)
+            ->setControllerContext($this->controllerContext);
 
-		foreach ($objects as $index => $object) {
-			$rows[] = $row->render($object, $index);
-		}
+        foreach ($objects as $index => $object) {
+            $rows[] = $row->render($object, $index);
+        }
 
-		return $rows;
-	}
+        return $rows;
+    }
 
-	/**
-	 * @param mixed $controllerContext
-	 * @return $this
-	 */
-	public function setControllerContext($controllerContext) {
-		$this->controllerContext = $controllerContext;
-		return $this;
-	}
+    /**
+     * @param mixed $controllerContext
+     * @return $this
+     */
+    public function setControllerContext($controllerContext)
+    {
+        $this->controllerContext = $controllerContext;
+        return $this;
+    }
 }

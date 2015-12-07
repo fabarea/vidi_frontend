@@ -19,8 +19,9 @@ use TYPO3\CMS\Core\Type\Enumeration;
 /**
  * Enumeration object for parameter plugin.
  */
-class PluginParameter extends Enumeration {
+class PluginParameter extends Enumeration
+{
 
-	const PREFIX = 'tx_vidifrontend_pi1';
+    const PREFIX = 'tx_vidifrontend_pi1';
 
 }

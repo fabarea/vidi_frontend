@@ -23,49 +23,52 @@ use Fab\Vidi\Domain\Repository\ContentRepositoryFactory;
 /**
  * Convert a content identifier into a Content object.
  */
-class ContentConverter extends AbstractTypeConverter {
+class ContentConverter extends AbstractTypeConverter
+{
 
-	/**
-	 * @var array<string>
-	 */
-	protected $sourceTypes = array('int');
+    /**
+     * @var array<string>
+     */
+    protected $sourceTypes = array('int');
 
-	/**
-	 * @var string
-	 */
-	protected $targetType = 'Fab\Vidi\Domain\Model\Content';
+    /**
+     * @var string
+     */
+    protected $targetType = 'Fab\Vidi\Domain\Model\Content';
 
-	/**
-	 * @var integer
-	 */
-	protected $priority = 1;
+    /**
+     * @var integer
+     */
+    protected $priority = 1;
 
-	/**
-	 * Actually convert from $source to $targetType
-	 *
-	 * @param string $source
-	 * @param string $targetType
-	 * @param array $convertedChildProperties
-	 * @param PropertyMappingConfigurationInterface $configuration
-	 * @throws \Exception
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
-	 * @return File
-	 * @api
-	 */
-	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), PropertyMappingConfigurationInterface $configuration = NULL) {
+    /**
+     * Actually convert from $source to $targetType
+     *
+     * @param string $source
+     * @param string $targetType
+     * @param array $convertedChildProperties
+     * @param PropertyMappingConfigurationInterface $configuration
+     * @throws \Exception
+     * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
+     * @return File
+     * @api
+     */
+    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), PropertyMappingConfigurationInterface $configuration = NULL)
+    {
 
-		$dataType = $this->getContentType()->getCurrentType();
+        $dataType = $this->getContentType()->getCurrentType();
 
-		$contentRepository = ContentRepositoryFactory::getInstance($dataType);
-		$content = $contentRepository->findByIdentifier((int)$source);
-		return $content;
-	}
+        $contentRepository = ContentRepositoryFactory::getInstance($dataType);
+        $content = $contentRepository->findByIdentifier((int)$source);
+        return $content;
+    }
 
-	/**
-	 * @return \Fab\VidiFrontend\Service\ContentType
-	 */
-	protected function getContentType() {
-		return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentType');
-	}
+    /**
+     * @return \Fab\VidiFrontend\Service\ContentType
+     */
+    protected function getContentType()
+    {
+        return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentType');
+    }
 
 }

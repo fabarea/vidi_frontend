@@ -20,17 +20,19 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * Return a possible column header.
  */
-class HeaderViewHelper extends AbstractViewHelper {
+class HeaderViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Returns a column header.
-	 *
-	 * @param string $name the column Name
-	 * @return boolean
-	 */
-	public function render($name) {
-		$dataType = $this->templateVariableContainer->get('dataType');
-		return FrontendTca::grid($dataType)->getHeader($name);
-	}
+    /**
+     * Returns a column header.
+     *
+     * @param string $name the column Name
+     * @return boolean
+     */
+    public function render($name)
+    {
+        $dataType = $this->templateVariableContainer->get('dataType');
+        return FrontendTca::grid($dataType)->getHeader($name);
+    }
 
 }

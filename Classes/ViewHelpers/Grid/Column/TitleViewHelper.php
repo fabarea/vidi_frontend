@@ -20,18 +20,20 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * View helper for rendering a column title in the grid.
  */
-class TitleViewHelper extends AbstractViewHelper {
+class TitleViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Returns a column title.
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$dataType = $this->templateVariableContainer->get('dataType');
-		$columnName = $this->templateVariableContainer->get('columnName');
+    /**
+     * Returns a column title.
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $dataType = $this->templateVariableContainer->get('dataType');
+        $columnName = $this->templateVariableContainer->get('columnName');
 
-		return FrontendTca::grid($dataType)->getLabel($columnName);
-	}
+        return FrontendTca::grid($dataType)->getLabel($columnName);
+    }
 
 }
