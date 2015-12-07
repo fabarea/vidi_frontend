@@ -1,6 +1,6 @@
-#############################
+########################
 # plugin.tx_vidifrontend
-#############################
+########################
 plugin.tx_vidifrontend {
 	view {
 		templateRootPath = {$plugin.tx_vidifrontend.view.templateRootPath}
@@ -69,18 +69,16 @@ page_1416239670 {
         debug = 0
         additionalHeaders = Content-type:application/json
     }
-    10 = COA_INT
-    10 {
-        10 = USER_INT
-        10 {
-            userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-            extensionName = VidiFrontend
-            pluginName = Pi1
-			switchableControllerActions {
-				Content {
-					1 = list
-				}
+	10 = USER_INT
+	10 {
+		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+		extensionName = VidiFrontend
+		pluginName = Pi1
+		vendorName = Fab
+		switchableControllerActions {
+			Content {
+				1 = list
 			}
-        }
-    }
+		}
+	}
 }
