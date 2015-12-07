@@ -131,7 +131,7 @@ consider that `Bower`_ and `Grunt`_ must be installed on your system as prerequi
 
 Install the required Web Components::
 
-	cd typo3conf/ext/vidi_upload
+	cd typo3conf/ext/vidi_frontend
 
 	# This will populate the directory Resources/Public/BowerComponents.
 	bower install
@@ -142,7 +142,7 @@ Install the required Web Components::
 
 Then, you can run the Grunt of the extension to generate a build::
 
-	cd typo3conf/ext/vidi_upload
+	cd typo3conf/ext/vidi_frontend
 	grunt build
 
 While developing, you can use the ``watch`` which will generate the build as you edit files::
