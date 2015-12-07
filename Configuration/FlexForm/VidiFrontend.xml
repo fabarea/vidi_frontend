@@ -16,7 +16,7 @@
 							<onChange>reload</onChange>
 							<config>
 								<type>select</type>
-								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsDataTypes</itemsProcFunc>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getDataTypes</itemsProcFunc>
 								<size>1</size>
 								<maxitems>1</maxitems>
 							</config>
@@ -27,7 +27,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.columns</label>
 							<config>
 								<type>select</type>
-								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsColumns</itemsProcFunc>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getColumns</itemsProcFunc>
 								<size>10</size>
 								<maxitems>100</maxitems>
 							</config>
@@ -78,7 +78,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.facets</label>
 							<config>
 								<type>select</type>
-								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsFacets</itemsProcFunc>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getFacets</itemsProcFunc>
 								<size>10</size>
 								<maxitems>100</maxitems>
 							</config>
@@ -100,7 +100,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.selection</label>
 							<config>
 								<type>select</type>
-								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsSelection</itemsProcFunc>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getSelections</itemsProcFunc>
 								<size>1</size>
 								<maxitems>1</maxitems>
 							</config>
@@ -130,7 +130,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.sorting</label>
 							<config>
 								<type>select</type>
-								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsSorting</itemsProcFunc>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getSorting</itemsProcFunc>
 								<size>1</size>
 								<maxitems>1</maxitems>
 							</config>
@@ -178,7 +178,7 @@
 							</label>
 							<config>
 								<type>select</type>
-								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->feedItemsForSettingsTemplateShow</itemsProcFunc>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getTemplates</itemsProcFunc>
 								<size>1</size>
 								<maxitems>1</maxitems>
 							</config>

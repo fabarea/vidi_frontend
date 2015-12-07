@@ -17,8 +17,12 @@ namespace Fab\VidiFrontend\Backend;
 use Fab\Vidi\Domain\Model\Selection;
 use Fab\Vidi\Facet\FacetInterface;
 use Fab\VidiFrontend\Tca\FrontendTca;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Tca\Tca;
+use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Service\TypoScriptService;
 
 /**
  * A class to interact with TCEForms.
@@ -29,9 +33,8 @@ class TceForms {
 	 * This method modifies the list of items for FlexForm "dataType".
 	 *
 	 * @param array $parameters
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject
 	 */
-	public function feedItemsForSettingsDataTypes(&$parameters, $parentObject = NULL) {
+	public function getDataTypes(&$parameters) {
 
 		/** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
 		$configurationUtility = $this->getObjectManager()->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
@@ -56,16 +59,19 @@ class TceForms {
 	 * This method modifies the list of items for FlexForm "template".
 	 *
 	 * @param array $parameters
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject
 	 */
-	public function feedItemsForSettingsTemplateShow(&$parameters, $parentObject = NULL) {
+	public function getTemplates(&$parameters) {
 		$configuration = $this->getPluginConfiguration();
 
 		if (empty($configuration) || empty($configuration['settings']['templates'])) {
 			$parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
 		} else {
 
-			$configuredDataType = $this->getDataTypeFromFlexform($parameters);
+			if (version_compare(TYPO3_branch, '7.0', '<')) {
+				$configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
+			} else {
+				$configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
+			}
 
 			$parameters['items'][] = ''; // Empty value
 			foreach ($configuration['settings']['templates'] as $template) {
@@ -81,16 +87,21 @@ class TceForms {
 	 * This method modifies the list of items for FlexForm "template".
 	 *
 	 * @param array $parameters
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject
 	 */
-	public function feedItemsForSettingsColumns(&$parameters, $parentObject = NULL) {
+	public function getColumns(&$parameters) {
+
 		$configuration = $this->getPluginConfiguration();
 
 		if (empty($configuration) || empty($configuration['settings']['templates'])) {
 			$parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
 		} else {
 
-			$configuredDataType = $this->getDataTypeFromFlexform($parameters);
+
+			if (version_compare(TYPO3_branch, '7.0', '<')) {
+				$configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
+			} else {
+				$configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
+			}
 
 			if (empty($configuredDataType)) {
 				$parameters['items'][] = array('No columns to display yet! Save this record.', '', NULL);
@@ -107,16 +118,19 @@ class TceForms {
 	 * This method modifies the list of items for FlexForm "facets".
 	 *
 	 * @param array $parameters
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject
 	 */
-	public function feedItemsForSettingsFacets(&$parameters, $parentObject = NULL) {
+	public function getFacets(&$parameters) {
 		$configuration = $this->getPluginConfiguration();
 
 		if (empty($configuration) || empty($configuration['settings']['templates'])) {
 			$parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
 		} else {
 
-			$configuredDataType = $this->getDataTypeFromFlexform($parameters);
+			if (version_compare(TYPO3_branch, '7.0', '<')) {
+				$configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
+			} else {
+				$configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
+			}
 
 			if (!empty($configuredDataType)) {
 				foreach (FrontendTca::grid($configuredDataType)->getFacetNames() as $facet) {
@@ -134,9 +148,8 @@ class TceForms {
 	 * This method modifies the list of items for FlexForm "selection".
 	 *
 	 * @param array $parameters
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject
 	 */
-	public function feedItemsForSettingsSelection(&$parameters, $parentObject = NULL) {
+	public function getSelections(&$parameters) {
 		$configuration = $this->getPluginConfiguration();
 
 		if (empty($configuration) || empty($configuration['settings']['templates'])) {
@@ -147,7 +160,13 @@ class TceForms {
 
 			/** @var \Fab\Vidi\Domain\Repository\SelectionRepository $selectionRepository */
 			$selectionRepository = $this->getObjectManager()->get('Fab\Vidi\Domain\Repository\SelectionRepository');
-			$configuredDataType = $this->getDataTypeFromFlexform($parameters);
+
+			if (version_compare(TYPO3_branch, '7.0', '<')) {
+				$configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
+			} else {
+				$configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
+			}
+
 			if ($configuredDataType) {
 
 				$selections = $selectionRepository->findForEveryone($configuredDataType);
@@ -167,16 +186,19 @@ class TceForms {
 	 * This method modifies the list of items for FlexForm "sorting".
 	 *
 	 * @param array $parameters
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject
 	 */
-	public function feedItemsForSettingsSorting(&$parameters, $parentObject = NULL) {
+	public function getSorting(&$parameters) {
 		$configuration = $this->getPluginConfiguration();
 
 		if (empty($configuration) || empty($configuration['settings']['templates'])) {
 			$parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
 		} else {
 
-			$configuredDataType = $this->getDataTypeFromFlexform($parameters);
+			if (version_compare(TYPO3_branch, '7.0', '<')) {
+				$configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
+			} else {
+				$configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
+			}
 
 			$parameters['items'][] = array('', '', NULL);
 			if (!empty($configuredDataType)) {
@@ -194,12 +216,33 @@ class TceForms {
 	 * @param $parameters
 	 * @return string
 	 */
-	protected function getDataTypeFromFlexform($parameters) {
+	protected function getDataTypeFromFlexformLegacy($parameters) {
 		$configuredDataType = '';
 		if (!empty($parameters['row']['pi_flexform'])) {
 			$flexform = GeneralUtility::xml2array($parameters['row']['pi_flexform']);
 			if (!empty($flexform['data']['general']['lDEF']['settings.dataType'])) {
 				$configuredDataType = $flexform['data']['general']['lDEF']['settings.dataType']['vDEF'];
+			}
+		}
+		return $configuredDataType;
+	}
+
+	/**
+	 * @param array $flexform
+	 * @return string
+	 */
+	protected function getDataTypeFromFlexform(array $flexform = array()) {
+
+		$configuredDataType = '';
+
+		if (!empty($flexform)) {
+
+			$normalizedFlexform = $this->normalizeFlexForm($flexform);
+			if (!empty($normalizedFlexform['settings']['dataType'])) {
+				$configuredDataType = $normalizedFlexform['settings']['dataType'];
+				if (is_array($configuredDataType)) {
+					$configuredDataType = $configuredDataType[0];
+				}
 			}
 		}
 		return $configuredDataType;
@@ -215,26 +258,115 @@ class TceForms {
 
 		$pluginConfiguration = array();
 		if (is_array($setup['plugin.']['tx_vidifrontend.'])) {
-			/** @var \TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService */
-			$typoScriptService = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Service\TypoScriptService');
+			/** @var TypoScriptService $typoScriptService */
+			$typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
 			$pluginConfiguration = $typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_vidifrontend.']);
 		}
 		return $pluginConfiguration;
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager
+	 * @return BackendConfigurationManager
 	 */
 	protected function getConfigurationManager() {
-		return $this->getObjectManager()->get('Tx_Extbase_Configuration_BackendConfigurationManager');
+		return $this->getObjectManager()->get(BackendConfigurationManager::class);
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+	 * @return ObjectManager
 	 */
 	protected function getObjectManager() {
-		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-		return GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+		/** @var ObjectManager $objectManager */
+		return GeneralUtility::makeInstance(ObjectManager::class);
+	}
+
+	/**
+	 * Parses the flexForm content and converts it to an array
+	 * The resulting array will be multi-dimensional, as a value "bla.blubb"
+	 * results in two levels, and a value "bla.blubb.bla" results in three levels.
+	 *
+	 * Note: multi-language flexForms are not supported yet
+	 *
+	 * @param array $flexForm flexForm xml string
+	 * @param string $languagePointer language pointer used in the flexForm
+	 * @param string $valuePointer value pointer used in the flexForm
+	 * @return array the processed array
+	 */
+	protected function normalizeFlexForm(array $flexForm, $languagePointer = 'lDEF', $valuePointer = 'vDEF')
+	{
+		$settings = array();
+		$flexForm = isset($flexForm['data']) ? $flexForm['data'] : array();
+		foreach (array_values($flexForm) as $languages) {
+			if (!is_array($languages[$languagePointer])) {
+				continue;
+			}
+			foreach ($languages[$languagePointer] as $valueKey => $valueDefinition) {
+				if (strpos($valueKey, '.') === false) {
+					$settings[$valueKey] = $this->walkFlexFormNode($valueDefinition, $valuePointer);
+				} else {
+					$valueKeyParts = explode('.', $valueKey);
+					$currentNode = &$settings;
+					foreach ($valueKeyParts as $valueKeyPart) {
+						$currentNode = &$currentNode[$valueKeyPart];
+					}
+					if (is_array($valueDefinition)) {
+						if (array_key_exists($valuePointer, $valueDefinition)) {
+							$currentNode = $valueDefinition[$valuePointer];
+						} else {
+							$currentNode = $this->walkFlexFormNode($valueDefinition, $valuePointer);
+						}
+					} else {
+						$currentNode = $valueDefinition;
+					}
+				}
+			}
+		}
+		return $settings;
+	}
+
+	/**
+	 * Parses a flexForm node recursively and takes care of sections etc
+	 *
+	 * @param array $nodeArray The flexForm node to parse
+	 * @param string $valuePointer The valuePointer to use for value retrieval
+	 * @return array
+	 */
+	protected function walkFlexFormNode($nodeArray, $valuePointer = 'vDEF')
+	{
+		if (is_array($nodeArray)) {
+			$return = array();
+			foreach ($nodeArray as $nodeKey => $nodeValue) {
+				if ($nodeKey === $valuePointer) {
+					return $nodeValue;
+				}
+				if (in_array($nodeKey, array('el', '_arrayContainer'))) {
+					return $this->walkFlexFormNode($nodeValue, $valuePointer);
+				}
+				if ($nodeKey[0] === '_') {
+					continue;
+				}
+				if (strpos($nodeKey, '.')) {
+					$nodeKeyParts = explode('.', $nodeKey);
+					$currentNode = &$return;
+					$nodeKeyPartsCount = count($nodeKeyParts);
+					for ($i = 0; $i < $nodeKeyPartsCount - 1; $i++) {
+						$currentNode = &$currentNode[$nodeKeyParts[$i]];
+					}
+					$newNode = array(next($nodeKeyParts) => $nodeValue);
+					$currentNode = $this->walkFlexFormNode($newNode, $valuePointer);
+				} elseif (is_array($nodeValue)) {
+					if (array_key_exists($valuePointer, $nodeValue)) {
+						$return[$nodeKey] = $nodeValue[$valuePointer];
+					} else {
+						$return[$nodeKey] = $this->walkFlexFormNode($nodeValue, $valuePointer);
+					}
+				} else {
+					$return[$nodeKey] = $nodeValue;
+				}
+			}
+			return $return;
+		}
+		return $nodeArray;
 	}
 
 }
