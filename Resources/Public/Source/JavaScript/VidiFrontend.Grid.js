@@ -176,7 +176,7 @@ VidiFrontend.Grid = {
 				},
 				processing: settings.loadContentByAjax,
 				serverSide: settings.loadContentByAjax,
-				ajaxSource: settings.loadContentByAjax ? '?type=1416239670' : '',
+				ajaxSource: settings.loadContentByAjax ? window.location.pathname + '?type=1416239670' : '',
 
 				/**
 				 *
@@ -207,8 +207,7 @@ VidiFrontend.Grid = {
 
 			options = VidiFrontend.Grid.initializeDefaultSearch(options, identifier);
 			VidiFrontend.grids[identifier] = $('#grid-' + identifier).dataTable(options);
-		});
-
+		}); // end each
 	},
 
 	/**
