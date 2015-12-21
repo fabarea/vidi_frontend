@@ -31,6 +31,127 @@ class TceForms
 {
 
     /**
+     * @var string
+     */
+    protected $gridConfigurationStandard = "<'row'<'col-xs-10'f><'col-xs-2 hidden-xs'l>r><'row'<'col-xs-12't>><'row'<'col-xs-6'i><'col-xs-6'p>>";
+    /**
+     * @var string
+     */
+    protected $gridConfigurationWithVisualBar = "<'row'<'col-sm-10 visual-search-container'><'col-xs-2 hidden-xs'l>r><'row'<'col-xs-12't>><'row'<'col-sm-4'i><'col-sm-4'f><'col-sm-4'p>>";
+
+    /**
+     * Render the field "isVisualSearchBarField"
+     *
+     * @param array $parameters
+     * @return string
+     */
+    public function renderIsVisualSearchBarField(array $parameters)
+    {
+        if ($parameters['row']['uid']) {
+
+            // Get existing flexform configuration
+            $flexform = $parameters['row']['pi_flexform'];
+            if (version_compare(TYPO3_branch, '7.0', '<')) {
+                $flexform = GeneralUtility::xml2array($flexform);
+            }
+
+            $isVisualSearchBar = false;
+            $normalizedFlexform = $this->normalizeFlexForm($flexform);
+            if (!empty($normalizedFlexform['settings']) && $normalizedFlexform['settings']['isVisualSearchBar']) {
+                $isVisualSearchBar = (bool)$normalizedFlexform['settings']['isVisualSearchBar'];
+            }
+
+            $output = sprintf(
+                '<div class="t3-form-field t3-form-field-flex">
+<input type="hidden" name="data[tt_content][%s][pi_flexform][data][facet][lDEF][settings.isVisualSearchBar][vDEF]" value="0"/>
+<input type="checkbox" name="data[tt_content][%s][pi_flexform][data][facet][lDEF][settings.isVisualSearchBar][vDEF]" class="checkbox" %s value="1" id="isVisualSearchBar"/>
+</div>
+
+    <script>
+    TYPO3.jQuery("#isVisualSearchBar").change(function() {
+
+        var gridConfigurationStandard = "%s";
+        var gridConfigurationWithVisualSearchBar = "%s";
+
+        // Toggle grid configuration
+        if (TYPO3.jQuery(this).is(":checked") && TYPO3.jQuery("#gridConfiguration").val() == gridConfigurationStandard) {
+            TYPO3.jQuery("#gridConfiguration").val(gridConfigurationWithVisualSearchBar);
+        } else if (TYPO3.jQuery("#gridConfiguration").val() == gridConfigurationWithVisualSearchBar) {
+            TYPO3.jQuery("#gridConfiguration").val(gridConfigurationStandard);
+        }
+    });
+
+    </script>
+    ',
+                $parameters['row']['uid'],
+                $parameters['row']['uid'],
+                $isVisualSearchBar ? 'checked="checked"' : '',
+                $this->gridConfigurationStandard,
+                $this->gridConfigurationWithVisualBar
+            );
+        } else {
+            $output = $this->getLanguageService()->sL('LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:warning.saveFirst');
+        }
+
+
+        return $output;
+    }
+
+    /**
+     * Render the field "gridConfiguration"
+     *
+     * @param array $parameters
+     * @return string
+     */
+    public function renderGridConfigurationField(array $parameters)
+    {
+        if ($parameters['row']['uid']) {
+
+            // Default configuration
+            $gridConfiguration = $this->gridConfigurationStandard;
+            $helpText = sprintf(
+                $this->getLanguageService()->sL('LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:info.gridConfiguration'),
+                '<a href="https://datatables.net/examples/basic_init/dom.html" target="_blank">DOM positioning</a>'
+            );
+
+            // Get existing flexform configuration
+            $flexform = $parameters['row']['pi_flexform'];
+            if (version_compare(TYPO3_branch, '7.0', '<')) {
+                $flexform = GeneralUtility::xml2array($flexform);
+            }
+            $normalizedFlexform = $this->normalizeFlexForm($flexform);
+            if (!empty($normalizedFlexform['settings']) && $normalizedFlexform['settings']['gridConfiguration']) {
+                $gridConfiguration = trim($normalizedFlexform['settings']['gridConfiguration']);
+            }
+
+            $output = sprintf(
+                '<input name="data[tt_content][%s][pi_flexform][data][grid][lDEF][settings.gridConfiguration][vDEF]" id="gridConfiguration" style="width: 90%%" value="%s">
+    <div>
+    %s
+
+    <ul>
+    <li>l - Length changing</li>
+    <li>f - Filtering input</li>
+    <li>t - The table!</li>
+    <li>i - Information</li>
+    <li>p - Pagination</li>
+    <li>r - processing</li>
+    </ul>
+    </div>
+    ',
+                $parameters['row']['uid'],
+                $gridConfiguration,
+                $helpText
+            );
+        } else {
+            $output = $this->getLanguageService()->sL('LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:warning.saveFirst');
+        }
+
+
+        return $output;
+    }
+
+    /**
      * This method modifies the list of items for FlexForm "dataType".
      *
      * @param array $parameters
@@ -381,4 +502,11 @@ class TceForms
         return $nodeArray;
     }
 
+    /**
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

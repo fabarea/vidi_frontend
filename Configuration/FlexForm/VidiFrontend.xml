@@ -6,13 +6,13 @@
 		<general>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.general</sheetTitle>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.source</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<settings.dataType>
 						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.content_type</label>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.contentType</label>
 							<onChange>reload</onChange>
 							<config>
 								<type>select</type>
@@ -33,27 +33,46 @@
 							</config>
 						</TCEforms>
 					</settings.columns>
+				</el>
+			</ROOT>
+		</general>
+		<grid>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.grid</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.loadContentByAjax>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.loadContentByAjax</label>
+							<config>
+								<type>check</type>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</settings.loadContentByAjax>
 					<settings.defaultNumberOfItems>
 						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.number_of_items</label>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.numberOfItems</label>
 							<config>
 								<type>input</type>
 								<default>10, 20, 50, 100, -1</default>
 							</config>
 						</TCEforms>
 					</settings.defaultNumberOfItems>
-					<settings.showSearch>
+					<settings.gridConfiguration>
 						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.number_of_items</label>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.gridConfiguration</label>
 							<config>
-								<type>input</type>
-								<default>10, 20, 50, 100, -1</default>
+								<type>user</type>
+								<userFunc>Fab\VidiFrontend\Backend\TceForms->renderGridConfigurationField</userFunc>
 							</config>
 						</TCEforms>
-					</settings.showSearch>
+					</settings.gridConfiguration>
 				</el>
 			</ROOT>
-		</general>
+		</grid>
 
 		<facet>
 			<ROOT>
@@ -64,11 +83,13 @@
 				<el>
 					<settings.isVisualSearchBar>
 						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.is_visual_search_bar
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.isVisualSearchBar
 							</label>
 							<config>
-								<type>check</type>
-								<default>0</default>
+								<type>user</type>
+								<userFunc>Fab\VidiFrontend\Backend\TceForms->renderIsVisualSearchBarField</userFunc>
+								<!--<type>check</type>-->
+								<!--<default>0</default>-->
 							</config>
 						</TCEforms>
 					</settings.isVisualSearchBar>
@@ -165,7 +186,7 @@
 		<detailView>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.detail_view
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.detailView
 					</sheetTitle>
 				</TCEforms>
 				<type>array</type>
@@ -173,7 +194,7 @@
 					<settings.templateDetail>
 						<TCEforms>
 							<label>
-								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.template_for_detail_view
+								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.templateForDetailView
 							</label>
 							<config>
 								<type>select</type>
@@ -186,7 +207,7 @@
 					<settings.targetPageDetail>
 						<TCEforms>
 							<label>
-								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.target_page_detail
+								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.targetPageDetail
 							</label>
 							<config>
 								<type>group</type>
@@ -202,7 +223,7 @@
 					<settings.parameterPrefix>
 						<TCEforms>
 							<label>
-								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.parameter_prefix
+								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.parameterPefix
 							</label>
 							<config>
 								<type>input</type>

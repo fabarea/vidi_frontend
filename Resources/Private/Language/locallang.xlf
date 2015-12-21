@@ -13,8 +13,11 @@
 			</trans-unit>
 
 			<!-- Settings -->
-			<trans-unit id="flexform.tab.general">
-				<source>General</source>
+			<trans-unit id="flexform.tab.source">
+				<source>Source</source>
+			</trans-unit>
+			<trans-unit id="flexform.tab.grid">
+				<source>Grid</source>
 			</trans-unit>
 			<trans-unit id="flexform.tab.filter">
 				<source>Filter</source>
@@ -25,20 +28,20 @@
 			<trans-unit id="flexform.tab.facets">
 				<source>Facets</source>
 			</trans-unit>
-			<trans-unit id="flexform.tab.detail_view">
+			<trans-unit id="flexform.tab.detailView">
 				<source>Detail view</source>
 			</trans-unit>
 			<trans-unit id="settings.select">
 				<source>Select one...</source>
 			</trans-unit>
-			<trans-unit id="settings.content_type">
+			<trans-unit id="settings.contentType">
 				<source>Content Type</source>
 			</trans-unit>
-			<trans-unit id="settings.number_of_items">
+			<trans-unit id="settings.numberOfItems">
 				<source>Menu "number of records"</source>
 			</trans-unit>
 			<trans-unit id="settings.columns">
-				<source>Displayed columns. Attention! Some columns may not work on the Frontend out of the box. Override in TCA['grid_frontend'] in case.</source>
+				<source>Columns. Attention! Some columns may not work on the Frontend out of the box. Override in TCA['grid_frontend'] in case.</source>
 			</trans-unit>
 			<trans-unit id="settings.selection">
 				<source>Selection coming from the Backend module to be used as pre-filter</source>
@@ -46,19 +49,19 @@
 			<trans-unit id="settings.facets">
 				<source>Pick available Facets to be displayed the Visual Search bar.</source>
 			</trans-unit>
-			<trans-unit id="settings.is_visual_search_bar">
+			<trans-unit id="settings.isVisualSearchBar">
 				<source>Display the Visual Search bar to search by facets.</source>
 			</trans-unit>
-			<trans-unit id="settings.load_content_by_ajax">
+			<trans-unit id="settings.loadContentByAjax">
 				<source>Load content by Ajax e.g. for long lists. Implicitly set if the Visual Search bar is activated.</source>
 			</trans-unit>
-			<trans-unit id="settings.template_for_detail_view">
+			<trans-unit id="settings.templateForDetailView">
 				<source>Template for the "detail" view. If let blank, no link to a detail view will be made.</source>
 			</trans-unit>
-			<trans-unit id="settings.target_page_detail">
+			<trans-unit id="settings.targetPageDetail">
 				<source>Target page for detail view. Let blank for current page. (not yet implemented)</source>
 			</trans-unit>
-			<trans-unit id="settings.parameter_prefix">
+			<trans-unit id="settings.parameterPefix">
 				<source>Parameter prefix for detail view. Default value is "tx_vidifrontend_pi1". (not yet implemented)</source>
 			</trans-unit>
 			<trans-unit id="settings.sorting">
@@ -70,10 +73,21 @@
 			<trans-unit id="settings.additionalEquals">
 				<source>Additional comma separated constraints. Example for Files: storage= 1, identifier like /images/%, metadata.categories = 1</source>
 			</trans-unit>
-			<trans-unit id="showDetail">
-				<source>Show detail</source>
+			<trans-unit id="settings.gridConfiguration">
+				<source>Grid configuration</source>
+			</trans-unit>
+			<trans-unit id="info.gridConfiguration">
+				<source>To address the customising issue, DataTables takes inspiration from the CSS 3 Advanced Layout Module. Please
+					refer to the %s section for more insight. Pay attention, the configuration is automatically updated when activating the VisualSearch bar in the Facets tab unless you have customized it. The built-in options available are:</source>
+			</trans-unit>
+			<trans-unit id="warning.saveFirst">
+				<source>Please save this record before setting this option.</source>
 			</trans-unit>
 
+			<!-- Frontend -->
+			<trans-unit id="link.showDetail">
+				<source>Show detail</source>
+			</trans-unit>
 			<trans-unit id="grid.processing">
 				<source>Processing...</source>
 			</trans-unit>

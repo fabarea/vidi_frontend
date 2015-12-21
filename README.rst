@@ -1,17 +1,18 @@
 Vidi for TYPO3 CMS
 ==================
 
-Generic List Component where Content can be filtered in an advanced way... Veni, vidi, vici! This extension is based on Vidi with
-the aim to provide the same feature set but for the Frontend.
+Generic List Component where Content can be filtered in an advanced way... Veni, vidi, vici! This extension is based on `Vidi`_ which provides more or
+less the same feature set but in the Backend.
 
-.. image:: https://raw.github.com/fabarea/vidi_frontend/master/Documentation/Frontend-01.png
+.. image:: https://raw.github.com/Ecodev/vidi_frontend/master/Documentation/Frontend-01.png
 
-In the plugin record in the Backend, it can be configured what content type to render associated with a customizable template.
-
-For the Grid, we use the excellent `DataTables`_ which is a powerful jQuery plugin smart and fast to sort and filter data.
+Once installed, it can be configured what content type to render associated with a customizable template in the plugin record in the Backend.
+On the Frontend side, we use the excellent `DataTables`_ which is a powerful jQuery plugin smart and fast to sort and filter data.
 The Filter bar is provided by the `Visual Search`_ jQuery plugin which offers nice facet capabilities and intuitive search.
 
 Live example http://www.washinhcf.org/resources/publications/
+
+.. _Vidi:: https://github.com/fabarea/vidi
 
 Project info and releases
 -------------------------
@@ -20,32 +21,32 @@ Stable version:
 http://typo3.org/extensions/repository/view/vidi_frontend
 
 Development version:
-https://github.com/fabarea/vidi_frontend
+https://github.com/Ecodev/vidi_frontend
 
 ::
 
-	git clone https://github.com/fabarea/vidi_frontend.git
+	git clone https://github.com/Ecodev/vidi_frontend.git
 
 News about latest development are also announced on http://twitter.com/fudriot
 
 Installation and requirement
 ============================
 
-The extension **requires TYPO3 6.2**. Install the extension as normal in the Extension Manager from the `TER`_ or download the Git version::
+The extension **requires TYPO3 6.2 or greater** . Install the extension as normal in the Extension Manager from the `TER`_ or download the Git version::
 
 	# local installation
 	cd typo3conf/ext
 
 	# download the source
-	git clone https://github.com/fabarea/vidi_frontend.git
+	git clone https://github.com/Ecodev/vidi_frontend.git
 
 	-> next step, is to open the Extension Manager in the BE.
 
 .. _TER: http://typo3.org/extensions/repository/view/vidi_frontend
 
-You are almost there! Create a Content Element of type "Vidi Frontend" in General Plugin > "Generic List Component" and configure at your convenience.
+You are almost there! Create a Content Element of type "Vidi Frontend" in `General Plugin` > `Generic List Component` and configure at your convenience.
 
-.. image:: https://raw.github.com/fabarea/vidi_frontend/master/Documentation/Backend-01.png
+.. image:: https://raw.github.com/Ecodev/vidi_frontend/master/Documentation/Backend-01.png
 
 Configuration
 =============

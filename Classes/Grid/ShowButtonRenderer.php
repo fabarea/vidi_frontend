@@ -58,7 +58,7 @@ class ShowButtonRenderer extends ColumnRendererAbstract
 
         $tagBuilder->addAttribute('href', $uri);
         $tagBuilder->addAttribute('class', 'link-show');
-        $tagBuilder->addAttribute('title', LocalizationUtility::translate('showDetail', 'vidi_frontend'));
+        $tagBuilder->addAttribute('title', LocalizationUtility::translate('link.showDetail', 'vidi_frontend'));
         return $tagBuilder->render();
     }
 
