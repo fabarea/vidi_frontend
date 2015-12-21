@@ -3,6 +3,16 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="" product-name="local lang module" target-language="fr">
 		<header/>
 		<body>
+
+			<!-- Wizard -->
+			<trans-unit id="wizard.title">
+				<source>Liste Composant</source>
+			</trans-unit>
+			<trans-unit id="wizard.description">
+				<source>List interactive avec possibilité de filter le contenu de manière avancée... Veni, vidi, vici!</source>
+			</trans-unit>
+
+			<!-- Settings -->
 			<trans-unit id="flexform.tab.general">
 				<target>Général</target>
 			</trans-unit>
@@ -18,46 +28,46 @@
 			<trans-unit id="flexform.tab.detail_view">
 				<source>Vue détail</source>
 			</trans-unit>
-			<trans-unit id="flexform.select">
+			<trans-unit id="settings.select">
 				<target>Sélectionner une entrée...</target>
 			</trans-unit>
-			<trans-unit id="flexform.content_type">
+			<trans-unit id="settings.content_type">
 				<target>Type de contenu</target>
 			</trans-unit>
-			<trans-unit id="flexform.number_of_items">
+			<trans-unit id="settings.number_of_items">
 				<target>Classe CSS pour la grille</target>
 			</trans-unit>
-			<trans-unit id="flexform.columns">
+			<trans-unit id="settings.columns">
 				<target>Colonnes affichées. Attention! Certaines colonnes peuvent ne pas s'afficher en Frontend.</target>
 			</trans-unit>
-			<trans-unit id="flexform.selection">
+			<trans-unit id="settings.selection">
 				<target>Préfiltre avec une Sélection venant du module Backend.</target>
 			</trans-unit>
-			<trans-unit id="flexform.facets">
+			<trans-unit id="settings.facets">
 				<target>Sélectionner les facettes de la barre de recherche visuelle</target>
 			</trans-unit>
-			<trans-unit id="flexform.is_visual_search_bar">
+			<trans-unit id="settings.is_visual_search_bar">
 				<target>Afficher la barre de recherche visuelle pour des recherches par facettes.</target>
 			</trans-unit>
-			<trans-unit id="flexform.load_content_by_ajax">
+			<trans-unit id="settings.load_content_by_ajax">
 				<target>Charger le contenu par Ajax, pour des longues listes par exemple. Implicitement activé pour la bar de recherche "visuelle".</target>
 			</trans-unit>
-			<trans-unit id="flexform.template_for_detail_view">
+			<trans-unit id="settings.template_for_detail_view">
 				<target>Template pour la vue de "détail"</target>
 			</trans-unit>
-			<trans-unit id="flexform.target_page_detail">
+			<trans-unit id="settings.target_page_detail">
 				<target>Page cible pour la vue de détail. Si laissé blanc, page en cours.</target>
 			</trans-unit>
-			<trans-unit id="flexform.parameter_prefix">
+			<trans-unit id="settings.parameter_prefix">
 				<target>Paramètre préfix pour la vue de détail. Valeur par défaut "tx_vidifrontend_pi1"</target>
 			</trans-unit>
-			<trans-unit id="flexform.sorting">
+			<trans-unit id="settings.sorting">
 				<target>Tri par défaut</target>
 			</trans-unit>
-			<trans-unit id="flexform.direction">
+			<trans-unit id="settings.direction">
 				<target>Direction par défault</target>
 			</trans-unit>
-			<trans-unit id="flexform.additionalEquals">
+			<trans-unit id="settings.additionalEquals">
 				<target>Contraintes supplémentaires séparées par des virgules. Exemple pour Files: storage= 1, identifier like /images/%, metadata.categories = 1</target>
 			</trans-unit>
 			<trans-unit id="showDetail">
