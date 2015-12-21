@@ -18,4 +18,7 @@ if (TYPO3_MODE == 'BE') {
 
     $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['vidifrontend_pi1'] = 'layout, select_key, pages, recursive';
     $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['vidifrontend_pi1'] = 'pi_flexform';
+
+    // @todo check namespace
+    $GLOBALS['TBE_MODULES_EXT']["xMOD_db_new_content_el"]['addElClasses']['tx_vidifrontend_wizard'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('vidi_frontend') . 'Classes/Backend/Wizard.php';
 }

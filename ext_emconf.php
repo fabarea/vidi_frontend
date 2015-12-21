@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Versatile and Interactive Display - List Component for the Frontend',
-	'description' => 'Generic List Component for the Frontend where Content can be filtered in an advanced way... Veni, vidi, vici!',
+	'description' => 'Generic List Component for the Frontend where content can be filtered in an advanced way... Veni, vidi, vici!',
 	'author' => 'Fabien Udriot',
 	'author_email' => 'support@ecodev.ch',
 	'category' => 'plugin',
