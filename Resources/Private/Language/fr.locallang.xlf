@@ -76,9 +76,6 @@
 			<trans-unit id="info.gridConfiguration">
 				<target>DataTables s'insipre de CSS 3 Advanced Layout Module pour configurer ses éléments. Veuillez vous référer à la documentation %s pour davantage d'information. Notez que la configuration est automatiquement mise à jour, lorsque l'option VisualSearch barre est activée dans la tabulation "facets", sauf si vous l'avez personnalisée. Les options disponibles sont::</target>
 			</trans-unit>
-			<trans-unit id="warning.saveFirst">
-				<target>Veuillez sauvegarder cet enregistrement avant d'éditer cette option.</target>
-			</trans-unit>
 
 			<!-- Frontend -->
 			<trans-unit id="link.showDetail">

@@ -49,7 +49,7 @@ class RowsViewHelper extends AbstractViewHelper
         $columns = ContentElementConfiguration::getInstance()->getColumns();
 
         /** @var Row $row */
-        $row = GeneralUtility::makeInstance('Fab\VidiFrontend\View\Grid\Row', $columns);
+        $row = GeneralUtility::makeInstance(Row::class, $columns);
         $row->setConfigurationManager($this->configurationManager)
             ->setControllerContext($this->controllerContext);
 

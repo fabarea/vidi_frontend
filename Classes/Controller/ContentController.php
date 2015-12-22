@@ -15,6 +15,9 @@ namespace Fab\VidiFrontend\Controller;
  */
 
 use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
+use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
+use Fab\VidiFrontend\Service\ContentElementService;
+use Fab\VidiFrontend\Service\ContentType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Fab\Vidi\Domain\Model\Content;
@@ -27,12 +30,6 @@ use Fab\VidiFrontend\Persistence\OrderFactory;
  */
 class ContentController extends ActionController
 {
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Service\FlexFormService
-     * @inject
-     */
-    protected $flexFormService;
 
     /**
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
@@ -128,11 +125,11 @@ class ContentController extends ActionController
         $contentObjectRenderer = $this->getContentElementService($dataType)->getContentObjectRender($contentData);
         $this->configurationManager->setContentObject($contentObjectRenderer);
 
-        $settings = $this->flexFormService->convertFlexFormContentToArray($contentData['pi_flexform']);
+        $settings = ContentElementConfiguration::getInstance($contentData)->getSettings();
 
         // Initialize some objects related to the query.
-        $matcher = MatcherFactory::getInstance($settings['settings'])->getMatcher(array(), $dataType);
-        $order = OrderFactory::getInstance($settings['settings'])->getOrder($dataType);
+        $matcher = MatcherFactory::getInstance($settings)->getMatcher(array(), $dataType);
+        $order = OrderFactory::getInstance($settings)->getOrder($dataType);
         $pager = PagerObjectFactory::getInstance()->getPager();
 
         // Fetch objects via the Content Service.
@@ -207,19 +204,19 @@ class ContentController extends ActionController
      * Get the Vidi Module Loader.
      *
      * @param string $dataType
-     * @return \Fab\VidiFrontend\Service\ContentElementService
+     * @return ContentElementService
      */
     protected function getContentElementService($dataType)
     {
-        return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentElementService', $dataType);
+        return GeneralUtility::makeInstance(ContentElementService::class, $dataType);
     }
 
     /**
-     * @return \Fab\VidiFrontend\Service\ContentType
+     * @return ContentType
      */
     protected function getContentType()
     {
-        return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentType');
+        return GeneralUtility::makeInstance(ContentType::class);
     }
 
 }

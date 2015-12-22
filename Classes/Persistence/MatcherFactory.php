@@ -15,12 +15,15 @@ namespace Fab\VidiFrontend\Persistence;
  */
 
 use Fab\Vidi\Domain\Model\Selection;
+use Fab\Vidi\Resolver\FieldPathResolver;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use Fab\Vidi\Persistence\Matcher;
 use Fab\Vidi\Tca\Tca;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Factory class related to Matcher object.
@@ -51,7 +54,7 @@ class MatcherFactory implements SingletonInterface
      */
     static public function getInstance(array $settings)
     {
-        return GeneralUtility::makeInstance('Fab\VidiFrontend\Persistence\MatcherFactory', $settings);
+        return GeneralUtility::makeInstance(MatcherFactory::class, $settings);
     }
 
     /**
@@ -65,7 +68,7 @@ class MatcherFactory implements SingletonInterface
     {
 
         /** @var $matcher Matcher */
-        $matcher = GeneralUtility::makeInstance('Fab\Vidi\Persistence\Matcher', $matches, $dataType);
+        $matcher = GeneralUtility::makeInstance(\Fab\Vidi\Persistence\Matcher::class, $matches, $dataType);
 
         $matcher = $this->applyCriteriaFromDataTables($matcher, $dataType);
         $matcher = $this->applyCriteriaFromSelection($matcher, $dataType);
@@ -118,10 +121,16 @@ class MatcherFactory implements SingletonInterface
      */
     protected function applyCriteriaFromDataTables(Matcher $matcher, $dataType)
     {
-
         // Special case for Grid in the BE using jQuery DataTables plugin.
         // Retrieve a possible search term from GP.
-        $query = GeneralUtility::_GP('sSearch');
+        $query = GeneralUtility::_GP('search');
+        if (is_array($query)) {
+            if (!empty($query['value'])) {
+                $query = $query['value'];
+            } else {
+                $query = '';
+            }
+        }
 
         if (strlen($query) > 0) {
 
@@ -224,33 +233,33 @@ class MatcherFactory implements SingletonInterface
      */
     protected function emitPostProcessMatcherObjectSignal(Matcher $matcher)
     {
-        $this->getSignalSlotDispatcher()->dispatch('Fab\VidiFrontend\Persistence\MatcherFactory', 'postProcessMatcherObject', array($matcher, $matcher->getDataType()));
+        $this->getSignalSlotDispatcher()->dispatch(MatcherFactory::class, 'postProcessMatcherObject', array($matcher, $matcher->getDataType()));
     }
 
     /**
      * Get the SignalSlot dispatcher
      *
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @return Dispatcher
      */
     protected function getSignalSlotDispatcher()
     {
-        return $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+        return $this->getObjectManager()->get(Dispatcher::class);
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @return ObjectManager
      */
     protected function getObjectManager()
     {
-        return GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 
     /**
-     * @return \Fab\Vidi\Resolver\FieldPathResolver
+     * @return FieldPathResolver
      */
     protected function getFieldPathResolver()
     {
-        return GeneralUtility::makeInstance('Fab\Vidi\Resolver\FieldPathResolver');
+        return GeneralUtility::makeInstance(FieldPathResolver::class);
     }
 
 }

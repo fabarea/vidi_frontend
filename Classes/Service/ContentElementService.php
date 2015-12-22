@@ -14,6 +14,7 @@ namespace Fab\VidiFrontend\Service;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Service related to the Content Element (tt_content.
@@ -41,13 +42,13 @@ class ContentElementService
      * Return a Content Element object.
      *
      * @param array $contentData
-     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @return ContentObjectRenderer
      */
     public function getContentObjectRender(array $contentData)
     {
 
-        /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer */
-        $contentObjectRenderer = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+        /** @var ContentObjectRenderer $contentObjectRenderer */
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $contentObjectRenderer->start($contentData, $this->dataType);
         return $contentObjectRenderer;
     }

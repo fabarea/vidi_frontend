@@ -71,117 +71,78 @@ VidiFrontend.Grid = {
 
 					var state = JSON.parse(VidiFrontend.Session.get('dataTables' + identifier));
 
-					// Set default search by overriding the session data if argument is passed.
-					//if (state) {
-					//
-					//	// Override search if given in URL.
-					//	var uri = new Uri(window.location.href);
-					//	if (uri.getQueryParamValue('search')) {
-					//		var search = uri.getQueryParamValue('search');
-					//		state.oSearch.sSearch = search.replace(/'/g, '"');
-					//	}
-					//
-					//	// Also stores value to be used in visual search.
-					//	if (uri.getQueryParamValue('query')) {
-					//		VidiFrontend.Session.set('visualSearch.query' + identifier, uri.getQueryParamValue('query'));
-					//	}
-					//}
-
 					return state;
 				},
+				ajax: {
+					url: settings.loadContentByAjax ? window.location.pathname + '?type=1416239670' : '',
+					data: function(data) {
 
-				/**
-				 * Override the default Ajax call of DataTable.
-				 *
-				 * @param {string} source
-				 * @param {object} data
-				 * @param {function} callback
-				 * @param {object} settings
-				 */
-				serverData: function(source, data, callback, settings) {
+						// Get the parameter related to filter from the URL and "re-inject" them into the Ajax request
+						var uri = new Uri(window.location.href);
+						for (var index = 0; index < uri.queryPairs.length; index++) {
+							var queryPair = uri.queryPairs[index];
+							var parameterName = queryPair[0];
+							var parameterValue = queryPair[1];
 
-					source += "&dataType=" + VidiFrontend.settings[identifier].dataType;
-					source += "&identifier=" + VidiFrontend.settings[identifier].contentElementIdentifier;
-					source += "&format=json";
-
-					settings.jqXHR = $.ajax({
-						'dataType': 'json',
-						'type': "GET",
-						'url': source,
-						'data': data,
-						'success': callback,
-						'error': function() {
-							var message = 'Oups! Something went wrong with the Ajax request... Investigate the problem in the Network Monitor. <br />';
-							console.log(message);
-							//Vidi.FlashMessage.add(message, 'error');
-							//var fadeOut = false;
-							//Vidi.FlashMessage.showAll(fadeOut);
-						}
-					});
-				},
-
-				/**
-				 * Add Ajax parameters from plug-ins
-				 *
-				 * @param {object} data dataTables settings object
-				 * @return void
-				 */
-				serverParams: function(data) {
-
-					// Get the parameter related to filter from the URL and "re-inject" them into the Ajax request
-					var uri = new Uri(window.location.href);
-					for (var index = 0; index < uri.queryPairs.length; index++) {
-						var queryPair = uri.queryPairs[index];
-						var parameterName = queryPair[0];
-						var parameterValue = queryPair[1];
-
-					//	// Transmit filter parameter.
-					//	var regularExpression = new RegExp(Vidi.module.parameterPrefix);
-					//	if (regularExpression.test(parameterName)) {
-					//		data.push({ 'name': decodeURI(parameterName), 'value': parameterValue });
-					//	}
-
-						// Transmit a few other parameters as well, e.g the page id if present
-						var transmittedParameters = ['id', 'L'];
-						for (var parameterIndex = 0; parameterIndex < transmittedParameters.length; parameterIndex++) {
-							var transmittedParameter = transmittedParameters[parameterIndex];
-							if (transmittedParameter === parameterName) {
-								data.push({ 'name': decodeURI(parameterName), 'value': parameterValue });
+							// Transmit a few other parameters as well, e.g the page id if present
+							var transmittedParameters = ['id', 'L'];
+							for (var parameterIndex = 0; parameterIndex < transmittedParameters.length; parameterIndex++) {
+								var transmittedParameter = transmittedParameters[parameterIndex];
+								if (transmittedParameter === parameterName) {
+									data[decodeURI(parameterName)] = parameterValue;
+								}
 							}
 						}
+
+						data['dataType'] = VidiFrontend.settings[identifier].dataType;
+						data['identifier'] = VidiFrontend.settings[identifier].contentElementIdentifier;
+						data['format'] = 'json';
+
+						var settings = VidiFrontend.settings[identifier];
+						data[VidiFrontend.parameterPrefix + '[contentData]'] = settings.contentElementIdentifier;
+
+						// Handle the search term parameter coming from the Visual Search bar.
+						if (data.search.value) {
+
+							// Save raw query to be used in Selection for instance.
+							data.search.value = VidiFrontend.VisualSearch.convertExpression(data.search.value, settings);
+
+							data[VidiFrontend.parameterPrefix + '[searchTerm]'] = data.search.value;
+						}
+
+						// Visual effect
+						//VidiFrontend.Session.set('lastEditedUid' + identifier, 1);
+						$('#grid-' + identifier).css('opacity', 0.3);
+
+						// Not needed in the Ajax request.
+						delete data.columns;
+						delete data.draw;
+					},
+					//success: function(json) {
+					//console.log(json);
+					//},
+					error: function() {
+						var message = 'Oups! Something went wrong with the Ajax request... Investigate the problem in the Network Monitor. <br />';
+						console.log(message);
 					}
-
-					// Transmit visible columns to the server so that id does not need to process not displayed stuff.
-					var columns = $(this).dataTable().fnSettings().aoColumns;
-					$.each(columns, function(index, column) {
-						if (column['bVisible']) {
-							data.push({name: VidiFrontend.parameterPrefix + '[columns][]', value: column['columnName'] });
-						}
-					});
-
-					var settings = VidiFrontend.settings[identifier];
-					data.push({ 'name': VidiFrontend.parameterPrefix + '[contentData]', 'value': settings.contentElementIdentifier });
-
-					// Handle the search term parameter coming from the Visual Search bar.
-					$.each(data, function(index, object) {
-						if (object['name'] === 'sSearch') {
-							object['value'] = VidiFrontend.VisualSearch.convertExpression(object['value'], settings);
-							data.push({ 'name': VidiFrontend.parameterPrefix + '[searchTerm]', 'value': object['value'] });
-						}
-					});
-
-					// Visual effect
-					//VidiFrontend.Session.set('lastEditedUid' + identifier, 1);
-					$('#grid-' + identifier).css('opacity', 0.3);
 				},
 				processing: settings.loadContentByAjax,
 				serverSide: settings.loadContentByAjax,
-				ajaxSource: settings.loadContentByAjax ? window.location.pathname + '?type=1416239670' : '',
 
+				/**
+				 * @param {node} row
+				 * @param {object} data
+				 * @param {int} dataIndex
+				 */
+				createdRow: function(row, data, dataIndex ) {
+					if (data.DT_uri) {
+						$(row).attr('data-uri', data.DT_uri);
+					}
+				},
 				/**
 				 *
 				 */
-				initComplete: function() {
+				initComplete: function(d,r) {
 					//Vidi.VisualSearch.initialize();
 
 					var query = VidiFrontend.Session.get('visualSearch.query' + identifier);
@@ -291,10 +252,9 @@ VidiFrontend.Grid = {
 			if (settings.hasDetailView) {
 
 				/**
-				 * Clicking on a icon "detail" view should store the row id.
+				 * Store the last opened row to allow an fancy animation on link back to "list" view from "detail" view.
 				 */
 				$(document).on('click', '#grid-' + settings.gridIdentifier + ' tbody tr a.link-show', function(e) {
-					// Store the last opened row to allow an fancy animation on link back to "list" view from "detail" view.
 					var lastEditedUid = $(this).closest('tr').attr('id').replace('row-', '');
 					var gridIdentifier = $(this).closest('table').attr('id').replace('grid-', '');
 					VidiFrontend.Session.set('lastEditedUid' + gridIdentifier, lastEditedUid);
@@ -311,12 +271,15 @@ VidiFrontend.Grid = {
 					VidiFrontend.Session.set('lastEditedUid' + gridIdentifier, lastEditedUid);
 
 					// Redirect to the detail view
-					var url;
+					var uri;
 					if (e.target instanceof HTMLInputElement || e.target instanceof HTMLAnchorElement) {
 						return;
 					}
-					url = $(this).closest('tr').find('.link-show').attr('href');
-					window.location.href = url;
+
+					if ($(this).data('uri')) {
+						uri = $(this).closest('tr').data('uri');
+						window.location.href = uri;
+					}
 				});
 			}
 		});

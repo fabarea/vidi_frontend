@@ -80,9 +80,6 @@
 				<source>To address the customising issue, DataTables takes inspiration from the CSS 3 Advanced Layout Module. Please
 					refer to the %s section for more insight. Pay attention, the configuration is automatically updated when activating the VisualSearch bar in the Facets tab unless you have customized it. The built-in options available are:</source>
 			</trans-unit>
-			<trans-unit id="warning.saveFirst">
-				<source>Please save this record before setting this option.</source>
-			</trans-unit>
 
 			<!-- Frontend -->
 			<trans-unit id="link.showDetail">

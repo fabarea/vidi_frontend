@@ -17,6 +17,7 @@ namespace Fab\VidiFrontend\View\Grid;
 use Fab\Vidi\Tca\FieldType;
 use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
 use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
+use Fab\VidiFrontend\Plugin\PluginParameter;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Domain\Model\Content;
@@ -44,7 +45,12 @@ class Row extends AbstractComponentView
      *
      * @var array
      */
-    protected $variables = array();
+    protected $variables = [];
+
+    /**
+     * @var array
+     */
+    protected $columns;
 
     /**
      * @param array $columns
@@ -110,8 +116,53 @@ class Row extends AbstractComponentView
 
         $output['DT_RowId'] = 'row-' . $object->getUid();
         $output['DT_RowClass'] = sprintf('%s_%s', $object->getDataType(), $object->getUid());
+        $output['DT_uri'] = $this->getUri($object);
 
         return $output;
+    }
+
+    /**
+     * @param Content $object
+     * @return string
+     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
+     */
+    protected function getUri(Content $object)
+    {
+        $uri = '';
+        if ($this->hasDetailView()) {
+            $contentElementIdentifier =  ContentElementConfiguration::getInstance()->getIdentifier();
+
+            $arguments = array(
+                PluginParameter::PREFIX => array(
+                    'content' => $object->getUid(),
+                    'action' => 'show',
+                    'contentElement' => $contentElementIdentifier,
+                    'controller' => 'Content',
+                ),
+            );
+
+            $this->getUriBuilder()->setArguments($arguments);
+            $uri = $this->getUriBuilder()->build();
+        }
+
+        return $uri;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function hasDetailView()
+    {
+        $settings = ContentElementConfiguration::getInstance()->getSettings();
+        return !empty($settings['templateDetail']);
+    }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
+     */
+    protected function getUriBuilder()
+    {
+        return $this->controllerContext->getUriBuilder();
     }
 
     /**

@@ -47,22 +47,22 @@ class TceForms
      */
     public function renderIsVisualSearchBarField(array $parameters)
     {
-        if ($parameters['row']['uid']) {
 
-            // Get existing flexform configuration
+        // Get existing flexform configuration
+        if (version_compare(TYPO3_branch, '7.0', '<')) {
+            $flexform = $this->getLegacyFlexform($parameters);
+        } else {
             $flexform = $parameters['row']['pi_flexform'];
-            if (version_compare(TYPO3_branch, '7.0', '<')) {
-                $flexform = GeneralUtility::xml2array($flexform);
-            }
+        }
 
-            $isVisualSearchBar = false;
-            $normalizedFlexform = $this->normalizeFlexForm($flexform);
-            if (!empty($normalizedFlexform['settings']) && $normalizedFlexform['settings']['isVisualSearchBar']) {
-                $isVisualSearchBar = (bool)$normalizedFlexform['settings']['isVisualSearchBar'];
-            }
+        $isVisualSearchBar = false;
+        $normalizedFlexform = $this->normalizeFlexForm($flexform);
+        if (!empty($normalizedFlexform['settings']) && $normalizedFlexform['settings']['isVisualSearchBar']) {
+            $isVisualSearchBar = (bool)$normalizedFlexform['settings']['isVisualSearchBar'];
+        }
 
-            $output = sprintf(
-                '<div class="t3-form-field t3-form-field-flex">
+        $output = sprintf(
+            '<div class="t3-form-field t3-form-field-flex">
 <input type="hidden" name="data[tt_content][%s][pi_flexform][data][facet][lDEF][settings.isVisualSearchBar][vDEF]" value="0"/>
 <input type="checkbox" name="data[tt_content][%s][pi_flexform][data][facet][lDEF][settings.isVisualSearchBar][vDEF]" class="checkbox" %s value="1" id="isVisualSearchBar"/>
 </div>
@@ -83,15 +83,12 @@ class TceForms
 
     </script>
     ',
-                $parameters['row']['uid'],
-                $parameters['row']['uid'],
-                $isVisualSearchBar ? 'checked="checked"' : '',
-                $this->gridConfigurationStandard,
-                $this->gridConfigurationWithVisualBar
-            );
-        } else {
-            $output = $this->getLanguageService()->sL('LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:warning.saveFirst');
-        }
+            $parameters['row']['uid'],
+            $parameters['row']['uid'],
+            $isVisualSearchBar ? 'checked="checked"' : '',
+            $this->gridConfigurationStandard,
+            $this->gridConfigurationWithVisualBar
+        );
 
 
         return $output;
@@ -105,27 +102,26 @@ class TceForms
      */
     public function renderGridConfigurationField(array $parameters)
     {
-        if ($parameters['row']['uid']) {
+        // Default configuration
+        $gridConfiguration = $this->gridConfigurationStandard;
+        $helpText = sprintf(
+            $this->getLanguageService()->sL('LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:info.gridConfiguration'),
+            '<a href="https://datatables.net/examples/basic_init/dom.html" target="_blank">DOM positioning</a>'
+        );
 
-            // Default configuration
-            $gridConfiguration = $this->gridConfigurationStandard;
-            $helpText = sprintf(
-                $this->getLanguageService()->sL('LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:info.gridConfiguration'),
-                '<a href="https://datatables.net/examples/basic_init/dom.html" target="_blank">DOM positioning</a>'
-            );
-
-            // Get existing flexform configuration
+        // Get existing flexform configuration
+        if (version_compare(TYPO3_branch, '7.0', '<')) {
+            $flexform = $this->getLegacyFlexform($parameters);
+        } else {
             $flexform = $parameters['row']['pi_flexform'];
-            if (version_compare(TYPO3_branch, '7.0', '<')) {
-                $flexform = GeneralUtility::xml2array($flexform);
-            }
-            $normalizedFlexform = $this->normalizeFlexForm($flexform);
-            if (!empty($normalizedFlexform['settings']) && $normalizedFlexform['settings']['gridConfiguration']) {
-                $gridConfiguration = trim($normalizedFlexform['settings']['gridConfiguration']);
-            }
+        }
+        $normalizedFlexform = $this->normalizeFlexForm($flexform);
+        if (!empty($normalizedFlexform['settings']) && $normalizedFlexform['settings']['gridConfiguration']) {
+            $gridConfiguration = trim($normalizedFlexform['settings']['gridConfiguration']);
+        }
 
-            $output = sprintf(
-                '<input name="data[tt_content][%s][pi_flexform][data][grid][lDEF][settings.gridConfiguration][vDEF]" id="gridConfiguration" style="width: 90%%" value="%s">
+        $output = sprintf(
+            '<input name="data[tt_content][%s][pi_flexform][data][grid][lDEF][settings.gridConfiguration][vDEF]" id="gridConfiguration" style="width: 90%%" value="%s">
     <div>
     %s
 
@@ -139,13 +135,10 @@ class TceForms
     </ul>
     </div>
     ',
-                $parameters['row']['uid'],
-                $gridConfiguration,
-                $helpText
-            );
-        } else {
-            $output = $this->getLanguageService()->sL('LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:warning.saveFirst');
-        }
+            $parameters['row']['uid'],
+            $gridConfiguration,
+            $helpText
+        );
 
 
         return $output;
@@ -348,7 +341,7 @@ class TceForms
     {
         $configuredDataType = '';
         if (!empty($parameters['row']['pi_flexform'])) {
-            $flexform = GeneralUtility::xml2array($parameters['row']['pi_flexform']);
+            $flexform = @GeneralUtility::xml2array($parameters['row']['pi_flexform']);
             if (!empty($flexform['data']['general']['lDEF']['settings.dataType'])) {
                 $configuredDataType = $flexform['data']['general']['lDEF']['settings.dataType']['vDEF'];
             }
@@ -500,6 +493,22 @@ class TceForms
             return $return;
         }
         return $nodeArray;
+    }
+
+    /**
+     * Will be removed when dropping 6.2 compatibility.
+     *
+     * @param array $parameters
+     * @return array
+     */
+    public function getLegacyFlexform(array $parameters)
+    {
+        $flexform = array();
+        if ($parameters['row']['pi_flexform']) {
+            $flexform = @GeneralUtility::xml2array($flexform);
+        }
+
+        return is_array($flexform) ? $flexform : [];
     }
 
     /**

@@ -14,6 +14,7 @@ namespace Fab\VidiFrontend\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\Vidi\Persistence\Order;
 use Fab\Vidi\Tca\Tca;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -48,44 +49,38 @@ class OrderFactory implements SingletonInterface
      */
     static public function getInstance(array $settings)
     {
-        return GeneralUtility::makeInstance('Fab\VidiFrontend\Persistence\OrderFactory', $settings);
+        return GeneralUtility::makeInstance(OrderFactory::class, $settings);
     }
 
     /**
      * Returns an order object.
      *
      * @param string $dataType
-     * @return \Fab\Vidi\Persistence\Order
+     * @return Order
      */
     public function getOrder($dataType)
     {
-
         // Default ordering
         $order = Tca::table($dataType)->getDefaultOrderings();
 
-        // Retrieve a possible id of the column from the request.
-        $columnPosition = GeneralUtility::_GP('iSortCol_0');
+        // Retrieve a possible id of the column from the request
+        $orderings = GeneralUtility::_GP('order');
 
-        if ($columnPosition) {
-            $columns = GeneralUtility::trimExplode(',', $this->settings['columns'], TRUE);
+        if (is_array($orderings) && isset($orderings[0])) {
+            $columnPosition = $orderings[0]['column'];
+            $direction = $orderings[0]['dir'];
 
-            if (isset($columns[$columnPosition])) {
-                $fieldName = $columns[$columnPosition];
-                if (FrontendTca::grid($dataType)->isSortable($fieldName)) {
-                    $direction = GeneralUtility::_GP('sSortDir_0');
-                    $order = array(
-                        $fieldName => strtoupper($direction)
-                    );
-                }
+            if ($columnPosition > 0) {
+                $columns = GeneralUtility::trimExplode(',', $this->settings['columns'], TRUE);
+                $field = $columns[$columnPosition];
+
+                $order = array(
+                    $field => strtoupper($direction)
+                );
             }
-        } elseif (!empty($this->settings['sorting'])) {
-            $direction = empty($this->settings['direction']) ? 'ASC' : $this->settings['direction'];
-            $order = array(
-                $this->settings['sorting'] => $direction
-            );
         }
 
-        return GeneralUtility::makeInstance('Fab\Vidi\Persistence\Order', $order);
+        return GeneralUtility::makeInstance(Order::class, $order);
     }
 
 }

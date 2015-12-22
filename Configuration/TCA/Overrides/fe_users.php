@@ -16,6 +16,7 @@ $tca = array(
             # Overrides the "__buttons" column from the Vidi BE module.
             '__buttons' => [
                 'renderer' => 'Fab\VidiFrontend\Grid\ShowButtonRenderer',
+                'sortable' => false
             ],
         ],
     ],

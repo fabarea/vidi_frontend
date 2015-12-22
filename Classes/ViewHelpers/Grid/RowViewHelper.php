@@ -15,6 +15,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid;
  */
 
 use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
+use Fab\VidiFrontend\Plugin\PluginParameter;
 use Fab\VidiFrontend\View\Grid\Row;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -54,27 +55,79 @@ class RowViewHelper extends AbstractViewHelper
         $row->setConfigurationManager($this->configurationManager)
             ->setControllerContext($this->controllerContext);
 
-        $cells = $row->render($object, $index);
-
-        return $this->format($cells);
+        $renderedRow = $row->render($object, $index);
+        $formattedRow = $this->format($object, $renderedRow);
+        return $formattedRow;
     }
 
     /**
+     * @param Content $object
+     * @param array $cells
      * @return string
      */
-    protected function format(array $cells)
+    protected function format(Content $object, array $cells)
     {
 
         $classNames = $cells['DT_RowId'] . ' ' . $cells['DT_RowClass'];
         unset($cells['DT_RowId'], $cells['DT_RowClass']);
 
-        return sprintf(
-            '<tr class="%s"><td>%s</td></tr>%s',
+        $uri = $this->getUri($object);
+
+        $formattedRow = sprintf(
+            '<tr id="row-%s" class="%s" %s><td>%s</td></tr>%s',
+            $object->getUid(),
             $classNames,
+            empty($uri) ? '' : 'data-uri="' . $uri . '"',
             implode('</td><td>', $cells),
             chr(10)
         );
 
+        return $formattedRow;
     }
+
+    /**
+     * @param Content $object
+     * @return string
+     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
+     */
+    protected function getUri(Content $object)
+    {
+        $uri = '';
+        if ($this->hasDetailView()) {
+            $contentElementIdentifier = $this->templateVariableContainer->get('contentElementIdentifier');
+
+            $arguments = array(
+                PluginParameter::PREFIX => array(
+                    'content' => $object->getUid(),
+                    'action' => 'show',
+                    'contentElement' => $contentElementIdentifier,
+                    'controller' => 'Content',
+                ),
+            );
+
+            $this->getUriBuilder()->setArguments($arguments);
+            $uri = $this->getUriBuilder()->build();
+        }
+
+        return $uri;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function hasDetailView()
+    {
+        $settings = $this->templateVariableContainer->get('settings');
+        return !empty($settings['templateDetail']);
+    }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
+     */
+    protected function getUriBuilder()
+    {
+        return $this->controllerContext->getUriBuilder();
+    }
+
 
 }
