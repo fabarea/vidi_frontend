@@ -80,11 +80,58 @@ load the right assets for you. See below the comments::
 		}
 	}
 
-Custom columns
---------------
+Custom Grid Renderer
+--------------------
 
-In order to customize columns for the Frontend, configuration can be added in the TCA. Best is to learn by example and get inspired by
-``EXT:vidi_frontend/Configuration/TCA/fe_users.php``::
+Assumming we want a complete customized output for a column, we can can achieve this by implementing a Grid Render.
+Here is an exemple for table `fe_users`.
+We first have to register the new column in the TCA in some `Configuration/TCA/Override/fe_users.php`.
+
+::
+
+	$tca = [
+		'grid_frontend' => [
+			'columns' => [
+
+				# The key is totally free here. However we prefix with "__" to distinguish between a "regular" column associated to a field.
+				'__my_custom_column' => [
+					'renderers' => array(
+						'Vendor\MyExt\Grid\MyColumnRenderer',
+					),
+					'sorting' => FALSE,
+					'sortable' => FALSE,
+					'label' => '',
+				],
+			],
+		],
+	];
+
+	\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TCA']['fe_users'], $tca);
+
+The corresponding class to be placed in `EXT:MyExt/Classes/Grid/MyColumnRenderer`::
+
+	namespace Vendor\MyExt\Grid;
+
+	/**
+	 * Class to render a custom output.
+	 */
+	class MyColumnRenderer extends Fab\Vidi\Grid\ColumnRendererAbstract {
+
+		/**
+		 * Render a publication.
+		 *
+		 * @return string
+		 */
+		public function render() {
+			return $output;
+	}
+
+
+Adjust column configuration
+---------------------------
+
+Configuration of the columns is taken from the TCA. Sometimes we need to adjust its configuration for the Frontend and we can simply enriches it.
+Best is to learn by example and get inspired by ``EXT:vidi_frontend/Configuration/TCA/fe_users.php``::
 
 	$tca = array(
 		'grid_frontend' => array(
@@ -101,6 +148,18 @@ Custom Facets
 -------------
 
 Facets are visible in the Visual Search and enable the search by criteria. Facets are generally mapped to a field but it is not mandatory ; it can be arbitrary values. To provide a custom Facet, the interface `\Fab\Vidi\Facet\FacetInterface` must be implemented. Best is to take inspiration of the `\Fab\Vidi\Facet\StandardFacet` and provide your own implementation.
+
+::
+
+	$tca = [
+		'grid_frontend' => [
+			'facets' => [
+				new \Vendor\MyExt\Facets\MyCustomFacet(),
+			],
+		],
+	];
+
+	\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TCA']['fe_users'], $tca);
 
 Register a new template
 -----------------------
