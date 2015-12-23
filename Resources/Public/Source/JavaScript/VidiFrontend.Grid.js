@@ -249,7 +249,7 @@ VidiFrontend.Grid = {
 				}
 			});
 
-			if (settings.hasDetailView) {
+			if (settings.hasClickOnRow) {
 
 				/**
 				 * Store the last opened row to allow an fancy animation on link back to "list" view from "detail" view.

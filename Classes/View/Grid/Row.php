@@ -129,7 +129,7 @@ class Row extends AbstractComponentView
     protected function getUri(Content $object)
     {
         $uri = '';
-        if ($this->hasDetailView()) {
+        if ($this->hasClickOnRow()) {
             $contentElementIdentifier =  ContentElementConfiguration::getInstance()->getIdentifier();
 
             $arguments = array(
@@ -151,10 +151,10 @@ class Row extends AbstractComponentView
     /**
      * @return bool
      */
-    protected function hasDetailView()
+    protected function hasClickOnRow()
     {
         $settings = ContentElementConfiguration::getInstance()->getSettings();
-        return !empty($settings['templateDetail']);
+        return (bool)$settings['hasClickOnRow'] && !empty($settings['templateDetail']);
     }
 
     /**

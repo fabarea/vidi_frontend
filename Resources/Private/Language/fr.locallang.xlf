@@ -55,6 +55,9 @@
 			<trans-unit id="settings.templateForDetailView">
 				<target>Template pour la vue de "détail"</target>
 			</trans-unit>
+			<trans-unit id="settings.hasClickOnRow">
+				<target>Active clique sur ligne</target>
+			</trans-unit>
 			<trans-unit id="settings.targetPageDetail">
 				<target>Page cible pour la vue de détail. Si laissé blanc, page en cours.</target>
 			</trans-unit>

@@ -51,7 +51,7 @@ class RowViewHelper extends AbstractViewHelper
         $columns = ColumnsConfiguration::getInstance()->get($dataType, $columnList);
 
         /** @var Row $row */
-        $row = GeneralUtility::makeInstance('Fab\VidiFrontend\View\Grid\Row', $columns);
+        $row = GeneralUtility::makeInstance(Row::class, $columns);
         $row->setConfigurationManager($this->configurationManager)
             ->setControllerContext($this->controllerContext);
 
@@ -93,7 +93,7 @@ class RowViewHelper extends AbstractViewHelper
     protected function getUri(Content $object)
     {
         $uri = '';
-        if ($this->hasDetailView()) {
+        if ($this->hasClickOnRow()) {
             $contentElementIdentifier = $this->templateVariableContainer->get('contentElementIdentifier');
 
             $arguments = array(
@@ -115,10 +115,10 @@ class RowViewHelper extends AbstractViewHelper
     /**
      * @return bool
      */
-    protected function hasDetailView()
+    protected function hasClickOnRow()
     {
         $settings = $this->templateVariableContainer->get('settings');
-        return !empty($settings['templateDetail']);
+        return (bool)$settings['hasClickOnRow'] && !empty($settings['templateDetail']);
     }
 
     /**

@@ -58,6 +58,9 @@
 			<trans-unit id="settings.templateForDetailView">
 				<source>Template for the "detail" view. If let blank, no link to a detail view will be made.</source>
 			</trans-unit>
+			<trans-unit id="settings.hasClickOnRow">
+				<source>Enable click on row</source>
+			</trans-unit>
 			<trans-unit id="settings.targetPageDetail">
 				<source>Target page for detail view. Let blank for current page. (not yet implemented)</source>
 			</trans-unit>
