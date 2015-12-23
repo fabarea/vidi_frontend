@@ -86,6 +86,7 @@ class ContentController extends ActionController
             $this->settings['loadContentByAjax'] = 1;
         }
 
+        // Handle columns case
         $columns = ColumnsConfiguration::getInstance()->get($dataType, $this->settings['columns']);
         if (empty($columns)) {
             return '<strong style="color: red">Please select at least one column to be displayed!</strong>';
@@ -109,6 +110,10 @@ class ContentController extends ActionController
             $contentService = $this->getContentService($dataType)->findBy($matcher, $order);
             $this->view->assign('objects', $contentService->getObjects());
         }
+
+        // Initialize Content Element settings to be accessible across the request life cycle.
+        $contentObjectRenderer = $this->configurationManager->getContentObject();
+        ContentElementConfiguration::getInstance($contentObjectRenderer->data);
     }
 
     /**

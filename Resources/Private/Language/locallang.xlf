@@ -19,12 +19,6 @@
 			<trans-unit id="flexform.tab.grid">
 				<source>Grid</source>
 			</trans-unit>
-			<trans-unit id="flexform.tab.filter">
-				<source>Filter</source>
-			</trans-unit>
-			<trans-unit id="flexform.tab.sorting">
-				<source>Sorting</source>
-			</trans-unit>
 			<trans-unit id="flexform.tab.facets">
 				<source>Facets</source>
 			</trans-unit>
@@ -62,10 +56,10 @@
 				<source>Enable click on row</source>
 			</trans-unit>
 			<trans-unit id="settings.targetPageDetail">
-				<source>Target page for detail view. Let blank for current page. (not yet implemented)</source>
+				<source>Target page for detail view. Let blank for current page.</source>
 			</trans-unit>
 			<trans-unit id="settings.parameterPefix">
-				<source>Parameter prefix for detail view. Default value is "tx_vidifrontend_pi1". (not yet implemented)</source>
+				<source>Parameter prefix for detail view. Default value is "tx_vidifrontend_pi1".</source>
 			</trans-unit>
 			<trans-unit id="settings.sorting">
 				<source>Default sorting</source>

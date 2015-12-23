@@ -73,59 +73,6 @@ VidiFrontend.Grid = {
 
 					return state;
 				},
-				ajax: {
-					url: settings.loadContentByAjax ? window.location.pathname + '?type=1416239670' : '',
-					data: function(data) {
-
-						// Get the parameter related to filter from the URL and "re-inject" them into the Ajax request
-						var uri = new Uri(window.location.href);
-						for (var index = 0; index < uri.queryPairs.length; index++) {
-							var queryPair = uri.queryPairs[index];
-							var parameterName = queryPair[0];
-							var parameterValue = queryPair[1];
-
-							// Transmit a few other parameters as well, e.g the page id if present
-							var transmittedParameters = ['id', 'L'];
-							for (var parameterIndex = 0; parameterIndex < transmittedParameters.length; parameterIndex++) {
-								var transmittedParameter = transmittedParameters[parameterIndex];
-								if (transmittedParameter === parameterName) {
-									data[decodeURI(parameterName)] = parameterValue;
-								}
-							}
-						}
-
-						data['dataType'] = VidiFrontend.settings[identifier].dataType;
-						data['identifier'] = VidiFrontend.settings[identifier].contentElementIdentifier;
-						data['format'] = 'json';
-
-						var settings = VidiFrontend.settings[identifier];
-						data[VidiFrontend.parameterPrefix + '[contentData]'] = settings.contentElementIdentifier;
-
-						// Handle the search term parameter coming from the Visual Search bar.
-						if (data.search.value) {
-
-							// Save raw query to be used in Selection for instance.
-							data.search.value = VidiFrontend.VisualSearch.convertExpression(data.search.value, settings);
-
-							data[VidiFrontend.parameterPrefix + '[searchTerm]'] = data.search.value;
-						}
-
-						// Visual effect
-						//VidiFrontend.Session.set('lastEditedUid' + identifier, 1);
-						$('#grid-' + identifier).css('opacity', 0.3);
-
-						// Not needed in the Ajax request.
-						delete data.columns;
-						delete data.draw;
-					},
-					//success: function(json) {
-					//console.log(json);
-					//},
-					error: function() {
-						var message = 'Oups! Something went wrong with the Ajax request... Investigate the problem in the Network Monitor. <br />';
-						console.log(message);
-					}
-				},
 				processing: settings.loadContentByAjax,
 				serverSide: settings.loadContentByAjax,
 
@@ -165,6 +112,59 @@ VidiFrontend.Grid = {
 					VidiFrontend.Grid.animateRow($, identifier);
 				}
 			};
+
+			// Add loading by ajax handler
+			if (settings.loadContentByAjax) {
+				options.ajax = {
+					url: settings.loadContentByAjax ? window.location.pathname + '?type=1416239670' : '',
+					data: function(data) {
+
+						// Get the parameter related to filter from the URL and "re-inject" them into the Ajax request
+						var uri = new Uri(window.location.href);
+						for (var index = 0; index < uri.queryPairs.length; index++) {
+							var queryPair = uri.queryPairs[index];
+							var parameterName = queryPair[0];
+							var parameterValue = queryPair[1];
+
+							// Transmit a few other parameters as well, e.g the page id if present
+							var transmittedParameters = ['id', 'L'];
+							for (var parameterIndex = 0; parameterIndex < transmittedParameters.length; parameterIndex++) {
+								var transmittedParameter = transmittedParameters[parameterIndex];
+								if (transmittedParameter === parameterName) {
+									data[decodeURI(parameterName)] = parameterValue;
+								}
+							}
+						}
+
+						data['dataType'] = VidiFrontend.settings[identifier].dataType;
+						data['format'] = 'json';
+
+						var settings = VidiFrontend.settings[identifier];
+						data[VidiFrontend.parameterPrefix + '[contentData]'] = settings.contentElementIdentifier;
+
+						// Handle the search term parameter coming from the Visual Search bar.
+						if (data.search.value) {
+
+							// Save raw query to be used in Selection for instance.
+							data.search.value = VidiFrontend.VisualSearch.convertExpression(data.search.value, settings);
+
+							data[VidiFrontend.parameterPrefix + '[searchTerm]'] = data.search.value;
+						}
+
+						// Visual effect
+						//VidiFrontend.Session.set('lastEditedUid' + identifier, 1);
+						$('#grid-' + identifier).css('opacity', 0.3);
+
+						// Not needed in the Ajax request.
+						delete data.columns;
+						delete data.draw;
+					},
+					error: function() {
+						var message = 'Oups! Something went wrong with the Ajax request... Investigate the problem in the Network Monitor. <br />';
+						console.log(message);
+					}
+				};
+			}
 
 			options = VidiFrontend.Grid.initializeDefaultSearch(options, identifier);
 			VidiFrontend.grids[identifier] = $('#grid-' + identifier).dataTable(options);

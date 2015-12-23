@@ -164,7 +164,7 @@ Facets are visible in the Visual Search and enable the search by criteria. Facet
 Register a new template
 -----------------------
 
-The detail view of the content can be personalized per plugin record. To register more templates, simply define them in your TypoScript configuration
+The detail view of the content can be personalized per plugin record. To register more templates, simply define them in your TypoScript configuration.
 This TypoScript will typically be put under within ``EXT:foo/Configuration/TypoScript/setup.txt``::
 
 	plugin.tx_vidifrontend {

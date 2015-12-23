@@ -38,6 +38,11 @@ class ContentElementConfiguration implements SingletonInterface
     static protected $instances = [];
 
     /**
+     * @var int
+     */
+    static protected $currentIdentifier = 0;
+
+    /**
      * Returns a class instance.
      *
      * @param array $contentData
@@ -45,10 +50,14 @@ class ContentElementConfiguration implements SingletonInterface
      */
     static public function getInstance(array $contentData = [])
     {
-        if (empty($contentData)) {
-            $identifier = (int)GeneralUtility::_GP('identifier');
-        } else {
+        $identifier = self::$currentIdentifier;
+        if (!empty($contentData)) {
             $identifier = $contentData['uid'];
+            self::$currentIdentifier = (int)$contentData['uid'];
+        }
+
+        if ($identifier < 1) {
+            throw new \RuntimeException('I could not find a valid identifier', 1450851544);
         }
 
         if (empty(self::$instances[$identifier])) {

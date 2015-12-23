@@ -130,8 +130,34 @@ class Row extends AbstractComponentView
     {
         $uri = '';
         if ($this->hasClickOnRow()) {
-            $contentElementIdentifier =  ContentElementConfiguration::getInstance()->getIdentifier();
+            $settings =  ContentElementConfiguration::getInstance()->getSettings();
 
+            $arguments = $this->getArguments($object);
+            $this->getUriBuilder()
+                ->setArguments($arguments);
+
+            $targetPageUid = (int)$settings['targetPageDetail'];
+            if (!empty($targetPageUid)) {
+                $this->getUriBuilder()->setTargetPageUid($targetPageUid);
+            }
+
+            $uri = $this->getUriBuilder()->build();
+        }
+
+        return $uri;
+    }
+
+    /**
+     * @param Content $object
+     * @return array
+     */
+    protected function getArguments(Content $object)
+    {
+
+        $contentElementIdentifier =  ContentElementConfiguration::getInstance()->getIdentifier();
+        $settings =  ContentElementConfiguration::getInstance()->getSettings();
+
+        if ($settings['parameterPrefix'] === PluginParameter::PREFIX) {
             $arguments = array(
                 PluginParameter::PREFIX => array(
                     'content' => $object->getUid(),
@@ -140,12 +166,15 @@ class Row extends AbstractComponentView
                     'controller' => 'Content',
                 ),
             );
-
-            $this->getUriBuilder()->setArguments($arguments);
-            $uri = $this->getUriBuilder()->build();
+        } else {
+            $arguments = array(
+                $settings['parameterPrefix'] => array(
+                    'showUid' => $object->getUid(),
+                ),
+            );
         }
 
-        return $uri;
+        return $arguments;
     }
 
     /**

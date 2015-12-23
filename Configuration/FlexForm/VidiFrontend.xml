@@ -33,6 +33,60 @@
 							</config>
 						</TCEforms>
 					</settings.columns>
+					<settings.selection>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.selection</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getSelections</itemsProcFunc>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.selection>
+					<settings.additionalEquals>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.additionalEquals</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</settings.additionalEquals>
+					<settings.sorting>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.sorting</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getSorting</itemsProcFunc>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.sorting>
+					<settings.direction>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.direction</label>
+							<config>
+								<type>select</type>
+								<items>
+									<numIndex index="0" type="array">
+										<numIndex index="0"></numIndex>
+										<numIndex index="1"></numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">ASC</numIndex>
+										<numIndex index="1">ASC</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">DESC</numIndex>
+										<numIndex index="1">DESC</numIndex>
+									</numIndex>
+								</items>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.direction>
 				</el>
 			</ROOT>
 		</general>
@@ -107,82 +161,6 @@
 				</el>
 			</ROOT>
 		</facet>
-		<filter>
-			<ROOT>
-				<TCEforms>
-					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.filter
-					</sheetTitle>
-				</TCEforms>
-				<type>array</type>
-				<el>
-					<settings.selection>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.selection</label>
-							<config>
-								<type>select</type>
-								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getSelections</itemsProcFunc>
-								<size>1</size>
-								<maxitems>1</maxitems>
-							</config>
-						</TCEforms>
-					</settings.selection>
-					<settings.additionalEquals>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.additionalEquals</label>
-							<config>
-								<type>input</type>
-							</config>
-						</TCEforms>
-					</settings.additionalEquals>
-				</el>
-			</ROOT>
-		</filter>
-		<sorting>
-			<ROOT>
-				<TCEforms>
-					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.sorting
-					</sheetTitle>
-				</TCEforms>
-				<type>array</type>
-				<el>
-					<settings.sorting>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.sorting</label>
-							<config>
-								<type>select</type>
-								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getSorting</itemsProcFunc>
-								<size>1</size>
-								<maxitems>1</maxitems>
-							</config>
-						</TCEforms>
-					</settings.sorting>
-					<settings.direction>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.direction</label>
-							<config>
-								<type>select</type>
-								<items>
-									<numIndex index="0" type="array">
-										<numIndex index="0"></numIndex>
-										<numIndex index="1"></numIndex>
-									</numIndex>
-									<numIndex index="1" type="array">
-										<numIndex index="0">ASC</numIndex>
-										<numIndex index="1">ASC</numIndex>
-									</numIndex>
-									<numIndex index="2" type="array">
-										<numIndex index="0">DESC</numIndex>
-										<numIndex index="1">DESC</numIndex>
-									</numIndex>
-								</items>
-								<size>1</size>
-								<maxitems>1</maxitems>
-							</config>
-						</TCEforms>
-					</settings.direction>
-				</el>
-			</ROOT>
-		</sorting>
 		<detailView>
 			<ROOT>
 				<TCEforms>

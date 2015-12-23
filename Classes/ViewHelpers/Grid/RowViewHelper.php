@@ -62,54 +62,26 @@ class RowViewHelper extends AbstractViewHelper
 
     /**
      * @param Content $object
-     * @param array $cells
+     * @param array $row
      * @return string
      */
-    protected function format(Content $object, array $cells)
+    protected function format(Content $object, array $row)
     {
 
-        $classNames = $cells['DT_RowId'] . ' ' . $cells['DT_RowClass'];
-        unset($cells['DT_RowId'], $cells['DT_RowClass']);
-
-        $uri = $this->getUri($object);
+        $classNames = $row['DT_RowId'] . ' ' . $row['DT_RowClass'];
+        $uri = $row['DT_uri'];
+        unset($row['DT_RowId'], $row['DT_RowClass'], $row['DT_uri']);
 
         $formattedRow = sprintf(
-            '<tr id="row-%s" class="%s" %s><td>%s</td></tr>%s',
+            '<tr id="row-%s" class="%s" data-uri="%s"><td>%s</td></tr>%s',
             $object->getUid(),
             $classNames,
-            empty($uri) ? '' : 'data-uri="' . $uri . '"',
-            implode('</td><td>', $cells),
+            $uri,
+            implode('</td><td>', $row),
             chr(10)
         );
 
         return $formattedRow;
-    }
-
-    /**
-     * @param Content $object
-     * @return string
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
-     */
-    protected function getUri(Content $object)
-    {
-        $uri = '';
-        if ($this->hasClickOnRow()) {
-            $contentElementIdentifier = $this->templateVariableContainer->get('contentElementIdentifier');
-
-            $arguments = array(
-                PluginParameter::PREFIX => array(
-                    'content' => $object->getUid(),
-                    'action' => 'show',
-                    'contentElement' => $contentElementIdentifier,
-                    'controller' => 'Content',
-                ),
-            );
-
-            $this->getUriBuilder()->setArguments($arguments);
-            $uri = $this->getUriBuilder()->build();
-        }
-
-        return $uri;
     }
 
     /**
@@ -128,6 +100,5 @@ class RowViewHelper extends AbstractViewHelper
     {
         return $this->controllerContext->getUriBuilder();
     }
-
 
 }

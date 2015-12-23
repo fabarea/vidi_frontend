@@ -19,9 +19,6 @@
 			<trans-unit id="flexform.tab.grid">
 				<target>Grille</target>
 			</trans-unit>
-			<trans-unit id="flexform.tab.sorting">
-				<target>Tri</target>
-			</trans-unit>
 			<trans-unit id="flexform.tab.facets">
 				<target>Facettes</target>
 			</trans-unit>
@@ -62,7 +59,7 @@
 				<target>Page cible pour la vue de détail. Si laissé blanc, page en cours.</target>
 			</trans-unit>
 			<trans-unit id="settings.parameterPefix">
-				<target>Paramètre préfix pour la vue de détail. Valeur par défaut "tx_vidifrontend_pi1"</target>
+				<target>Paramètre préfixe pour la vue de détail. Valeur par défaut "tx_vidifrontend_pi1"</target>
 			</trans-unit>
 			<trans-unit id="settings.sorting">
 				<target>Tri par défaut</target>

@@ -15,10 +15,13 @@ namespace Fab\VidiFrontend\Grid;
  */
 
 use Fab\Vidi\Grid\ColumnRendererAbstract;
+use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
 use Fab\VidiFrontend\Plugin\PluginParameter;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Class for editing mm relation between objects.
@@ -34,8 +37,8 @@ class ShowButtonRenderer extends ColumnRendererAbstract
     public function render()
     {
 
-        /** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder */
-        $tagBuilder = $this->getObjectManager()->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
+        /** @var TagBuilder $tagBuilder */
+        $tagBuilder = $this->getObjectManager()->get(TagBuilder::class);
         $tagBuilder->reset();
         $tagBuilder->setTagName('a');
         #$tagBuilder->setContent('<span class="glyphicon glyphicon-eye-open"></span>'); // Only if Font Awesome is installed.
@@ -45,15 +48,15 @@ class ShowButtonRenderer extends ColumnRendererAbstract
         );
         $tagBuilder->setContent($icon);
 
-        $arguments = array(
-            PluginParameter::PREFIX => array(
-                'content' => $this->getObject()->getUid(),
-                'action' => 'show',
-                'contentElement' => $this->getCurrentContentElement()->data['uid'],
-                'controller' => 'Content',
-            ),
-        );
+        $arguments = $this->getArguments();
         $this->getUriBuilder()->setArguments($arguments);
+
+        $settings =  ContentElementConfiguration::getInstance()->getSettings();
+        $targetPageUid = (int)$settings['targetPageDetail'];
+        if (!empty($targetPageUid)) {
+            $this->getUriBuilder()->setTargetPageUid($targetPageUid);
+        }
+
         $uri = $this->getUriBuilder()->build();
 
         $tagBuilder->addAttribute('href', $uri);
@@ -62,31 +65,50 @@ class ShowButtonRenderer extends ColumnRendererAbstract
         return $tagBuilder->render();
     }
 
+    /**
+     * @return array
+     */
+    protected function getArguments()
+    {
+
+        $contentElementIdentifier =  ContentElementConfiguration::getInstance()->getIdentifier();
+        $settings =  ContentElementConfiguration::getInstance()->getSettings();
+
+        if ($settings['parameterPrefix'] === PluginParameter::PREFIX) {
+            $arguments = array(
+                PluginParameter::PREFIX => array(
+                    'content' => $this->object->getUid(),
+                    'action' => 'show',
+                    'contentElement' => $contentElementIdentifier,
+                    'controller' => 'Content',
+                ),
+            );
+        } else {
+            $arguments = array(
+                $settings['parameterPrefix'] => array(
+                    'showUid' => $this->object->getUid(),
+                ),
+            );
+        }
+
+        return $arguments;
+    }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @return ObjectManager
      */
     protected function getObjectManager()
     {
-        return GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 
     /**
      * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
      */
-    public function getUriBuilder()
+    protected function getUriBuilder()
     {
         $configuration = $this->getGridRendererConfiguration();
         return $configuration['uriBuilder'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-     */
-    public function getCurrentContentElement()
-    {
-        $configuration = $this->getGridRendererConfiguration();
-        return $configuration['contentElement'];
     }
 
 }
