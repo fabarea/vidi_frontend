@@ -12,10 +12,5 @@ plugin.tx_vidifrontend {
 		# storagePid =
 	}
 	settings {
-		grid {
-
-			# cat=plugin.tx_vidifrontend//a; type=string; label=The CSS classes applied to the Grid
-			className = table table-striped table-hover
-		}
 	}
 }

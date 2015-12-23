@@ -10,11 +10,6 @@ plugin.tx_vidifrontend {
 
 	settings {
 
-		grid {
-			className = {$plugin.tx_vidifrontend.settings.grid.className}
-		}
-
-
 		templates {
 			1 {
 				title = Default detail view

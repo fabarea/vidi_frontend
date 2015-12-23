@@ -70,6 +70,12 @@
 			<trans-unit id="settings.additionalEquals">
 				<source>Additional comma separated constraints. Example for Files: storage= 1, identifier like /images/%, metadata.categories = 1</source>
 			</trans-unit>
+			<trans-unit id="settings.gridClassName">
+				<source>Grid class name</source>
+			</trans-unit>
+			<trans-unit id="settings.hasColumnHeaders">
+				<source>Display column headers</source>
+			</trans-unit>
 			<trans-unit id="settings.gridConfiguration">
 				<source>Grid configuration</source>
 			</trans-unit>

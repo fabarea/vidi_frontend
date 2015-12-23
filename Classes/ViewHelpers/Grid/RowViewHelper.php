@@ -67,7 +67,6 @@ class RowViewHelper extends AbstractViewHelper
      */
     protected function format(Content $object, array $row)
     {
-
         $classNames = $row['DT_RowId'] . ' ' . $row['DT_RowClass'];
         $uri = $row['DT_uri'];
         unset($row['DT_RowId'], $row['DT_RowClass'], $row['DT_uri']);

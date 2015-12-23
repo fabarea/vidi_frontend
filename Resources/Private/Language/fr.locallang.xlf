@@ -70,6 +70,12 @@
 			<trans-unit id="settings.additionalEquals">
 				<target>Contraintes supplémentaires séparées par des virgules. Exemple pour Files: storage= 1, identifier like /images/%, metadata.categories = 1</target>
 			</trans-unit>
+			<trans-unit id="settings.gridClassName">
+				<target>Classes Grille</target>
+			</trans-unit>
+			<trans-unit id="settings.hasGridHeader">
+				<source>Afficher les titres de colonnes</source>
+			</trans-unit>
 			<trans-unit id="settings.gridConfiguration">
 				<target>Configuration Grille</target>
 			</trans-unit>
