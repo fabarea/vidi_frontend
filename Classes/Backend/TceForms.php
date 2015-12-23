@@ -505,7 +505,7 @@ class TceForms
     {
         $flexform = array();
         if ($parameters['row']['pi_flexform']) {
-            $flexform = @GeneralUtility::xml2array($flexform);
+            $flexform = GeneralUtility::xml2array($parameters['row']['pi_flexform']);
         }
 
         return is_array($flexform) ? $flexform : [];
