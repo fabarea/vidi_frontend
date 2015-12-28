@@ -43,6 +43,9 @@
 			<trans-unit id="settings.facets">
 				<source>Pick available Facets to be displayed the Visual Search bar.</source>
 			</trans-unit>
+			<trans-unit id="settings.logicalSeparator">
+				<source>Logical separator between facets</source>
+			</trans-unit>
 			<trans-unit id="settings.isVisualSearchBar">
 				<source>Display the Visual Search bar to search by facets.</source>
 			</trans-unit>

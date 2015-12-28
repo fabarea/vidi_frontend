@@ -14,14 +14,15 @@ namespace Fab\VidiFrontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\Vidi\Persistence\Matcher;
 use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
 use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
+use Fab\VidiFrontend\Persistence\PagerFactory;
 use Fab\VidiFrontend\Service\ContentElementService;
 use Fab\VidiFrontend\Service\ContentType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Fab\Vidi\Domain\Model\Content;
-use Fab\Vidi\Persistence\PagerObjectFactory;
 use Fab\VidiFrontend\Persistence\MatcherFactory;
 use Fab\VidiFrontend\Persistence\OrderFactory;
 
@@ -134,8 +135,16 @@ class ContentController extends ActionController
 
         // Initialize some objects related to the query.
         $matcher = MatcherFactory::getInstance($settings)->getMatcher(array(), $dataType);
+        if ($settings['logicalSeparator'] === Matcher::LOGICAL_OR) {
+            $matcher->setLogicalSeparatorForEquals(Matcher::LOGICAL_OR);
+            $matcher->setLogicalSeparatorForLike(Matcher::LOGICAL_OR);
+            $matcher->setLogicalSeparatorForIn(Matcher::LOGICAL_OR);
+            $matcher->setLogicalSeparatorForSearchTerm(Matcher::LOGICAL_OR);
+            $matcher->setDefaultLogicalSeparator(Matcher::LOGICAL_OR);
+        }
+
         $order = OrderFactory::getInstance($settings)->getOrder($dataType);
-        $pager = PagerObjectFactory::getInstance()->getPager();
+        $pager = PagerFactory::getInstance()->getPager();
 
         // Fetch objects via the Content Service.
         $contentService = $this->getContentService($dataType)->findBy($matcher, $order, $pager->getLimit(), $pager->getOffset());

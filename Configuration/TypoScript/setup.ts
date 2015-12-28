@@ -4,7 +4,7 @@
 plugin.tx_vidifrontend {
 	view {
 		templateRootPath = {$plugin.tx_vidifrontend.view.templateRootPath}
-		partialRootPath = {$plugin.tx_vidifrontend.view.partialRootPath}
+		#partialRootPath = {$plugin.tx_vidifrontend.view.partialRootPath}
 		layoutRootPath = {$plugin.tx_vidifrontend.view.layoutRootPath}
 	}
 

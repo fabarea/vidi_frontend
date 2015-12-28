@@ -176,6 +176,25 @@
 							</config>
 						</TCEforms>
 					</settings.facets>
+					<settings.logicalSeparator>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.logicalSeparator</label>
+							<config>
+								<type>select</type>
+								<maxitems>1</maxitems>
+								<items>
+									<numIndex index="1" type="array">
+										<numIndex index="0">AND</numIndex>
+										<numIndex index="1">logicalAnd</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">OR</numIndex>
+										<numIndex index="1">logicalOr</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</settings.logicalSeparator>
 				</el>
 			</ROOT>
 		</facet>

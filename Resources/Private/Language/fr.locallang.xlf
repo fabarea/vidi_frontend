@@ -43,6 +43,9 @@
 			<trans-unit id="settings.facets">
 				<target>Sélectionner les facettes de la barre de recherche visuelle</target>
 			</trans-unit>
+			<trans-unit id="settings.logicalSeparator">
+				<source>Séparateur logique entre les facettes</source>
+			</trans-unit>
 			<trans-unit id="settings.isVisualSearchBar">
 				<target>Afficher la barre de recherche visuelle pour des recherches par facettes.</target>
 			</trans-unit>
