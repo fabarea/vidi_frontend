@@ -14,6 +14,7 @@ namespace Fab\VidiFrontend\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\Vidi\Persistence\Pager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -26,35 +27,35 @@ class PagerFactory implements SingletonInterface
     /**
      * Gets a singleton instance of this class.
      *
-     * @return \Fab\VidiFrontend\Persistence\PagerFactory
+     * @return PagerFactory
      */
     static public function getInstance()
     {
-        return GeneralUtility::makeInstance('Fab\VidiFrontend\Persistence\PagerFactory');
+        return GeneralUtility::makeInstance(PagerFactory::class);
     }
 
     /**
      * Returns a pager object.
      *
-     * @return \Fab\Vidi\Persistence\Pager
+     * @return Pager
      */
     public function getPager()
     {
 
-        /** @var $pager \Fab\Vidi\Persistence\Pager */
-        $pager = GeneralUtility::makeInstance('Fab\Vidi\Persistence\Pager');
+        /** @var $pager Pager */
+        $pager = GeneralUtility::makeInstance(Pager::class);
 
         // Set items per page
-        #if (GeneralUtility::_GET('iDisplayLength') !== NULL) {
-        #	$limit = (int)GeneralUtility::_GET('iDisplayLength');
-        #	$pager->setLimit($limit);
-        #}
+        if (GeneralUtility::_GET('length') !== NULL) {
+            $limit = (int)GeneralUtility::_GET('length');
+            $pager->setLimit($limit);
+        }
 
         // Set offset
         $offset = 0;
-        #if (GeneralUtility::_GET('iDisplayStart') !== NULL) {
-        #	$offset = (int)GeneralUtility::_GET('iDisplayStart');
-        #}
+        if (GeneralUtility::_GET('start') !== NULL) {
+            $offset = (int)GeneralUtility::_GET('start');
+        }
         $pager->setOffset($offset);
 
         // set page
