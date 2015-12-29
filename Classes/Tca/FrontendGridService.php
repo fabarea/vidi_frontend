@@ -130,6 +130,23 @@ class FrontendGridService extends GridService
     }
 
     /**
+     * Returns the "sortable" value of the column.
+     *
+     * @param string $fieldNameAndPath
+     * @return int|string
+     */
+    public function isSortable($fieldNameAndPath)
+    {
+        $configuration = self::getField($fieldNameAndPath);
+        if (isset($configuration['sortable'])) {
+            $isSortable = (bool)$configuration['sortable'];
+        } else {
+            $isSortable = Tca::grid($this->tableName)->isSortable($fieldNameAndPath);
+        }
+        return $isSortable;
+    }
+
+    /**
      * Returns an array containing facets fields.
      *
      * @return array

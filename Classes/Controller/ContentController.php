@@ -139,8 +139,8 @@ class ContentController extends ActionController
             $matcher->setLogicalSeparatorForEquals(Matcher::LOGICAL_OR);
             $matcher->setLogicalSeparatorForLike(Matcher::LOGICAL_OR);
             $matcher->setLogicalSeparatorForIn(Matcher::LOGICAL_OR);
-            $matcher->setLogicalSeparatorForSearchTerm(Matcher::LOGICAL_OR);
-            $matcher->setDefaultLogicalSeparator(Matcher::LOGICAL_OR);
+            #$matcher->setLogicalSeparatorForSearchTerm(Matcher::LOGICAL_OR);
+            #$matcher->setDefaultLogicalSeparator(Matcher::LOGICAL_OR);
         }
 
         $order = OrderFactory::getInstance($settings)->getOrder($dataType);

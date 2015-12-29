@@ -60,8 +60,13 @@ class OrderFactory implements SingletonInterface
      */
     public function getOrder($dataType)
     {
-        // Default ordering
-        $order = Tca::table($dataType)->getDefaultOrderings();
+        if (isset($this->settings['sorting'])) {
+            $direction = isset($this->settings['direction']) ? $this->settings['direction'] : 'ASC';
+            $order = [$this->settings['sorting'] => $direction];
+        } else {
+            // Default ordering
+            $order = Tca::table($dataType)->getDefaultOrderings();
+        }
 
         // Retrieve a possible id of the column from the request
         $orderings = GeneralUtility::_GP('order');
