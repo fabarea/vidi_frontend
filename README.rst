@@ -182,6 +182,75 @@ This TypoScript will typically be put under within ``EXT:foo/Configuration/TypoS
 		}
 	}
 
+Add custom Constraints
+======================
+
+If required to add additional custom constraints at a "low" level, one can take advantage of a Signal Slot in the Content Repository of Vidi. To do so, first register the slot in one of your `ext_localconf.php` file::
+
+    $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
+
+    $signalSlotDispatcher->connect(
+        'Fab\Vidi\Domain\Repository\ContentRepository',
+        'postProcessConstraintsObject',
+        'Vendor\Extension\Aspects\ProductsAspect',
+        'processConstraints',
+        true
+    );
+
+
+Next step is to write and customise the PHP class as given as example below. You can freely manipulate the $constraints object and personalize at your need::
+
+    <?php
+    namespace Vendor\Extension\Aspects;
+
+    use Fab\Vidi\Persistence\Query;
+    use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
+
+    /**
+     * Class which handle signal slot for Vidi Content controller
+     */
+    class ProductsAspect {
+
+        /**
+         * Post-process the constraints object to respect the file mounts.
+         *
+         * @param Query $query
+         * @param ConstraintInterface|NULL $constraints
+         * @return array
+         */
+        public function processConstraints(Query $query, $constraints) {
+            if ($this->isFrontendMode() && $query->getType() === 'tt_products') {
+
+                $additionalConstraints = $query->logicalAnd(
+                    $query->logicalNot($query->equals('title', '')),
+                    $query->logicalNot($query->equals('image', ''))
+                );
+
+                if (is_null($constraints)) {
+                    $constraints = $additionalConstraints;
+                } else {
+
+                    $constraints = $query->logicalAnd(
+                        $constraints,
+                        $additionalConstraints
+                    );
+                }
+            }
+            return array($query, $constraints);
+        }
+
+        /**
+         * Returns whether the current mode is Frontend
+         *
+         * @return bool
+         */
+        protected function isFrontendMode()
+        {
+            return TYPO3_MODE == 'FE';
+        }
+
+    }
+
 
 Building assets in development
 ==============================
