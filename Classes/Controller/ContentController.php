@@ -72,13 +72,13 @@ class ContentController extends ActionController
     /**
      * List action for this controller.
      *
-     * @return string|void
+     * @return string|null
      */
     public function indexAction()
     {
-
+        $possibleMessage = null;
         if (empty($this->settings['dataType'])) {
-            return '<strong style="color: red">Please select a content type to be displayed!</strong>';
+            $possibleMessage = '<strong style="color: red">Please select a content type to be displayed!</strong>';
         }
         $dataType = $this->settings['dataType'];
 
@@ -90,31 +90,35 @@ class ContentController extends ActionController
         // Handle columns case
         $columns = ColumnsConfiguration::getInstance()->get($dataType, $this->settings['columns']);
         if (empty($columns)) {
-            return '<strong style="color: red">Please select at least one column to be displayed!</strong>';
+            $possibleMessage = '<strong style="color: red">Please select at least one column to be displayed!</strong>';
+        } else {
+
+            $this->view->assign('columns', $columns);
+
+            // Assign values.
+            $this->view->assign('settings', $this->settings);
+            $this->view->assign('gridIdentifier', $this->getGridIdentifier());
+            $this->view->assign('contentElementIdentifier', $this->configurationManager->getContentObject()->data['uid']);
+            $this->view->assign('dataType', $dataType);
+            $this->view->assign('objects', array());
+
+            if (!$this->settings['loadContentByAjax']) {
+
+                // Initialize some objects related to the query.
+                $matcher = MatcherFactory::getInstance($this->settings)->getMatcher(array(), $dataType);
+                $order = OrderFactory::getInstance($this->settings)->getOrder($dataType);
+
+                // Fetch objects via the Content Service.
+                $contentService = $this->getContentService($dataType)->findBy($matcher, $order);
+                $this->view->assign('objects', $contentService->getObjects());
+            }
+
+            // Initialize Content Element settings to be accessible across the request life cycle.
+            $contentObjectRenderer = $this->configurationManager->getContentObject();
+            ContentElementConfiguration::getInstance($contentObjectRenderer->data);
         }
-        $this->view->assign('columns', $columns);
 
-        // Assign values.
-        $this->view->assign('settings', $this->settings);
-        $this->view->assign('gridIdentifier', $this->getGridIdentifier());
-        $this->view->assign('contentElementIdentifier', $this->configurationManager->getContentObject()->data['uid']);
-        $this->view->assign('dataType', $dataType);
-        $this->view->assign('objects', array());
-
-        if (!$this->settings['loadContentByAjax']) {
-
-            // Initialize some objects related to the query.
-            $matcher = MatcherFactory::getInstance($this->settings)->getMatcher(array(), $dataType);
-            $order = OrderFactory::getInstance($this->settings)->getOrder($dataType);
-
-            // Fetch objects via the Content Service.
-            $contentService = $this->getContentService($dataType)->findBy($matcher, $order);
-            $this->view->assign('objects', $contentService->getObjects());
-        }
-
-        // Initialize Content Element settings to be accessible across the request life cycle.
-        $contentObjectRenderer = $this->configurationManager->getContentObject();
-        ContentElementConfiguration::getInstance($contentObjectRenderer->data);
+        return $possibleMessage;
     }
 
     /**
