@@ -1,5 +1,5 @@
 <?php
-#namespace Fab\VidiFrontend\Backend;
+namespace Fab\VidiFrontend\Backend;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 /**
  * Class that adds the wizard icon.
  */
-class tx_vidifrontend_wizard
+class Wizard
 {
 
     /**
