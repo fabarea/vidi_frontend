@@ -74,7 +74,7 @@ class ShowButtonRenderer extends ColumnRendererAbstract
         $contentElementIdentifier =  ContentElementConfiguration::getInstance()->getIdentifier();
         $settings =  ContentElementConfiguration::getInstance()->getSettings();
 
-        if ($settings['parameterPrefix'] === PluginParameter::PREFIX) {
+        if (empty(trim($settings['parameterPrefix'])) || $settings['parameterPrefix'] === PluginParameter::PREFIX) {
             $arguments = array(
                 PluginParameter::PREFIX => array(
                     'content' => $this->object->getUid(),
@@ -84,11 +84,21 @@ class ShowButtonRenderer extends ColumnRendererAbstract
                 ),
             );
         } else {
-            $arguments = array(
-                $settings['parameterPrefix'] => array(
-                    'showUid' => $this->object->getUid(),
-                ),
-            );
+            $parts = GeneralUtility::trimExplode('|', $settings['parameterPrefix']);
+            if (count($parts) === 1) {
+                $parameterName = $parts[0];
+                $arguments = [
+                    $parameterName => $this->object->getUid(),
+                ];
+            } else {
+                $parameterPrefix = $parts[0];
+                $parameterName = $parts[1];
+                $arguments = [
+                    $parameterPrefix => [
+                        $parameterName => $this->object->getUid(),
+                    ],
+                ];
+            }
         }
 
         return $arguments;

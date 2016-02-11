@@ -61,8 +61,8 @@
 			<trans-unit id="settings.targetPageDetail">
 				<source>Target page for detail view. Let blank for current page.</source>
 			</trans-unit>
-			<trans-unit id="settings.parameterPefix">
-				<source>Parameter prefix for detail view. Default value is "tx_vidifrontend_pi1".</source>
+			<trans-unit id="settings.parameterPrefix">
+				<source>Parameter prefix and name for detail view, example value tx_plugin_pi1|showUid. If let empty, default is "tx_vidifrontend_pi1".</source>
 			</trans-unit>
 			<trans-unit id="settings.sorting">
 				<source>Default sorting</source>

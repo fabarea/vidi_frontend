@@ -249,7 +249,7 @@
 					<settings.parameterPrefix>
 						<TCEforms>
 							<label>
-								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.parameterPefix
+								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.parameterPrefix
 							</label>
 							<config>
 								<type>input</type>

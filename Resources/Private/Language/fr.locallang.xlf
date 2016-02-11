@@ -61,8 +61,8 @@
 			<trans-unit id="settings.targetPageDetail">
 				<target>Page cible pour la vue de détail. Si laissé blanc, page en cours.</target>
 			</trans-unit>
-			<trans-unit id="settings.parameterPefix">
-				<target>Paramètre préfixe pour la vue de détail. Valeur par défaut "tx_vidifrontend_pi1"</target>
+			<trans-unit id="settings.parameterPrefix">
+				<target>Paramètre préfixe pour la vue de détail, exemple tx_plugin_pi1|showUid. Si laissé vide, la valeur par défaut est "tx_vidifrontend_pi1"</target>
 			</trans-unit>
 			<trans-unit id="settings.sorting">
 				<target>Tri par défaut</target>
