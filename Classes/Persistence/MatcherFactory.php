@@ -37,35 +37,26 @@ class MatcherFactory implements SingletonInterface
     protected $settings = array();
 
     /**
-     * Constructor
-     *
-     * @param array $settings
-     */
-    public function __construct(array $settings)
-    {
-        $this->settings = $settings;
-    }
-
-    /**
      * Gets a singleton instance of this class.
      *
-     * @param array $settings
      * @return MatcherFactory
      */
-    static public function getInstance(array $settings)
+    static public function getInstance()
     {
-        return GeneralUtility::makeInstance(MatcherFactory::class, $settings);
+        return GeneralUtility::makeInstance(MatcherFactory::class);
     }
 
     /**
      * Returns a matcher object.
      *
+     * @param array $settings
      * @param array $matches
      * @param string $dataType
      * @return Matcher
      */
-    public function getMatcher($matches = array(), $dataType)
+    public function getMatcher(array $settings, $matches = array(), $dataType)
     {
+        $this->settings = $settings;
 
         /** @var $matcher Matcher */
         $matcher = GeneralUtility::makeInstance(\Fab\Vidi\Persistence\Matcher::class, $matches, $dataType);

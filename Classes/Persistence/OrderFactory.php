@@ -27,42 +27,28 @@ class OrderFactory implements SingletonInterface
 {
 
     /**
-     * @var array
-     */
-    protected $settings = array();
-
-    /**
-     * Constructor
-     *
-     * @param array $settings
-     */
-    public function __construct(array $settings)
-    {
-        $this->settings = $settings;
-    }
-
-    /**
      * Gets a singleton instance of this class.
      *
-     * @param array $settings
      * @return OrderFactory
      */
-    static public function getInstance(array $settings)
+    static public function getInstance()
     {
-        return GeneralUtility::makeInstance(OrderFactory::class, $settings);
+        return GeneralUtility::makeInstance(OrderFactory::class);
     }
 
     /**
      * Returns an order object.
      *
+     * @param array $settings
      * @param string $dataType
      * @return Order
      */
-    public function getOrder($dataType)
+    public function getOrder(array $settings, $dataType)
     {
-        if (isset($this->settings['sorting'])) {
-            $direction = isset($this->settings['direction']) ? $this->settings['direction'] : 'ASC';
-            $order = [$this->settings['sorting'] => $direction];
+
+        if (isset($settings['sorting'])) {
+            $direction = isset($settings['direction']) ? $settings['direction'] : 'ASC';
+            $order = [$settings['sorting'] => $direction];
         } else {
             // Default ordering
             $order = Tca::table($dataType)->getDefaultOrderings();
@@ -76,7 +62,7 @@ class OrderFactory implements SingletonInterface
             $direction = $orderings[0]['dir'];
 
             if ($columnPosition > 0) {
-                $columns = GeneralUtility::trimExplode(',', $this->settings['columns'], TRUE);
+                $columns = GeneralUtility::trimExplode(',', $settings['columns'], TRUE);
                 $field = $columns[$columnPosition];
 
                 $order = array(

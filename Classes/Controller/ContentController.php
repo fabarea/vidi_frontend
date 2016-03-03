@@ -105,8 +105,8 @@ class ContentController extends ActionController
             if (!$this->settings['loadContentByAjax']) {
 
                 // Initialize some objects related to the query.
-                $matcher = MatcherFactory::getInstance($this->settings)->getMatcher(array(), $dataType);
-                $order = OrderFactory::getInstance($this->settings)->getOrder($dataType);
+                $matcher = MatcherFactory::getInstance()->getMatcher($this->settings, array(), $dataType);
+                $order = OrderFactory::getInstance()->getOrder($this->settings, $dataType);
 
                 // Fetch objects via the Content Service.
                 $contentService = $this->getContentService($dataType)->findBy($matcher, $order);
@@ -138,7 +138,7 @@ class ContentController extends ActionController
         $settings = ContentElementConfiguration::getInstance($contentData)->getSettings();
 
         // Initialize some objects related to the query.
-        $matcher = MatcherFactory::getInstance($settings)->getMatcher(array(), $dataType);
+        $matcher = MatcherFactory::getInstance()->getMatcher($settings, array(), $dataType);
         if ($settings['logicalSeparator'] === Matcher::LOGICAL_OR) {
             $matcher->setLogicalSeparatorForEquals(Matcher::LOGICAL_OR);
             $matcher->setLogicalSeparatorForLike(Matcher::LOGICAL_OR);
@@ -147,7 +147,7 @@ class ContentController extends ActionController
             #$matcher->setDefaultLogicalSeparator(Matcher::LOGICAL_OR);
         }
 
-        $order = OrderFactory::getInstance($settings)->getOrder($dataType);
+        $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
         $pager = PagerFactory::getInstance()->getPager();
 
         // Fetch objects via the Content Service.
