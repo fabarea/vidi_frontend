@@ -20,7 +20,10 @@ use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
 use Fab\VidiFrontend\Persistence\PagerFactory;
 use Fab\VidiFrontend\Service\ContentElementService;
 use Fab\VidiFrontend\Service\ContentType;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Fab\Vidi\Domain\Model\Content;
 use Fab\VidiFrontend\Persistence\MatcherFactory;
@@ -76,19 +79,22 @@ class ContentController extends ActionController
      */
     public function indexAction()
     {
+
+        $settings = $this->computeFinalSettings($this->settings);
+
         $possibleMessage = null;
-        if (empty($this->settings['dataType'])) {
+        if (empty($settings['dataType'])) {
             $possibleMessage = '<strong style="color: red">Please select a content type to be displayed!</strong>';
         }
-        $dataType = $this->settings['dataType'];
+        $dataType = $settings['dataType'];
 
         // Set dynamic value for the sake of the Visual Search.
-        if ($this->settings['isVisualSearchBar']) {
-            $this->settings['loadContentByAjax'] = 1;
+        if ($settings['isVisualSearchBar']) {
+            $settings['loadContentByAjax'] = 1;
         }
 
         // Handle columns case
-        $columns = ColumnsConfiguration::getInstance()->get($dataType, $this->settings['columns']);
+        $columns = ColumnsConfiguration::getInstance()->get($dataType, $settings['columns']);
         if (empty($columns)) {
             $possibleMessage = '<strong style="color: red">Please select at least one column to be displayed!</strong>';
         } else {
@@ -96,17 +102,17 @@ class ContentController extends ActionController
             $this->view->assign('columns', $columns);
 
             // Assign values.
-            $this->view->assign('settings', $this->settings);
-            $this->view->assign('gridIdentifier', $this->getGridIdentifier());
+            $this->view->assign('settings', $settings);
+            $this->view->assign('gridIdentifier', $this->getGridIdentifier($settings));
             $this->view->assign('contentElementIdentifier', $this->configurationManager->getContentObject()->data['uid']);
             $this->view->assign('dataType', $dataType);
             $this->view->assign('objects', array());
 
-            if (!$this->settings['loadContentByAjax']) {
+            if (!$settings['loadContentByAjax']) {
 
                 // Initialize some objects related to the query.
-                $matcher = MatcherFactory::getInstance()->getMatcher($this->settings, array(), $dataType);
-                $order = OrderFactory::getInstance()->getOrder($this->settings, $dataType);
+                $matcher = MatcherFactory::getInstance()->getMatcher($settings, array(), $dataType);
+                $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
 
                 // Fetch objects via the Content Service.
                 $contentService = $this->getContentService($dataType)->findBy($matcher, $order);
@@ -136,6 +142,7 @@ class ContentController extends ActionController
         $this->configurationManager->setContentObject($contentObjectRenderer);
 
         $settings = ContentElementConfiguration::getInstance($contentData)->getSettings();
+        $settings = $this->computeFinalSettings($settings);
 
         // Initialize some objects related to the query.
         $matcher = MatcherFactory::getInstance()->getMatcher($settings, array(), $dataType);
@@ -170,17 +177,18 @@ class ContentController extends ActionController
      */
     public function showAction(Content $content)
     {
+        $settings = $this->computeFinalSettings($this->settings);
 
         // Configure the template path according to the Plugin settings.
-        $pathAbs = GeneralUtility::getFileAbsFileName($this->settings['templateDetail']);
+        $pathAbs = GeneralUtility::getFileAbsFileName($settings['templateDetail']);
         if (!is_file($pathAbs)) {
             return sprintf('<strong style="color:red;">I could not find the template file %s.</strong>', $pathAbs);
         }
 
         $variableName = 'object';
         $dataType = $this->getContentType()->getCurrentType();
-        if (isset($this->settings['fluidVariables'][$dataType]) && basename($this->settings['templateDetail']) !== 'Show.html') {
-            $variableName = $this->settings['fluidVariables'][$dataType];
+        if (isset($settings['fluidVariables'][$dataType]) && basename($settings['templateDetail']) !== 'Show.html') {
+            $variableName = $settings['fluidVariables'][$dataType];
         }
 
         $this->view->setTemplatePathAndFilename($pathAbs);
@@ -188,22 +196,38 @@ class ContentController extends ActionController
     }
 
     /**
+     * Merge with "raw" TypoScript configuration into Flexform settings.
+     *
+     * @param array $settings
+     * @return array
+     */
+    protected function computeFinalSettings(array $settings) {
+
+        $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $ts = GeneralUtility::removeDotsFromTS($configuration['plugin.']['tx_vidifrontend.']['settings.']);
+        ArrayUtility::mergeRecursiveWithOverrule($settings, $ts);
+
+        return $settings;
+    }
+
+    /**
      * Take some specific values and transform as as unique md5 identifier.
      *
+     * @param array $settings
      * @return string
      */
-    protected function getGridIdentifier()
+    protected function getGridIdentifier(array $settings)
     {
 
         $key = $this->configurationManager->getContentObject()->data['uid'];
-        $key .= $this->settings['dataType'];
-        $key .= $this->settings['columns'];
-        $key .= $this->settings['sorting'];
-        $key .= $this->settings['direction'];
-        $key .= $this->settings['defaultNumberOfItems'];
-        $key .= $this->settings['loadContentByAjax'];
-        $key .= $this->settings['facets'];
-        $key .= $this->settings['isVisualSearchBar'];
+        $key .= $settings['dataType'];
+        $key .= $settings['columns'];
+        $key .= $settings['sorting'];
+        $key .= $settings['direction'];
+        $key .= $settings['defaultNumberOfItems'];
+        $key .= $settings['loadContentByAjax'];
+        $key .= $settings['facets'];
+        $key .= $settings['isVisualSearchBar'];
         return md5($key);
     }
 
