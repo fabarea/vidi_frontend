@@ -64,6 +64,9 @@
 			<trans-unit id="settings.parameterPrefix">
 				<source>Parameter prefix and name for detail view, example value tx_plugin_pi1|showUid. If let empty, default is "tx_vidifrontend_pi1".</source>
 			</trans-unit>
+			<trans-unit id="settings.limit">
+				<source>Max limit of records (0 means not limit)</source>
+			</trans-unit>
 			<trans-unit id="settings.sorting">
 				<source>Default sorting</source>
 			</trans-unit>

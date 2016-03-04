@@ -52,6 +52,14 @@
 							</config>
 						</TCEforms>
 					</settings.additionalEquals>
+					<settings.limit>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.limit</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</settings.limit>
 					<settings.sorting>
 						<TCEforms>
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.sorting</label>

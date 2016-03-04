@@ -23,7 +23,6 @@ use Fab\VidiFrontend\Service\ContentType;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Fab\Vidi\Domain\Model\Content;
 use Fab\VidiFrontend\Persistence\MatcherFactory;
@@ -115,7 +114,7 @@ class ContentController extends ActionController
                 $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
 
                 // Fetch objects via the Content Service.
-                $contentService = $this->getContentService($dataType)->findBy($matcher, $order);
+                $contentService = $this->getContentService($dataType)->findBy($matcher, $order, (int)$settings['limit']);
                 $this->view->assign('objects', $contentService->getObjects());
             }
 
@@ -156,6 +155,12 @@ class ContentController extends ActionController
 
         $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
         $pager = PagerFactory::getInstance()->getPager();
+
+        // Restrict number of records.
+        if ((int)$settings['limit'] > 0) {
+            $pager->setLimit((int)$settings['limit']);
+            $pager->setOffset((int)$settings['limit']);
+        }
 
         // Fetch objects via the Content Service.
         $contentService = $this->getContentService($dataType)->findBy($matcher, $order, $pager->getLimit(), $pager->getOffset());
