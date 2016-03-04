@@ -290,6 +290,15 @@ It means when making a fresh build, the patch must be (for now) manually added::
 
 	-> There should be 2 occurrences. Comment lines below related to "_.defer".
 
+	# Remove assumed already jQuery from dependency
+	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.core.js > Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
+	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.position.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
+	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.widget.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
+	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.menu.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
+	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.autocomplete.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
+	curl http://documentcloud.github.io/visualsearch/vendor/underscore-1.5.2.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
+	curl http://documentcloud.github.io/visualsearch/vendor/backbone-1.1.0.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
+
 .. _Bower: http://bower.io/
 .. _Grunt: http://gruntjs.com/
 .. _Visual Search: http://documentcloud.github.io/visualsearch/
