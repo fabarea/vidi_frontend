@@ -15,7 +15,6 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid;
  */
 
 use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
-use Fab\VidiFrontend\Plugin\PluginParameter;
 use Fab\VidiFrontend\View\Grid\Row;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;

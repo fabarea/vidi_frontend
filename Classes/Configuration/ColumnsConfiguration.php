@@ -21,22 +21,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Retrieve columns configuration given CSV list of columns.
  */
-class ColumnsConfiguration implements SingletonInterface
+class ColumnsConfiguration
 {
-
-    /**
-     * @var array
-     */
-    protected $configuration = array();
 
     /**
      * Returns the configuration of a content element.
      *
-     * @return \Fab\VidiFrontend\Configuration\ColumnsConfiguration
+     * @return ColumnsConfiguration
      */
     static public function getInstance()
     {
-        return GeneralUtility::makeInstance('Fab\VidiFrontend\Configuration\ColumnsConfiguration');
+        return GeneralUtility::makeInstance(ColumnsConfiguration::class);
     }
 
     /**
@@ -49,13 +44,12 @@ class ColumnsConfiguration implements SingletonInterface
     public function get($dataType, $columnList = '')
     {
 
-        if (empty($this->configuration)) {
-            $columns = GeneralUtility::trimExplode(',', $columnList, TRUE);
-            foreach ($columns as $fieldNameAndPath) {
-                $this->configuration[$fieldNameAndPath] = FrontendTca::grid($dataType)->getField($fieldNameAndPath);
-            }
+        $configuration = [];
+        $columns = GeneralUtility::trimExplode(',', $columnList, TRUE);
+        foreach ($columns as $fieldNameAndPath) {
+            $configuration[$fieldNameAndPath] = FrontendTca::grid($dataType)->getField($fieldNameAndPath);
         }
-        return $this->configuration;
+        return $configuration;
     }
 
 }
