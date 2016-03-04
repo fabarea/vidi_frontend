@@ -46,7 +46,7 @@ class OrderFactory implements SingletonInterface
     public function getOrder(array $settings, $dataType)
     {
 
-        if (isset($settings['sorting'])) {
+        if (isset($settings['sorting']) && !empty($settings['sorting'])) {
             $direction = isset($settings['direction']) ? $settings['direction'] : 'ASC';
             $order = [$settings['sorting'] => $direction];
         } else {
