@@ -157,7 +157,7 @@ class Row extends AbstractComponentView
         $contentElementIdentifier =  ContentElementConfiguration::getInstance()->getIdentifier();
         $settings =  ContentElementConfiguration::getInstance()->getSettings();
 
-        if ($settings['parameterPrefix'] === PluginParameter::PREFIX) {
+        if ($settings['parameterPrefix'] === PluginParameter::PREFIX || empty($settings['parameterPrefix'])) {
             $arguments = array(
                 PluginParameter::PREFIX => array(
                     'content' => $object->getUid(),
