@@ -48,7 +48,18 @@
 						<TCEforms>
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.additionalEquals</label>
 							<config>
-								<type>input</type>
+								<type>text</type>
+								<rows>5</rows>
+								<cols>30</cols>
+								<default><![CDATA[# Example for Files (sys_file):
+# storage = 1,
+# identifier like /images/%,
+# metadata.categories = 1.
+
+# Example for Frontend Users (fe_users):
+# usergroup.uid = 1,2
+# lastname like customer%
+]]></default>
 							</config>
 						</TCEforms>
 					</settings.additionalEquals>

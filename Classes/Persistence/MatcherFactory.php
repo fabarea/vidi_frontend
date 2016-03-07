@@ -63,9 +63,7 @@ class MatcherFactory implements SingletonInterface
 
         $matcher = $this->applyCriteriaFromDataTables($matcher, $dataType);
         $matcher = $this->applyCriteriaFromSelection($matcher, $dataType);
-        $matcher = $this->applyCriteriaFromAdditionalConstraints($matcher); // ? @todo really useful?? could be given as example
-
-        // @todo Additional constraints = , like, >, >= , < , <=
+        $matcher = $this->applyCriteriaFromAdditionalConstraints($matcher);
 
         // Trigger signal for post processing Matcher Object.
         $this->emitPostProcessMatcherObjectSignal($matcher);
@@ -83,21 +81,27 @@ class MatcherFactory implements SingletonInterface
     {
 
         if (!empty($this->settings['additionalEquals'])) {
-            $constraints = GeneralUtility::trimExplode(',', $this->settings['additionalEquals'], TRUE);
+            $constraints = GeneralUtility::trimExplode("\n", $this->settings['additionalEquals'], TRUE);
             foreach ($constraints as $constraint) {
 
-                if (preg_match('/.+=.+/isU', $constraint, $matches)) {
-                    $constraintParts = GeneralUtility::trimExplode('=', $constraint, TRUE);
-                    if (count($constraintParts) === 2) {
-                        $matcher->equals(trim($constraintParts[0]), trim($constraintParts[1]));
-                    }
-                } elseif (preg_match('/.+like.+/isU', $constraint, $matches)) {
-                    $constraintParts = GeneralUtility::trimExplode('like', $constraint, TRUE);
-                    if (count($constraintParts) === 2) {
-                        $matcher->like(trim($constraintParts[0]), trim($constraintParts[1]));
+                // hidden feature, constraint should not starts with # which considered a commented statement
+                if (false === strpos($constraint, '#')) {
+
+                    if (preg_match('/(.+) (>=|>|<|<=|=|like) (.+)/is', $constraint, $matches) && count($matches) === 4) {
+
+                        $operator = $matcher->getSupportedOperators()[strtolower(trim($matches[2]))];
+                        $operand = trim($matches[1]);
+                        $value = trim($matches[3]);
+
+                        $matcher->$operator($operand, $value);
+                    } elseif (preg_match('/(.+) (in) (.+)/is', $constraint, $matches) && count($matches) === 4) {
+
+                        $operator = $matcher->getSupportedOperators()[trim($matches[2])];
+                        $operand = trim($matches[1]);
+                        $value = trim($matches[3]);
+                        $matcher->$operator($operand, GeneralUtility::trimExplode(',', $value, true));
                     }
                 }
-
             }
         }
         return $matcher;

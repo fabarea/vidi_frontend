@@ -74,7 +74,7 @@
 				<source>Default direction</source>
 			</trans-unit>
 			<trans-unit id="settings.additionalEquals">
-				<source>Additional comma separated constraints. Example for Files: storage= 1, identifier like /images/%, metadata.categories = 1</source>
+				<source><![CDATA[Additional constraints with possible operators = , >, >= , < , <=, like, in. Use one constraint per line.]]></source>
 			</trans-unit>
 			<trans-unit id="settings.gridClassName">
 				<source>Grid class name</source>
