@@ -54,7 +54,7 @@
 								<default><![CDATA[# Example for Files (sys_file):
 # storage = 1,
 # identifier like /images/%,
-# metadata.categories = 1.
+# metadata.categories = 1
 
 # Example for Frontend Users (fe_users):
 # usergroup.uid = 1,2
@@ -278,6 +278,28 @@
 				</el>
 			</ROOT>
 		</detailView>
+		<massActions>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.massActions
+					</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.actions>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.actions</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getActions</itemsProcFunc>
+								<size>10</size>
+								<maxitems>100</maxitems>
+							</config>
+						</TCEforms>
+					</settings.actions>
+				</el>
+			</ROOT>
+		</massActions>
 	</sheets>
 
 </T3DataStructure>

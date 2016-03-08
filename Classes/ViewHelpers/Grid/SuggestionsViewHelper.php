@@ -31,7 +31,6 @@ class SuggestionsViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        $dataType = $this->templateVariableContainer->get('dataType');
         $settings = $this->templateVariableContainer->get('settings');
 
         $suggestions = array();

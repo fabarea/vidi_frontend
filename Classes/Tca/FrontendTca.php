@@ -42,7 +42,6 @@ class FrontendTca implements SingletonInterface, TcaServiceInterface
      */
     static public function getService($tableName, $serviceType)
     {
-
         if (empty(self::$instances[$tableName][$serviceType])) {
             $className = sprintf('Fab\VidiFrontend\Tca\Frontend%sService', ucfirst($serviceType));
 

@@ -25,6 +25,9 @@
 			<trans-unit id="flexform.tab.detailView">
 				<source>Detail view</source>
 			</trans-unit>
+			<trans-unit id="flexform.tab.massActions">
+				<source>Mass actions</source>
+			</trans-unit>
 			<trans-unit id="settings.select">
 				<source>Select one...</source>
 			</trans-unit>
@@ -81,6 +84,9 @@
 			</trans-unit>
 			<trans-unit id="settings.hasColumnHeaders">
 				<source>Display column headers</source>
+			</trans-unit>
+			<trans-unit id="settings.actions">
+				<source>Actions</source>
 			</trans-unit>
 			<trans-unit id="settings.gridConfiguration">
 				<source>Grid configuration</source>
@@ -143,6 +149,24 @@
 			</trans-unit>
 			<trans-unit id="grid.lengthMenu.all">
 				<source>All</source>
+			</trans-unit>
+			<trans-unit id="grid.rows.selected">
+				<source>For selected rows (%s)</source>
+			</trans-unit>
+			<trans-unit id="grid.rows.all">
+				<source>For all rows (%s)</source>
+			</trans-unit>
+			<trans-unit id="grid.rows">
+				<source>For all rows</source>
+			</trans-unit>
+			<trans-unit id="export.xls">
+				<source>Export XLS</source>
+			</trans-unit>
+			<trans-unit id="export.xml">
+				<source>Export XML</source>
+			</trans-unit>
+			<trans-unit id="export.csv">
+				<source>Export CSV</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -19,6 +19,8 @@ use Fab\Vidi\Domain\Repository\ContentRepositoryFactory;
 use Fab\Vidi\Persistence\Matcher;
 use Fab\Vidi\Persistence\Order;
 use Fab\Vidi\Signal\AfterFindContentObjectsSignalArguments;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Service related to the Content.
@@ -34,7 +36,7 @@ class ContentService
     /**
      * @var \Fab\Vidi\Domain\Model\Content[]
      */
-    protected $objects = array();
+    protected $objects = [];
 
     /**
      * @var int
@@ -45,7 +47,7 @@ class ContentService
      * Constructor
      *
      * @param string $dataType
-     * @return \Fab\VidiFrontend\Service\ContentService
+     * @return ContentService
      */
     public function __construct($dataType)
     {
@@ -94,8 +96,8 @@ class ContentService
     protected function emitAfterFindContentObjectsSignal($contentObjects, Matcher $matcher, $limit = 0, $offset = 0)
     {
 
-        /** @var \Fab\Vidi\Signal\AfterFindContentObjectsSignalArguments $signalArguments */
-        $signalArguments = GeneralUtility::makeInstance('Fab\Vidi\Signal\AfterFindContentObjectsSignalArguments');
+        /** @var AfterFindContentObjectsSignalArguments $signalArguments */
+        $signalArguments = GeneralUtility::makeInstance(AfterFindContentObjectsSignalArguments::class);
         $signalArguments->setDataType($this->dataType)
             ->setContentObjects($contentObjects)
             ->setMatcher($matcher)
@@ -103,21 +105,29 @@ class ContentService
             ->setOffset($offset)
             ->setHasBeenProcessed(FALSE);
 
-        $signalResult = $this->getSignalSlotDispatcher()->dispatch('Fab\VidiFrontend\Service\ContentService', 'afterFindContentObjects', array($signalArguments));
+        $signalResult = $this->getSignalSlotDispatcher()->dispatch(ContentService::class, 'afterFindContentObjects', array($signalArguments));
         return $signalResult[0];
     }
 
     /**
      * Get the SignalSlot dispatcher.
      *
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @return Dispatcher
      */
     protected function getSignalSlotDispatcher()
     {
 
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        return $objectManager->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        return $objectManager->get(Dispatcher::class);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataType()
+    {
+        return $this->dataType;
     }
 
     /**

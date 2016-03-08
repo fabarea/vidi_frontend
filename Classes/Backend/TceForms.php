@@ -16,6 +16,7 @@ namespace Fab\VidiFrontend\Backend;
 
 use Fab\Vidi\Domain\Model\Selection;
 use Fab\Vidi\Facet\FacetInterface;
+use Fab\Vidi\Module\ModuleLoader;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -180,8 +181,8 @@ class TceForms
     {
         $configuration = $this->getPluginConfiguration();
 
-        if (empty($configuration) || empty($configuration['settings']['templates'])) {
-            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
+        if (0 === count($configuration) || empty($configuration['settings']['templates'])) {
+            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
         } else {
 
             if (version_compare(TYPO3_branch, '7.0', '<')) {
@@ -210,8 +211,8 @@ class TceForms
 
         $configuration = $this->getPluginConfiguration();
 
-        if (empty($configuration) || empty($configuration['settings']['templates'])) {
-            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
+        if (0 === count($configuration) || empty($configuration['settings']['templates'])) {
+            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
         } else {
 
 
@@ -233,6 +234,37 @@ class TceForms
     }
 
     /**
+     * This method modifies the list of items for FlexForm "actions".
+     *
+     * @param array $parameters
+     */
+    public function getActions(&$parameters)
+    {
+
+        $configuration = $this->getPluginConfiguration();
+
+        if (0 === count($configuration) || empty($configuration['settings']['templates'])) {
+            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
+        } else {
+
+            if (version_compare(TYPO3_branch, '7.0', '<')) {
+                $configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
+            } else {
+                $configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
+            }
+
+            if (empty($configuredDataType)) {
+                $parameters['items'][] = array('No columns to display yet! Save this record.', '', NULL);
+            } else {
+                foreach (FrontendTca::grid($configuredDataType)->getMassActions() as $action) {
+                    $values = array($action->getName(), $action->getName(), NULL);
+                    $parameters['items'][] = $values;
+                }
+            }
+        }
+    }
+
+    /**
      * This method modifies the list of items for FlexForm "facets".
      *
      * @param array $parameters
@@ -241,8 +273,8 @@ class TceForms
     {
         $configuration = $this->getPluginConfiguration();
 
-        if (empty($configuration) || empty($configuration['settings']['templates'])) {
-            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
+        if (0 === count($configuration) || empty($configuration['settings']['templates'])) {
+            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
         } else {
 
             if (version_compare(TYPO3_branch, '7.0', '<')) {
@@ -272,14 +304,14 @@ class TceForms
     {
         $configuration = $this->getPluginConfiguration();
 
-        if (empty($configuration) || empty($configuration['settings']['templates'])) {
-            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
+        if (0 === count($configuration) || empty($configuration['settings']['templates'])) {
+            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
         } else {
 
             $parameters['items'][] = array('', '', null);
 
             /** @var \Fab\Vidi\Domain\Repository\SelectionRepository $selectionRepository */
-            $selectionRepository = $this->getObjectManager()->get('Fab\Vidi\Domain\Repository\SelectionRepository');
+            $selectionRepository = $this->getObjectManager()->get(\Fab\Vidi\Domain\Repository\SelectionRepository::class);
 
             if (version_compare(TYPO3_branch, '7.0', '<')) {
                 $configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
@@ -311,8 +343,8 @@ class TceForms
     {
         $configuration = $this->getPluginConfiguration();
 
-        if (empty($configuration) || empty($configuration['settings']['templates'])) {
-            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
+        if (0 === count($configuration) || empty($configuration['settings']['templates'])) {
+            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
         } else {
 
             if (version_compare(TYPO3_branch, '7.0', '<')) {
@@ -358,7 +390,7 @@ class TceForms
 
         $configuredDataType = '';
 
-        if (!empty($flexform)) {
+        if (0 !== count($flexform)) {
 
             $normalizedFlexform = $this->normalizeFlexForm($flexform);
             if (!empty($normalizedFlexform['settings']['dataType'])) {

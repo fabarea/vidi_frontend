@@ -167,11 +167,21 @@ class Row extends AbstractComponentView
                 ),
             );
         } else {
-            $arguments = array(
-                $settings['parameterPrefix'] => array(
-                    'showUid' => $object->getUid(),
-                ),
-            );
+            $parts = GeneralUtility::trimExplode('|', $settings['parameterPrefix']);
+            if (count($parts) === 1) {
+                $parameterName = $parts[0];
+                $arguments = [
+                    $parameterName => $object->getUid(),
+                ];
+            } else {
+                $parameterPrefix = $parts[0];
+                $parameterName = $parts[1];
+                $arguments = [
+                    $parameterPrefix => [
+                        $parameterName => $object->getUid(),
+                    ],
+                ];
+            }
         }
 
         return $arguments;

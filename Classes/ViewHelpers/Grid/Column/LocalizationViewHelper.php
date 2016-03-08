@@ -45,7 +45,8 @@ class LocalizationViewHelper extends AbstractViewHelper
             'infoFiltered',
             'loadingRecords',
             'zeroRecords',
-            'emptyTable',
+            'rows.all',
+            'rows.selected',
         );
 
         foreach ($labels as $label) {

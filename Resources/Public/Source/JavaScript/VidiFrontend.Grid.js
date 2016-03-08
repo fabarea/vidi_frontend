@@ -13,12 +13,13 @@ if (window.VidiFrontend === undefined) {
  */
 VidiFrontend.Grid = {
 
+	storage: {},
+
 	/**
-	 * @param {object} $
 	 * @return void
 	 */
-	initialize: function($) {
-
+	initialize: function() {
+		var $ = this.getJQuery();
 		_.each(VidiFrontend.settings, function(settings, identifier) {
 
 			// Initialize labels and values for the search
@@ -110,6 +111,13 @@ VidiFrontend.Grid = {
 
 					// Possibly animate row
 					VidiFrontend.Grid.animateRow($, identifier);
+
+					// Adjust possible mass-action label with number of records.
+					if (typeof(VidiFrontend.grids[identifier]) === 'object') {
+						var labels = VidiFrontend.settings[identifier]['language'];
+						var massActionLabel = labels['rows.all'].replace('%s', VidiFrontend.grids[identifier].fnSettings().fnRecordsTotal());
+						$('.mass-action-label-' + identifier).html('<span class="caret"></span> ' + massActionLabel);
+					}
 				}
 			};
 
@@ -143,12 +151,14 @@ VidiFrontend.Grid = {
 						data[VidiFrontend.parameterPrefix + '[contentData]'] = settings.contentElementIdentifier;
 
 						// Handle the search term parameter coming from the Visual Search bar.
+						VidiFrontend.Grid.storage[identifier] = '';
 						if (data.search.value) {
 
 							// Save raw query to be used in Selection for instance.
 							data.search.value = VidiFrontend.VisualSearch.convertExpression(data.search.value, settings);
 
 							data[VidiFrontend.parameterPrefix + '[searchTerm]'] = data.search.value;
+							VidiFrontend.Grid.storage[identifier] = data.search.value;
 						}
 
 						// Visual effect
@@ -168,6 +178,12 @@ VidiFrontend.Grid = {
 
 			options = VidiFrontend.Grid.initializeDefaultSearch(options, identifier);
 			VidiFrontend.grids[identifier] = $('#grid-' + identifier).dataTable(options);
+
+			// Adjust possible mass-action label with number of records.
+			var labels = VidiFrontend.settings[identifier]['language'];
+			var massActionLabel = labels['rows.all'].replace('%s', VidiFrontend.grids[identifier].fnSettings().fnRecordsTotal());
+
+			$('.mass-action-label-' + identifier).html('<span class="caret"></span> ' + massActionLabel);
 		}); // end each
 	},
 
@@ -233,8 +249,44 @@ VidiFrontend.Grid = {
 	/**
 	 * @return void
 	 */
-	attachHandler: function($) {
+	attachHandler: function() {
+		var $ = this.getJQuery();
 		_.each(VidiFrontend.settings, function(settings, identifier) {
+
+			/**
+			 * After click on menu, call the export URL.
+			 */
+			$(document).on('click', '#grid-' + settings.gridIdentifier + ' .btn-export', function(e) {
+				e.preventDefault();
+				var uri = $(this).attr('href');
+				if (VidiFrontend.Grid.hasSelectedRows(identifier)) {
+					var selectedIdentifiers = VidiFrontend.Grid.getSelectedIdentifiers(identifier);
+					uri = uri.replace(encodeURI('[matches]='), decodeURI('[matches][uid]=' + selectedIdentifiers.join(',')));
+				}
+
+				if (typeof(VidiFrontend.Grid.storage[identifier]) === 'string') {
+					uri += '&search=' + VidiFrontend.Grid.storage[identifier];
+				}
+				window.location = uri;
+			});
+
+			/**
+			 * Update possible dropdown menu at the bottom of the grid.
+			 */
+			$(document).on('click', '#grid-' + settings.gridIdentifier + ' tbody .checkbox-row', function() {
+
+				var labels = VidiFrontend.settings[identifier]['language'];
+				var massActionLabel;
+				if (VidiFrontend.Grid.hasSelectedRows(identifier)) {
+					massActionLabel = labels['rows.selected']; //TYPO3.l10n.localize('for_selected_rows', {0: Vidi.Grid.getNumberOfSelectedRows()});
+					massActionLabel = massActionLabel.replace('%s', VidiFrontend.Grid.getNumberOfSelectedRows(identifier));
+				} else {
+					massActionLabel = labels['rows.all']; // massActionLabel = TYPO3.l10n.localize('for_all_rows', {0: Vidi.Grid.getStoredTransaction().fnRecordsTotal()});
+					massActionLabel = massActionLabel.replace('%s', VidiFrontend.grids[identifier].fnSettings().fnRecordsTotal());
+				}
+
+				$('.mass-action-label-' + identifier).html('<span class="caret"></span> ' + massActionLabel);
+			});
 
 			/**
 			 * Select or deselect all rows at once.
@@ -283,5 +335,70 @@ VidiFrontend.Grid = {
 				});
 			}
 		});
+	}, // end AttachHandler
+
+
+	/**
+	 * Return identifiers corresponding to selected rows in the Grid.
+	 *
+	 * @return {Array}
+	 */
+	getSelectedIdentifiers: function(identifier) {
+		var $ = this.getJQuery();
+		var selectedIdentifiers = [];
+		$('#grid-' + identifier)
+			.find('.checkbox-row')
+			.filter(':checked')
+			.each(function(index) {
+				var identifier = $(this).data('uid');
+				selectedIdentifiers.push(identifier);
+			});
+
+		return selectedIdentifiers;
+	},
+
+	/**
+	 * @param {string} identifier
+	 * @returns {int}
+	 */
+	getNumberOfRows: function(identifier) {
+		var $ = this.getJQuery();
+		var numberOfRows = $('#grid-' + identifier)
+			.find('tbody tr').length;
+
+		return numberOfRows;
+	},
+
+	/**
+	 * Return the number of selected rows.
+	 *
+	 * @return {int}
+	 */
+	getNumberOfSelectedRows: function(identifier) {
+		return VidiFrontend.Grid.getSelectedIdentifiers(identifier).length;
+	},
+
+	/**
+	 * Tells whether the Grid has selected rows.
+	 *
+	 * @return {boolean}
+	 */
+	hasSelectedRows: function(identifier) {
+		return VidiFrontend.Grid.getSelectedIdentifiers(identifier).length > 0;
+	},
+
+	/**
+	 *
+	 * @returns {*}
+	 */
+	getJQuery: function(){
+		return VidiFrontend.Grid.jQuery;
+	},
+
+	/**
+	 * @param jQuery
+	 */
+	setJQuery: function(jQuery){
+		VidiFrontend.Grid.jQuery = jQuery;
 	}
 };

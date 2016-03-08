@@ -14,12 +14,16 @@ namespace Fab\VidiFrontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Fab\Vidi\Persistence\Matcher;
 use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
 use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
+use Fab\VidiFrontend\MassAction\MassActionInterface;
 use Fab\VidiFrontend\Persistence\PagerFactory;
 use Fab\VidiFrontend\Service\ContentElementService;
+use Fab\VidiFrontend\Service\ContentService;
 use Fab\VidiFrontend\Service\ContentType;
+use Fab\VidiFrontend\Tca\FrontendTca;
+use Fab\VidiFrontend\TypeConverter\ContentConverter;
+use Fab\VidiFrontend\TypeConverter\ContentDataConverter;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -42,28 +46,18 @@ class ContentController extends ActionController
 
         if ($this->arguments->hasArgument('content')) {
 
-            /** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
-            $typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\ContentConverter');
+            /** @var ContentConverter $typeConverter */
+            $typeConverter = $this->objectManager->get(ContentConverter::class);
 
             $this->arguments->getArgument('content')
                 ->getPropertyMappingConfiguration()
                 ->setTypeConverter($typeConverter);
         }
 
-        if ($this->arguments->hasArgument('columns')) {
-
-            /** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
-            $typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\ArrayConverter');
-
-            $this->arguments->getArgument('columns')
-                ->getPropertyMappingConfiguration()
-                ->setTypeConverter($typeConverter);
-        }
-
         if ($this->arguments->hasArgument('contentData')) {
 
-            /** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
-            $typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\ContentDataConverter');
+            /** @var ContentConverter $typeConverter */
+            $typeConverter = $this->objectManager->get(ContentDataConverter::class);
 
             $this->arguments->getArgument('contentData')
                 ->getPropertyMappingConfiguration()
@@ -74,16 +68,14 @@ class ContentController extends ActionController
     /**
      * List action for this controller.
      *
-     * @return string|null
+     * @return void
      */
     public function indexAction()
     {
-
         $settings = $this->computeFinalSettings($this->settings);
 
-        $possibleMessage = null;
         if (empty($settings['dataType'])) {
-            $possibleMessage = '<strong style="color: red">Please select a content type to be displayed!</strong>';
+            $this->redirect('warn', null, null, ['code' => 1457540575]);
         }
         $dataType = $settings['dataType'];
 
@@ -94,65 +86,55 @@ class ContentController extends ActionController
 
         // Handle columns case
         $columns = ColumnsConfiguration::getInstance()->get($dataType, $settings['columns']);
-        if (empty($columns)) {
-            $possibleMessage = '<strong style="color: red">Please select at least one column to be displayed!</strong>';
-        } else {
-
-            $this->view->assign('columns', $columns);
-
-            // Assign values.
-            $this->view->assign('settings', $settings);
-            $this->view->assign('gridIdentifier', $this->getGridIdentifier($settings));
-            $this->view->assign('contentElementIdentifier', $this->configurationManager->getContentObject()->data['uid']);
-            $this->view->assign('dataType', $dataType);
-            $this->view->assign('objects', array());
-
-            if (!$settings['loadContentByAjax']) {
-
-                // Initialize some objects related to the query.
-                $matcher = MatcherFactory::getInstance()->getMatcher($settings, array(), $dataType);
-                $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
-
-                // Fetch objects via the Content Service.
-                $contentService = $this->getContentService($dataType)->findBy($matcher, $order, (int)$settings['limit']);
-                $this->view->assign('objects', $contentService->getObjects());
-            }
-
-            // Initialize Content Element settings to be accessible across the request life cycle.
-            $contentObjectRenderer = $this->configurationManager->getContentObject();
-            ContentElementConfiguration::getInstance($contentObjectRenderer->data);
+        if (count($columns) === 0) {
+            $this->redirect('warn', null, null, ['code' => 1457540589]);
         }
 
-        return $possibleMessage;
+        // Assign values.
+        $this->view->assign('columns', $columns);
+        $this->view->assign('settings', $settings);
+        $this->view->assign('gridIdentifier', $this->getGridIdentifier($settings));
+        $this->view->assign('contentElementIdentifier', $this->configurationManager->getContentObject()->data['uid']);
+        $this->view->assign('dataType', $dataType);
+        $this->view->assign('objects', array());
+        $this->view->assign('numberOfColumns', count($columns));
+
+        if (!$settings['loadContentByAjax']) {
+
+            // Initialize some objects related to the query.
+            $matcher = MatcherFactory::getInstance()->getMatcher($settings, array(), $dataType);
+            $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
+
+            // Fetch objects via the Content Service.
+            $contentService = $this->getContentService($dataType)->findBy($matcher, $order, (int)$settings['limit']);
+            $this->view->assign('objects', $contentService->getObjects());
+        }
+
+        // Initialize Content Element settings to be accessible across the request life cycle.
+        $contentObjectRenderer = $this->configurationManager->getContentObject();
+        ContentElementConfiguration::getInstance($contentObjectRenderer->data);
     }
 
     /**
      * List Row action for this controller. Output a json list of contents
      *
      * @param array $contentData
+     * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
      * @return void
      */
     public function listAction(array $contentData)
     {
-        $dataType = GeneralUtility::_GP('dataType');
+        $settings = ContentElementConfiguration::getInstance($contentData)->getSettings();
+        $settings = $this->computeFinalSettings($settings);
+
+        $dataType = $settings['dataType'];
 
         // In the context of Ajax, we must define manually the current Content Element object.
         $contentObjectRenderer = $this->getContentElementService($dataType)->getContentObjectRender($contentData);
         $this->configurationManager->setContentObject($contentObjectRenderer);
 
-        $settings = ContentElementConfiguration::getInstance($contentData)->getSettings();
-        $settings = $this->computeFinalSettings($settings);
-
         // Initialize some objects related to the query.
         $matcher = MatcherFactory::getInstance()->getMatcher($settings, array(), $dataType);
-        if ($settings['logicalSeparator'] === Matcher::LOGICAL_OR) {
-            $matcher->setLogicalSeparatorForEquals(Matcher::LOGICAL_OR);
-            $matcher->setLogicalSeparatorForLike(Matcher::LOGICAL_OR);
-            $matcher->setLogicalSeparatorForIn(Matcher::LOGICAL_OR);
-            #$matcher->setLogicalSeparatorForSearchTerm(Matcher::LOGICAL_OR);
-            #$matcher->setDefaultLogicalSeparator(Matcher::LOGICAL_OR);
-        }
-
         $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
         $pager = PagerFactory::getInstance()->getPager();
 
@@ -177,8 +159,83 @@ class ContentController extends ActionController
     }
 
     /**
+     * List Row action for this controller. Output a json list of contents
+     *
+     * @param array $contentData
+     * @param string $actionName
+     * @param array $matches
+     * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
+     * @return string
+     */
+    public function executeAction(array $contentData, $actionName, array $matches = [])
+    {
+        $settings = ContentElementConfiguration::getInstance($contentData)->getSettings();
+        $settings = $this->computeFinalSettings($settings);
+
+        $dataType = $settings['dataType'];
+
+        $massActions = FrontendTca::grid($dataType)->getMassActions();
+
+        if (empty($massActions[$actionName])) {
+            $this->redirect('warn', null, null, ['code' => 1457540597]);
+        }
+
+        // In the context of Ajax, we must define manually the current Content Element object.
+        $contentObjectRenderer = $this->getContentElementService($dataType)->getContentObjectRender($contentData);
+        $this->configurationManager->setContentObject($contentObjectRenderer);
+
+        // Initialize some objects related to the query.
+        $matcher = MatcherFactory::getInstance()->getMatcher($settings, $matches, $dataType);
+        $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
+
+        // Fetch objects via the Content Service.
+        $contentService = $this->getContentService($dataType)->findBy($matcher, $order);
+
+        // Assign values.
+        $this->view->assign('objects', $contentService->getObjects());
+        $this->view->assign('numberOfObjects', $contentService->getNumberOfObjects());
+
+        /** @var MassActionInterface $action */
+        $action = $massActions[$actionName];
+        $result = $action->with($settings)->execute($contentService);
+
+        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Response $response */
+        $response = $this->response;
+        foreach ($result->getHeaders() as $name => $value) {
+            $response->setHeader($name, $value);
+        }
+        $response->sendHeaders();
+
+        return $result->getOutput();
+    }
+
+    /**
+     * @param int $code
+     * @return string
+     */
+    public function warnAction($code = null)
+    {
+        $message = 'An unknown error happened';
+        if ((int)$code === 1457540575) {
+            $message = 'Please select a content type to be displayed!';
+        } elseif ((int)$code === 1457540589) {
+            $message = 'Please select at least one column to be displayed!';
+        } elseif ((int)$code === 1457540597) {
+            $message = 'Action Name is not valid';
+        } elseif ((int)$code === 1457551693) {
+            $message = 'I could not find the appropriate template file';
+        }
+
+        return sprintf(
+            '<strong style="color: red">%s%s</strong>',
+            $message,
+            GeneralUtility::getApplicationContext()->isDevelopment() ? ', code: ' . $code : ''
+        );
+    }
+
+    /**
      * @param Content $content
-     * @return string|void
+     * @return void
      */
     public function showAction(Content $content)
     {
@@ -187,7 +244,8 @@ class ContentController extends ActionController
         // Configure the template path according to the Plugin settings.
         $pathAbs = GeneralUtility::getFileAbsFileName($settings['templateDetail']);
         if (!is_file($pathAbs)) {
-            return sprintf('<strong style="color:red;">I could not find the template file %s.</strong>', $pathAbs);
+            return ''; // Prevent bug if two vidi plugins are installed on the same page and one has not template detail.
+            $this->redirect('warn', null, null, ['code' => 1457551693]);
         }
 
         $variableName = 'object';
@@ -240,11 +298,11 @@ class ContentController extends ActionController
      * Get the Vidi Module Loader.
      *
      * @param string $dataType
-     * @return \Fab\VidiFrontend\Service\ContentService
+     * @return ContentService
      */
     protected function getContentService($dataType)
     {
-        return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentService', $dataType);
+        return GeneralUtility::makeInstance(ContentService::class, $dataType);
     }
 
     /**

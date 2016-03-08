@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('TYPO3_MODE')) die ('Access denied.');
 
 $tca = array(
@@ -19,6 +20,9 @@ $tca = array(
                 'sortable' => false
             ],
         ],
+        'actions' => [
+            #new \Vendor\MyExt\MassAction\MyAction(),
+        ]
     ],
 );
 

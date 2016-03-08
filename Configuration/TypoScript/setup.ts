@@ -77,3 +77,29 @@ page_1416239670 {
 		}
 	}
 }
+
+page_1457381088 = PAGE
+page_1457381088 {
+	typeNum = 1457381088
+	config {
+		xhtml_cleaning = 0
+		admPanel = 0
+		disableAllHeaderCode = 1
+		disablePrefixComment = 1
+		debug = 0
+		#additionalHeaders = Content-type:application/json
+	}
+	10 = USER_INT
+	10 {
+		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+		extensionName = VidiFrontend
+		pluginName = Pi1
+		vendorName = Fab
+		switchableControllerActions {
+			Content {
+				1 = execute
+				2 = warn
+			}
+		}
+	}
+}

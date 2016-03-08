@@ -14,7 +14,7 @@ namespace Fab\VidiFrontend\Tca;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Fab\VidiFrontend\MassAction\MassActionInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use Fab\Vidi\Exception\InvalidKeyInArrayException;
 use Fab\Vidi\Facet\FacetInterface;
@@ -87,8 +87,39 @@ class FrontendGridService extends GridService
     public function getFields()
     {
         $allFields = Tca::grid($this->tableName)->getAllFields();
-        $frontendFields = is_array($this->tca['columns']) ? $this->tca['columns'] : array();
+        $frontendFields = is_array($this->tca['columns']) ? $this->tca['columns'] : [];
         return array_merge($allFields, $frontendFields);
+    }
+
+    /**
+     * Returns an array containing column actions.
+     *
+     * @return MassActionInterface[]
+     */
+    public function getMassActions()
+    {
+
+
+        // Default classes
+        $xlsAction = new \Fab\VidiFrontend\MassAction\ExportXlsAction();
+        $xmlAction = new \Fab\VidiFrontend\MassAction\ExportXmlAction();
+        $csvAction = new \Fab\VidiFrontend\MassAction\ExportCsvAction();
+        $divider = new \Fab\VidiFrontend\MassAction\DividerMenuItem();
+
+        $massAction = [
+            $xlsAction->getName() => $xlsAction,
+            $xmlAction->getName() => $xmlAction,
+            $csvAction->getName() => $csvAction,
+            $divider->getName() => $divider,
+        ];
+
+        if (is_array($this->tca['actions'])) {
+            /** @var MassActionInterface $action */
+            foreach ($this->tca['actions'] as $action) {
+                $massAction[$action->getName()] = $action;
+            }
+        }
+        return $massAction;
     }
 
     /**

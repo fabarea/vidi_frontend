@@ -7,10 +7,10 @@ if (!defined('TYPO3_MODE')) {
     'Fab.vidi_frontend',
     'Pi1',
     array(
-        'Content' => 'index, list, show',
+        'Content' => 'index, list, show, execute, warn',
     ),
     array(
-        'Content' => 'list',
+        'Content' => 'list, execute',
     )
 );
 
@@ -23,4 +23,3 @@ $signalSlotDispatcher->connect(
     'tweakFileReferences',
     TRUE
 );
-

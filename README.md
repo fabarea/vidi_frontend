@@ -1,18 +1,16 @@
 Vidi for TYPO3 CMS
 ==================
 
-Generic List Component where Content can be filtered in an advanced way... Veni, vidi, vici! This extension is based on `Vidi`_ which provides more or
+Generic List Component where Content can be filtered in an advanced way... Veni, vidi, vici! This extension is based on [Vidi](https://github.com/fabarea/vidi) which provides more or
 less the same feature set but in the Backend.
 
 .. image:: https://raw.github.com/Ecodev/vidi_frontend/master/Documentation/Frontend-01.png
 
 Once installed, it can be configured what content type to render associated with a customizable template in the plugin record in the Backend.
-On the Frontend side, we use the excellent `DataTables`_ which is a powerful jQuery plugin smart and fast to sort and filter data.
-The Filter bar is provided by the `Visual Search`_ jQuery plugin which offers nice facet capabilities and intuitive search.
+On the Frontend side, we use the excellent [DataTables](http://www.datatables.net/) which is a powerful jQuery plugin smart and fast to sort and filter data.
+The Filter bar is provided by the [Visual Search](http://documentcloud.github.io/visualsearch/) jQuery plugin which offers nice facet capabilities and intuitive search.
 
 Live example http://www.washinhcf.org/resources/publications/
-
-.. _Vidi:: https://github.com/fabarea/vidi
 
 Project info and releases
 -------------------------
@@ -23,8 +21,6 @@ http://typo3.org/extensions/repository/view/vidi_frontend
 Development version:
 https://github.com/Ecodev/vidi_frontend
 
-::
-
 	git clone https://github.com/Ecodev/vidi_frontend.git
 
 News about latest development are also announced on http://twitter.com/fudriot
@@ -32,7 +28,7 @@ News about latest development are also announced on http://twitter.com/fudriot
 Installation and requirement
 ============================
 
-The extension **requires TYPO3 6.2 or greater** . Install the extension as normal in the Extension Manager from the `TER`_ or download the Git version::
+The extension **requires TYPO3 6.2 or greater** . Install the extension as normal in the Extension Manager from the [TER](http://typo3.org/extensions/repository/view/vidi_frontend) or download the Git version:
 
 	# local installation
 	cd typo3conf/ext
@@ -42,11 +38,9 @@ The extension **requires TYPO3 6.2 or greater** . Install the extension as norma
 
 	-> next step, is to open the Extension Manager in the BE.
 
-.. _TER: http://typo3.org/extensions/repository/view/vidi_frontend
-
 You are almost there! Create a Content Element of type "Vidi Frontend" in `General Plugin` > `Generic List Component` and configure at your convenience.
 
-.. image:: https://raw.github.com/Ecodev/vidi_frontend/master/Documentation/Backend-01.png
+![](https://raw.github.com/Ecodev/vidi_frontend/master/Documentation/Backend-01.png)
 
 Configuration
 =============
@@ -87,7 +81,6 @@ Assumming we want a complete customized output for a column, we can can achieve 
 Here is an exemple for table `fe_users`.
 We first have to register the new column in the TCA in some `Configuration/TCA/Override/fe_users.php`.
 
-::
 
 	$tca = [
 		'grid_frontend' => [
@@ -108,7 +101,7 @@ We first have to register the new column in the TCA in some `Configuration/TCA/O
 
 	\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TCA']['fe_users'], $tca);
 
-The corresponding class to be placed in `EXT:MyExt/Classes/Grid/MyColumnRenderer`::
+The corresponding class to be placed in `EXT:MyExt/Classes/Grid/MyColumnRenderer`:
 
 	namespace Vendor\MyExt\Grid;
 
@@ -131,7 +124,7 @@ Adjust column configuration
 ---------------------------
 
 Configuration of the columns is taken from the TCA. Sometimes we need to adjust its configuration for the Frontend and we can simply enriches it.
-Best is to learn by example and get inspired by ``EXT:vidi_frontend/Configuration/TCA/fe_users.php``::
+Best is to learn by example and get inspired by ``EXT:vidi_frontend/Configuration/TCA/fe_users.php``:
 
 	$tca = array(
 		'grid_frontend' => array(
@@ -149,8 +142,6 @@ Custom Facets
 
 Facets are visible in the Visual Search and enable the search by criteria. Facets are generally mapped to a field but it is not mandatory ; it can be arbitrary values. To provide a custom Facet, the interface `\Fab\Vidi\Facet\FacetInterface` must be implemented. Best is to take inspiration of the `\Fab\Vidi\Facet\StandardFacet` and provide your own implementation.
 
-::
-
 	$tca = [
 		'grid_frontend' => [
 			'facets' => [
@@ -161,11 +152,160 @@ Facets are visible in the Visual Search and enable the search by criteria. Facet
 
 	\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TCA']['fe_users'], $tca);
 
+
+```
+The associate class
+
+    <?php
+    namespace Vendor\MyExt\Facets;
+    
+    
+    use Fab\Vidi\Facet\FacetInterface;
+    use Fab\Vidi\Facet\StandardFacet;
+    use Fab\Vidi\Persistence\Matcher;
+    
+    /**
+     * Class for configuring a custom Facet item.
+     */
+    class CategoryPublicationFacet implements FacetInterface 
+    {
+    
+        /**
+         * @var string
+         */
+        protected $name = '__categories_publications';
+    
+        /**
+         * @var string
+         */
+        protected $label = 'Categories';
+    
+        /**
+         * @var array
+         */
+        protected $suggestions = array();
+    
+        /**
+         * @var string
+         */
+        protected $fieldNameAndPath = 'metadata.categories';
+    
+        /**
+         * @var string
+         */
+        protected $dataType;
+    
+        /**
+         * @var string
+         */
+        protected $canModifyMatcher = true;
+    
+    
+        /**
+         * Constructor of a Generic Facet in Vidi.
+         *
+         * @param string $name
+         * @param string $label
+         * @param array $suggestions
+         * @param string $fieldNameAndPath
+         */
+        public function __construct($name = '', $label = '', array $suggestions = array(), $fieldNameAndPath = '') 
+        {
+        }
+    
+        /**
+         * @return string
+         */
+        public function getName() 
+        {
+            return $this->name;
+        }
+    
+        /**
+         * @return string
+         */
+        public function getLabel() 
+        {
+            return $this->label;
+        }
+    
+        /**
+         * @return array
+         */
+        public function getSuggestions() 
+        {
+    
+            return [1 => 'foo', 2 => 'bar', ];
+        }
+    
+        /**
+         * @return bool
+         */
+        public function hasSuggestions() 
+        {
+            return true;
+        }
+    
+        /**
+         * @return string
+         */
+        public function getFieldNameAndPath() 
+        {
+            return $this->fieldNameAndPath;
+        }
+    
+        /**
+         * @param string $dataType
+         * @return $this
+         */
+        public function setDataType($dataType) 
+        {
+            $this->dataType = $dataType;
+            return $this;
+        }
+    
+        /**
+         * @return bool
+         */
+        public function canModifyMatcher() 
+        {
+            return $this->canModifyMatcher;
+        }
+    
+        /**
+         * @param Matcher $matcher
+         * @param $value
+         * @return Matcher
+         */
+        public function modifyMatcher(Matcher $matcher, $value) 
+        {
+            if (MathUtility::canBeInterpretedAsInteger($value)) {
+                $matcher->equals('metadata.categories', $value);
+            } else {
+                $matcher->like('metadata.categories', $value);
+            }
+            return $matcher;
+        }
+    
+        /**
+         * Magic method implementation for retrieving state.
+         *
+         * @param array $states
+         * @return StandardFacet
+         */
+        static public function __set_state($states) 
+        {
+            return new CategoryPublicationFacet($states['name'], $states['label'], $states['suggestions'], $states['fieldNameAndPath']);
+        }
+    
+    }
+
+
 Register a new template
 -----------------------
 
 The detail view of the content can be personalized per plugin record. To register more templates, simply define them in your TypoScript configuration.
-This TypoScript will typically be put under within ``EXT:foo/Configuration/TypoScript/setup.txt``::
+This TypoScript will typically be put under within ``EXT:foo/Configuration/TypoScript/setup.txt``:
 
 	plugin.tx_vidifrontend {
 		settings {
@@ -185,7 +325,7 @@ This TypoScript will typically be put under within ``EXT:foo/Configuration/TypoS
 Add custom Constraints
 ======================
 
-If required to add additional custom constraints at a "low" level, one can take advantage of a Signal Slot in the Content Repository of Vidi. To do so, first register the slot in one of your `ext_localconf.php` file::
+If required to add additional custom constraints at a "low" level, one can take advantage of a Signal Slot in the Content Repository of Vidi. To do so, first register the slot in one of your `ext_localconf.php` file:
 
     $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
 
@@ -198,7 +338,7 @@ If required to add additional custom constraints at a "low" level, one can take 
     );
 
 
-Next step is to write and customise the PHP class as given as example below. You can freely manipulate the $constraints object and personalize at your need::
+Next step is to write and customise the PHP class as given as example below. You can freely manipulate the $constraints object and personalize at your need:
 
     <?php
     namespace Vendor\Extension\Aspects;
@@ -251,14 +391,109 @@ Next step is to write and customise the PHP class as given as example below. You
 
     }
 
+Add custom Actions
+==================
+
+By default, Vidi Frontend includes some default mass actions such as XML, CSV, XLS export. It is of course possible to add your own actions. Two steps are required for that. The first is to declare in the TCA:
+
+    $tca = array(
+        'grid_frontend' => [
+            'columns' => [
+                ...
+            ],
+            'actions' => [
+                new \Vendor\MyExt\MassAction\MyAction(),
+            ]
+        ],
+    );
+    
+    \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TCA']['tx_domain_model_foo'], $tca);
+    
+Then, you need to declare your own class and implement the ```MassActionInterface``` where we have two main methods:
+ 
+* ```render()``` where the HTML for the menu item is assembled.
+* ```execute()``` where we get the items from the request and we can process them according to our needs. The ```execute()``` method must return a ```ResultActionInterface``` which includes the response plus possibles headers to be sent to the client (browser).
+     
+```
+
+    <?php
+    namespace Vendor\MyExt\MassAction;
+    
+    
+    use Fab\VidiFrontend\Service\ContentService;
+    use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+    
+    
+    /**
+     * Class MyAction
+     */
+    class MyAction extends AbstractMassAction
+    {
+    
+        /**
+         * @var string
+         */
+        protected $name = 'my_action';
+    
+        /**
+         * @return string
+         */
+        public function render()
+        {
+            $result = sprintf('<li><a href="%s" class="export-csv" data-format="csv"><i class="fa fa-file-text-o"></i> %s</a></li>',
+                $this->getMassActionUrl(),
+                LocalizationUtility::translate('my_action', 'foo')
+            );
+            return $result;
+        }
+    
+        /**
+         * Return the name of this action..
+         *
+         * @return string
+         */
+        public function getName()
+        {
+            return $this->name;
+        }
+    
+        /**
+         * Execute the action.
+         *
+         * @param ContentService $contentService
+         * @return ResultActionInterface
+         */
+        public function execute(ContentService $contentService)
+        {
+            $result = new JsonResultAction();
+            $objects = $contentService->getObjects();
+    
+            // Make sure we have something to process...
+            if ((bool)$objects) {
+    
+                // do something
+                ...
+                
+                $result->setOuptut('foo')
+            }
+    
+            return $result;
+        }
+    
+    }
+
+```
+
+On the top of that you may consider loading your own JS to catch the action and trigger on the client side whatever action is necessary for your such as an Ajax request.
+
 
 Building assets in development
 ==============================
 
 The extension provides JS / CSS bundles which included all the necessary code. If you need to make a new build for those JS / CSS files,
-consider that `Bower`_ and `Grunt`_ must be installed on your system as prerequisite.
+consider that [Bower](http://bower.io/) and [Grunt](http://gruntjs.com/) must be installed on your system as prerequisite.
 
-Install the required Web Components::
+Install the required Web Components:
 
 	cd typo3conf/ext/vidi_frontend
 
@@ -269,12 +504,12 @@ Install the required Web Components::
 	npm install
 
 
-Then, you can run the Grunt of the extension to generate a build::
+Then, you can run the Grunt of the extension to generate a build:
 
 	cd typo3conf/ext/vidi_frontend
 	grunt build
 
-While developing, you can use the ``watch`` which will generate the build as you edit files::
+While developing, you can use the ``watch`` which will generate the build as you edit files:
 
 	grunt watch
 
@@ -282,8 +517,8 @@ While developing, you can use the ``watch`` which will generate the build as you
 Patch VisualSearch
 ------------------
 
-To improve the User experience, `Visual Search`_ plugin has been patched avoiding the drop down menu to appear inopportunely.
-It means when making a fresh build, the patch must be (for now) manually added::
+To improve the User experience, [Visual Search](http://documentcloud.github.io/visualsearch/) plugin has been patched avoiding the drop down menu to appear inopportunely.
+It means when making a fresh build, the patch must be (for now) manually added:
 
 	cd Resources/Public/BowerComponents/visualsearch/
 	grep -lr "app.searchBox.searchEvent(e)" .
@@ -299,7 +534,3 @@ It means when making a fresh build, the patch must be (for now) manually added::
 	curl http://documentcloud.github.io/visualsearch/vendor/underscore-1.5.2.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
 	curl http://documentcloud.github.io/visualsearch/vendor/backbone-1.1.0.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
 
-.. _Bower: http://bower.io/
-.. _Grunt: http://gruntjs.com/
-.. _Visual Search: http://documentcloud.github.io/visualsearch/
-.. _DataTables: http://www.datatables.net/

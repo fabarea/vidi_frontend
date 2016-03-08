@@ -15,6 +15,7 @@ namespace Fab\VidiFrontend\Persistence;
  */
 
 use Fab\Vidi\Domain\Model\Selection;
+use Fab\Vidi\Domain\Repository\SelectionRepository;
 use Fab\Vidi\Resolver\FieldPathResolver;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -63,10 +64,39 @@ class MatcherFactory implements SingletonInterface
 
         $matcher = $this->applyCriteriaFromDataTables($matcher, $dataType);
         $matcher = $this->applyCriteriaFromSelection($matcher, $dataType);
+        $matcher = $this->applyCriteriaFromMatchesArgument($matcher, $matches);
         $matcher = $this->applyCriteriaFromAdditionalConstraints($matcher);
 
         // Trigger signal for post processing Matcher Object.
         $this->emitPostProcessMatcherObjectSignal($matcher);
+
+        if ($settings['logicalSeparator'] === Matcher::LOGICAL_OR) {
+            $matcher->setLogicalSeparatorForEquals(Matcher::LOGICAL_OR);
+            $matcher->setLogicalSeparatorForLike(Matcher::LOGICAL_OR);
+            $matcher->setLogicalSeparatorForIn(Matcher::LOGICAL_OR);
+            #$matcher->setLogicalSeparatorForSearchTerm(Matcher::LOGICAL_OR);
+            #$matcher->setDefaultLogicalSeparator(Matcher::LOGICAL_OR);
+        }
+
+        return $matcher;
+    }
+
+    /**
+     * @param Matcher $matcher
+     * @param array $matches
+     * @return Matcher $matcher
+     */
+    protected function applyCriteriaFromMatchesArgument(Matcher $matcher, $matches)
+    {
+        foreach ($matches as $fieldNameAndPath => $value) {
+            // CSV values should be considered as "in" operator in Query, otherwise "equals".
+            $explodedValues = GeneralUtility::trimExplode(',', $value, TRUE);
+            if (count($explodedValues) > 1) {
+                $matcher->in($fieldNameAndPath, $explodedValues);
+            } else {
+                $matcher->equals($fieldNameAndPath, $explodedValues[0]);
+            }
+        }
 
         return $matcher;
     }
@@ -155,8 +185,8 @@ class MatcherFactory implements SingletonInterface
         $selectionIdentifier = (int)$this->settings['selection'];
         if ($selectionIdentifier > 0) {
 
-            /** @var \Fab\Vidi\Domain\Repository\SelectionRepository $selectionRepository */
-            $selectionRepository = $this->getObjectManager()->get('Fab\Vidi\Domain\Repository\SelectionRepository');
+            /** @var SelectionRepository $selectionRepository */
+            $selectionRepository = $this->getObjectManager()->get(SelectionRepository::class);
 
             /** @var Selection $selection */
             $selection = $selectionRepository->findByUid($selectionIdentifier);

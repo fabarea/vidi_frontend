@@ -95,6 +95,27 @@
 			</f:for>
 		</f:if>
 		</tbody>
+		<f:if condition="{settings.actions}">
+			<tfoot>
+			<tr>
+				<th colspan="{numberOfColumns}">
+					<div class="dropup">
+						<a class="btn btn-default btn-sm dropdown-toggle mass-action-label-{gridIdentifier}"
+						   data-toggle="dropdown"
+						   href="#"
+						   onclick="return false"
+						   aria-haspopup="true"
+						   aria-expanded="false">
+							<f:translate key="grid.rows"/>
+						</a>
+						<ul class="dropdown-menu mass-action-items">
+							{vf:render.massActions()}
+						</ul>
+					</div>
+				</th>
+			</tr>
+			</tfoot>
+		</f:if>
 	</table>
 
 </f:section>
