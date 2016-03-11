@@ -61,7 +61,6 @@ abstract class AbstractMassAction implements MassActionInterface
             'action' => 'execute',
             'contentData' => $this->currentContentElement,
             'actionName' => $this->getName(),
-            'matches' => '',
         ];
 
         $argumentList = '';

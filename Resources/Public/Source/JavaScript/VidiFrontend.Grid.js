@@ -258,16 +258,21 @@ VidiFrontend.Grid = {
 			 */
 			$(document).on('click', '#grid-' + settings.gridIdentifier + ' .btn-export', function(e) {
 				e.preventDefault();
-				var uri = $(this).attr('href');
+				var currentLocation = new Uri(document.location.href);
+				var uri = new Uri($(this).attr('href'))
+					.setProtocol(currentLocation.protocol())
+					.setHost(currentLocation.host())
+					.setPath(currentLocation.path());
+
 				if (VidiFrontend.Grid.hasSelectedRows(identifier)) {
 					var selectedIdentifiers = VidiFrontend.Grid.getSelectedIdentifiers(identifier);
-					uri = uri.replace(encodeURI('[matches]='), decodeURI('[matches][uid]=' + selectedIdentifiers.join(',')));
+					uri.addQueryParam(encodeURI(VidiFrontend.parameterPrefix + '[matches][uid]'), selectedIdentifiers.join(','));
 				}
 
 				if (typeof(VidiFrontend.Grid.storage[identifier]) === 'string') {
-					uri += '&search=' + VidiFrontend.Grid.storage[identifier];
+					uri.addQueryParam('search', VidiFrontend.Grid.storage[identifier]);
 				}
-				window.location = uri;
+				window.location = uri.toString();
 			});
 
 			/**
