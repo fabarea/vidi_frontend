@@ -6,13 +6,13 @@ $tca = array(
     'grid_frontend' => [
         'columns' => [
 
-            # Overrides the "usergroup" column from the Vidi BE module.
-            'usergroup' => [
-                'renderers' => [
-                    'Fab\Vidi\Grid\RelationRenderer',
-                ],
-                'label' => 'LLL:EXT:vidi/Resources/Private/Language/fe_users.xlf:usergroup',
-            ],
+            # Just an example how to override the "usergroup" column from the Vidi BE module.
+            #'usergroup' => [
+            #    'renderers' => [
+            #        'Vendor\MyExt\Grid\MyRenderer',
+            #    ],
+            #    'label' => 'LLL:EXT:vidi/Resources/Private/Language/fe_users.xlf:usergroup',
+            #],
 
             # Overrides the "__buttons" column from the Vidi BE module.
             '__buttons' => [
