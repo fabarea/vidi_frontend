@@ -3,6 +3,23 @@ if (!defined('TYPO3_MODE')) {
     die ('Access denied.');
 }
 
+$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['vidi_frontend']);
+
+if (false === isset($configuration['autoload_typoscript']) || true === (bool)$configuration['autoload_typoscript']) {
+
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
+        'vidi_frontend',
+        'constants',
+        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:vidi_frontend/Configuration/TypoScript/constants.txt">'
+    );
+
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
+        'vidi_frontend',
+        'setup',
+        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:vidi_frontend/Configuration/TypoScript/setup.txt">'
+    );
+}
+
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'Fab.vidi_frontend',
     'Pi1',
