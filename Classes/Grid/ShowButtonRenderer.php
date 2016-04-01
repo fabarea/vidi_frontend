@@ -77,10 +77,9 @@ class ShowButtonRenderer extends ColumnRendererAbstract
         if (empty(trim($settings['parameterPrefix'])) || $settings['parameterPrefix'] === PluginParameter::PREFIX) {
             $arguments = array(
                 PluginParameter::PREFIX => array(
-                    'content' => $this->object->getUid(),
-                    'action' => 'show',
                     'contentElement' => $contentElementIdentifier,
-                    'controller' => 'Content',
+                    'action' => 'show',
+                    'content' => $this->object->getUid(),
                 ),
             );
         } else {

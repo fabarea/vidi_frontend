@@ -160,10 +160,9 @@ class Row extends AbstractComponentView
         if ($settings['parameterPrefix'] === PluginParameter::PREFIX || empty($settings['parameterPrefix'])) {
             $arguments = array(
                 PluginParameter::PREFIX => array(
-                    'content' => $object->getUid(),
-                    'action' => 'show',
                     'contentElement' => $contentElementIdentifier,
-                    'controller' => 'Content',
+                    'action' => 'show',
+                    'content' => $object->getUid(),
                 ),
             );
         } else {

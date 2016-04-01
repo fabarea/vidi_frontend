@@ -153,8 +153,9 @@ Facets are visible in the Visual Search and enable the search by criteria. Facet
 	\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TCA']['fe_users'], $tca);
 
 
-```
 The associate class
+
+```
 
     <?php
     namespace Vendor\MyExt\Facets;
@@ -297,9 +298,8 @@ The associate class
         {
             return new CategoryPublicationFacet($states['name'], $states['label'], $states['suggestions'], $states['fieldNameAndPath']);
         }
-    
     }
-
+```
 
 Register a new template
 -----------------------
@@ -486,6 +486,23 @@ Then, you need to declare your own class and implement the ```MassActionInterfac
 
 On the top of that you may consider loading your own JS to catch the action and trigger on the client side whatever action is necessary for your such as an Ajax request.
 
+
+RealURL configuration
+=====================
+
+RealURL configuration could look as follows to display nice URL to a detail view. 
+
+```
+    'postVarSets' => [
+        '_DEFAULT' => [
+            'content' => [
+                ['GETvar' => 'tx_vidifrontend_pi1[contentElement]'],
+                ['GETvar' => 'tx_vidifrontend_pi1[action]'],
+                ['GETvar' => 'tx_vidifrontend_pi1[content]'],
+            ],
+        ]
+    ],
+```
 
 Building assets in development
 ==============================
