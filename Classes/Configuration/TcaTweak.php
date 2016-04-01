@@ -72,7 +72,11 @@ class TcaTweak
      */
     protected function getFields($dataType)
     {
-        return array_keys($GLOBALS['TCA'][$dataType]['columns']);
+        $fields = [];
+        if (is_array($GLOBALS['TCA'][$dataType]) && is_array($GLOBALS['TCA'][$dataType]['columns'])) {
+            $fields = array_keys($GLOBALS['TCA'][$dataType]['columns']);
+        }
+        return $fields;
     }
 
     /**
