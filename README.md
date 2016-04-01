@@ -4,7 +4,7 @@ Vidi for TYPO3 CMS
 Generic List Component where Content can be filtered in an advanced way... Veni, vidi, vici! This extension is based on [Vidi](https://github.com/fabarea/vidi) which provides more or
 less the same feature set but in the Backend.
 
-.. image:: https://raw.github.com/Ecodev/vidi_frontend/master/Documentation/Frontend-01.png
+.. image:: https://raw.github.com/fabarea/vidi_frontend/master/Documentation/Frontend-01.png
 
 Once installed, it can be configured what content type to render associated with a customizable template in the plugin record in the Backend.
 On the Frontend side, we use the excellent [DataTables](http://www.datatables.net/) which is a powerful jQuery plugin smart and fast to sort and filter data.
@@ -19,9 +19,9 @@ Stable version:
 http://typo3.org/extensions/repository/view/vidi_frontend
 
 Development version:
-https://github.com/Ecodev/vidi_frontend
+https://github.com/fabarea/vidi_frontend
 
-	git clone https://github.com/Ecodev/vidi_frontend.git
+	git clone https://github.com/fabarea/vidi_frontend.git
 
 News about latest development are also announced on http://twitter.com/fudriot
 
@@ -34,13 +34,13 @@ The extension **requires TYPO3 6.2 or greater** . Install the extension as norma
 	cd typo3conf/ext
 
 	# download the source
-	git clone https://github.com/Ecodev/vidi_frontend.git
+	git clone https://github.com/fabarea/vidi_frontend.git
 
 	-> next step, is to open the Extension Manager in the BE.
 
 You are almost there! Create a Content Element of type "Vidi Frontend" in `General Plugin` > `Generic List Component` and configure at your convenience.
 
-![](https://raw.github.com/Ecodev/vidi_frontend/master/Documentation/Backend-01.png)
+![](https://raw.github.com/fabarea/vidi_frontend/master/Documentation/Backend-01.png)
 
 Configuration
 =============

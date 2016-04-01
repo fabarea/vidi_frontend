@@ -3,8 +3,13 @@
 	"type": "typo3-cms-extension",
 	"description": "Generic List Component for the Frontend where content can be filtered in an advanced way... Veni, vidi, vici!",
 	"homepage": "https://github.com/fudriot/vidi_frontend",
-	"license": ["GPL-2.0+"],
-	"keywords": ["TYPO3 CMS", "generic listing"],
+	"license": [
+		"GPL-2.0+"
+	],
+	"keywords": [
+		"TYPO3 CMS",
+		"generic listing"
+	],
 	"support": {
 		"issues": "https://github.com/fudriot/vidi_frontend/issues"
 	},
@@ -13,5 +18,8 @@
 			"Fab\\VidiFrontend\\": "Classes/"
 		}
 	},
-	"version": "1.0.0-dev"
+	"replace": {
+		"vidi_frontend": "self.version",
+		"typo3-ter/vidi_frontend": "self.version"
+	}
 }
