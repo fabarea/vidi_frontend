@@ -88,7 +88,7 @@ class Row extends AbstractComponentView
                     $rendererConfiguration['uriBuilder'] = $this->controllerContext->getUriBuilder();
                     $rendererConfiguration['contentElement'] = $this->configurationManager->getContentObject();
 
-                    /** @var $rendererObject \Fab\Vidi\Grid\GridRendererInterface */
+                    /** @var $rendererObject \Fab\Vidi\Grid\ColumnRendererInterface */
                     $rendererObject = GeneralUtility::makeInstance($rendererClassName);
                     $value .= $rendererObject
                         ->setObject($object)
