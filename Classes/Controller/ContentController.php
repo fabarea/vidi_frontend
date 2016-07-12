@@ -69,6 +69,8 @@ class ContentController extends ActionController
      * List action for this controller.
      *
      * @return void
+     * @throws \InvalidArgumentException
+     * @throws \BadMethodCallException
      */
     public function indexAction()
     {
@@ -106,7 +108,10 @@ class ContentController extends ActionController
             $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
 
             // Fetch objects via the Content Service.
-            $contentService = $this->getContentService($dataType)->findBy($matcher, $order, (int)$settings['limit']);
+            $contentService = $this->getContentService()
+                ->setDataType($dataType)
+                ->setSettings($settings)
+                ->findBy($matcher, $order, (int)$settings['limit']);
             $this->view->assign('objects', $contentService->getObjects());
         }
 
@@ -121,6 +126,8 @@ class ContentController extends ActionController
      * @param array $contentData
      * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
      * @return void
+     * @throws \InvalidArgumentException
+     * @throws \BadMethodCallException
      */
     public function listAction(array $contentData)
     {
@@ -145,7 +152,10 @@ class ContentController extends ActionController
         }
 
         // Fetch objects via the Content Service.
-        $contentService = $this->getContentService($dataType)->findBy($matcher, $order, $pager->getLimit(), $pager->getOffset());
+        $contentService = $this->getContentService()
+            ->setDataType($dataType)
+            ->setSettings($settings)
+            ->findBy($matcher, $order, $pager->getLimit(), $pager->getOffset());
         $pager->setCount($contentService->getNumberOfObjects());
 
         // Set format.
@@ -166,6 +176,8 @@ class ContentController extends ActionController
      * @param array $matches
      * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
      * @return string
+     * @throws \InvalidArgumentException
+     * @throws \BadMethodCallException
      */
     public function executeAction(array $contentData, $actionName, array $matches = [])
     {
@@ -189,7 +201,10 @@ class ContentController extends ActionController
         $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
 
         // Fetch objects via the Content Service.
-        $contentService = $this->getContentService($dataType)->findBy($matcher, $order);
+        $contentService = $this->getContentService()
+            ->setDataType($dataType)
+            ->setSettings($settings)
+            ->findBy($matcher, $order);
 
         // Assign values.
         $this->view->assign('objects', $contentService->getObjects());
@@ -297,12 +312,11 @@ class ContentController extends ActionController
     /**
      * Get the Vidi Module Loader.
      *
-     * @param string $dataType
      * @return ContentService
      */
-    protected function getContentService($dataType)
+    protected function getContentService()
     {
-        return GeneralUtility::makeInstance(ContentService::class, $dataType);
+        return GeneralUtility::makeInstance(ContentService::class);
     }
 
     /**

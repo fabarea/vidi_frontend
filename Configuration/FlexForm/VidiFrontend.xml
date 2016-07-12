@@ -106,6 +106,15 @@
 							</config>
 						</TCEforms>
 					</settings.direction>
+					<settings.enableFields>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.enableFields</label>
+							<config>
+								<type>user</type>
+								<userFunc>Fab\VidiFrontend\Backend\TceForms->getEnableFields</userFunc>
+							</config>
+						</TCEforms>
+					</settings.enableFields>
 				</el>
 			</ROOT>
 		</general>

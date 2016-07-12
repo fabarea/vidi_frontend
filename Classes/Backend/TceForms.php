@@ -16,9 +16,7 @@ namespace Fab\VidiFrontend\Backend;
 
 use Fab\Vidi\Domain\Model\Selection;
 use Fab\Vidi\Facet\FacetInterface;
-use Fab\Vidi\Module\ModuleLoader;
 use Fab\VidiFrontend\Tca\FrontendTca;
-use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Tca\Tca;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
@@ -91,6 +89,82 @@ class TceForms
             $this->gridConfigurationWithVisualBar
         );
 
+
+        return $output;
+    }
+
+    /**
+     * Render the field "gridConfiguration"
+     *
+     * @param array $parameters
+     * @return string
+     */
+    public function getEnableFields(array $parameters)
+    {
+
+        $flexform = $parameters['row']['pi_flexform'];
+        $dataType = $this->getDataTypeFromFlexform($flexform);
+
+        if (empty($dataType)) {
+            $output = 'No enable fields to display yet! Select a content type first.';
+        } else {
+
+            $enableFieldsValues = GeneralUtility::trimExplode(',', $this->getSettings($flexform, 'enableFields'), true);
+
+            $options = [];
+
+            $enableFields = [
+                'startTime' => ['label' => 'Start time', 'getter' => 'getStartTimeField'],
+                'endTime' => ['label' => 'End time', 'getter' => 'getEndTimeField'],
+                'disabled' => ['label' => 'Hidden', 'getter' => 'getHiddenField'],
+            ];
+
+            foreach ($enableFields as $value => $field) {
+
+                $getter = $field['getter'];
+                if (Tca::table($dataType)->$getter()) {
+                    $isChecked = in_array($value, $enableFieldsValues, true) ? '' : 'checked="checked"';
+                    $options[] = sprintf(
+                        '<li><label><input type="checkbox" class="checkbox-enableField" value="%s" %s /> %s</label></li>',
+                        strtolower($value),
+                        $isChecked,
+                        strtolower($field['label'])
+                    );
+                }
+            }
+
+            $output = sprintf(
+                '
+    <input name="data[tt_content][%s][pi_flexform][data][grid][lDEF][settings.enableFields][vDEF]" type="hidden" id="enableFields" value="%s">
+    <ul class="list-unstyled" style="margin-top: 10px;">%s</ul>
+
+                <script>
+                    (function($) {
+                        $(function() {
+                            $(".checkbox-enableField").change(function() {
+
+                                var enableFields = $("#enableFields").val();
+                                var currentValue = $(this).val();
+
+                                // In any case remove item
+                                var expression = new RegExp(\', *\' + currentValue, \'i\');
+                                enableFields = enableFields.replace(expression, \'\');
+                                $("#enableFields").val(enableFields);
+
+                                // Append new data type at the end if checked.
+                                if (!$(this).is(":checked")) {
+                                    $("#enableFields").val(enableFields + \', \' + currentValue);
+                                }
+                            });
+                        });
+                    })(TYPO3.jQuery);
+
+                </script>',
+                $parameters['row']['uid'],
+                $this->getSettings($flexform, 'enableFields'),
+                implode("\n", $options)
+            );
+        }
 
         return $output;
     }
@@ -223,7 +297,7 @@ class TceForms
             }
 
             if (empty($configuredDataType)) {
-                $parameters['items'][] = array('No columns to display yet! Save this record.', '', null);
+                $parameters['items'][] = array('No columns to display yet! Select a content type first.', '', null);
             } else {
                 foreach (FrontendTca::grid($configuredDataType)->getFields() as $fieldNameAndPath => $configuration) {
                     $values = array($fieldNameAndPath, $fieldNameAndPath, null);
@@ -254,7 +328,7 @@ class TceForms
             }
 
             if (empty($configuredDataType)) {
-                $parameters['items'][] = array('No columns to display yet! Save this record.', '', NULL);
+                $parameters['items'][] = array('No columns to display yet! Select a content type first.', '', NULL);
             } else {
                 foreach (FrontendTca::grid($configuredDataType)->getMassActions() as $action) {
                     $values = array($action->getName(), $action->getName(), NULL);
@@ -387,20 +461,30 @@ class TceForms
      */
     protected function getDataTypeFromFlexform(array $flexform = array())
     {
+        return $this->getSettings($flexform, 'dataType');
+    }
 
-        $configuredDataType = '';
+    /**
+     * @param array $flexform
+     * @param string $key
+     * @return string
+     */
+    protected function getSettings(array $flexform = array(), $key)
+    {
+
+        $value = '';
 
         if (0 !== count($flexform)) {
 
             $normalizedFlexform = $this->normalizeFlexForm($flexform);
-            if (!empty($normalizedFlexform['settings']['dataType'])) {
-                $configuredDataType = $normalizedFlexform['settings']['dataType'];
-                if (is_array($configuredDataType)) {
-                    $configuredDataType = $configuredDataType[0];
+            if (!empty($normalizedFlexform['settings'][$key])) {
+                $value = $normalizedFlexform['settings'][$key];
+                if (is_array($value)) {
+                    $value = $value[0];
                 }
             }
         }
-        return $configuredDataType;
+        return $value;
     }
 
     /**

@@ -14,6 +14,7 @@ namespace Fab\VidiFrontend\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Fab\Vidi\Persistence\QuerySettings;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Domain\Repository\ContentRepositoryFactory;
 use Fab\Vidi\Persistence\Matcher;
@@ -34,6 +35,11 @@ class ContentService
     protected $dataType;
 
     /**
+     * @var array
+     */
+    protected $settings;
+
+    /**
      * @var \Fab\Vidi\Domain\Model\Content[]
      */
     protected $objects = [];
@@ -49,7 +55,7 @@ class ContentService
      * @param string $dataType
      * @return ContentService
      */
-    public function __construct($dataType)
+    public function __construct($dataType = '')
     {
         $this->dataType = $dataType;
     }
@@ -62,12 +68,27 @@ class ContentService
      * @param int $limit
      * @param int $offset
      * @return $this
+     * @throws \BadMethodCallException
+     * @throws \InvalidArgumentException
      */
-    public function findBy(Matcher $matcher, Order $order = NULL, $limit = NULL, $offset = NULL)
+    public function findBy(Matcher $matcher, Order $order = null, $limit = null, $offset = null)
     {
 
         // Query the repository.
-        $objects = ContentRepositoryFactory::getInstance($this->dataType)->findBy($matcher, $order, $limit, $offset);
+        $contentRepository = ContentRepositoryFactory::getInstance($this->dataType);
+
+        /** @var QuerySettings $querySettings */
+        if (!empty($this->settings['enableFields'])) {
+
+            $ignoreFields = GeneralUtility::trimExplode(',', $this->settings['enableFields'], true);
+            $querySettings = GeneralUtility::makeInstance(QuerySettings::class);
+            $querySettings->setEnableFieldsToBeIgnored($ignoreFields);
+            $querySettings->setIgnoreEnableFields(true);
+            $contentRepository->setDefaultQuerySettings($querySettings);
+            #$contentRepository->resetDefaultQuerySettings(); // @todo enable me.
+        }
+
+        $objects = $contentRepository->findBy($matcher, $order, $limit, $offset);
         $signalResult = $this->emitAfterFindContentObjectsSignal($objects, $matcher, $limit, $offset);
 
         // Reset objects variable after possible signal / slot processing.
@@ -144,6 +165,26 @@ class ContentService
     public function getNumberOfObjects()
     {
         return $this->numberOfObjects;
+    }
+
+    /**
+     * @param string $dataType
+     * @return $this
+     */
+    public function setDataType($dataType)
+    {
+        $this->dataType = $dataType;
+        return $this;
+    }
+
+    /**
+     * @param array $settings
+     * @return $this
+     */
+    public function setSettings($settings)
+    {
+        $this->settings = $settings;
+        return $this;
     }
 
 }

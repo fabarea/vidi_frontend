@@ -91,6 +91,9 @@
 			<trans-unit id="settings.gridConfiguration">
 				<source>Grid configuration</source>
 			</trans-unit>
+			<trans-unit id="settings.enableFields">
+				<source>Respect enabled fields</source>
+			</trans-unit>
 			<trans-unit id="info.gridConfiguration">
 				<source>To address the customising issue, DataTables takes inspiration from the CSS 3 Advanced Layout Module. Please
 					refer to the %s section for more insight. Pay attention, the configuration is automatically updated when activating the VisualSearch bar in the Facets tab unless you have customized it. The built-in options available are:</source>
