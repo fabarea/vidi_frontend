@@ -41,6 +41,7 @@ class MatcherFactory implements SingletonInterface
      * Gets a singleton instance of this class.
      *
      * @return MatcherFactory
+     * @throws \InvalidArgumentException
      */
     static public function getInstance()
     {
@@ -54,6 +55,8 @@ class MatcherFactory implements SingletonInterface
      * @param array $matches
      * @param string $dataType
      * @return Matcher
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \InvalidArgumentException
      */
     public function getMatcher(array $settings, $matches = array(), $dataType)
     {
@@ -243,6 +246,7 @@ class MatcherFactory implements SingletonInterface
      * @param string $dataType
      * @param string $value
      * @return bool
+     * @throws \Exception
      */
     protected function isOperatorEquals($fieldName, $dataType, $value)
     {
@@ -255,6 +259,8 @@ class MatcherFactory implements SingletonInterface
      *
      * @param Matcher $matcher
      * @signal
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
     protected function emitPostProcessMatcherObjectSignal(Matcher $matcher)
     {
@@ -273,6 +279,7 @@ class MatcherFactory implements SingletonInterface
 
     /**
      * @return ObjectManager
+     * @throws \InvalidArgumentException
      */
     protected function getObjectManager()
     {
@@ -281,6 +288,7 @@ class MatcherFactory implements SingletonInterface
 
     /**
      * @return FieldPathResolver
+     * @throws \InvalidArgumentException
      */
     protected function getFieldPathResolver()
     {
