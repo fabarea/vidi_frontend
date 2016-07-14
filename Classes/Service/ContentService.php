@@ -85,7 +85,7 @@ class ContentService
             $querySettings->setEnableFieldsToBeIgnored($ignoreFields);
             $querySettings->setIgnoreEnableFields(true);
             $contentRepository->setDefaultQuerySettings($querySettings);
-            #$contentRepository->resetDefaultQuerySettings(); // @todo enable me.
+            $contentRepository->resetDefaultQuerySettings(); // reset default query settings as object is singleton.
         }
 
         $objects = $contentRepository->findBy($matcher, $order, $limit, $offset);
