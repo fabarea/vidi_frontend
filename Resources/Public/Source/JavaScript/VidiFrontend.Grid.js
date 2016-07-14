@@ -170,7 +170,7 @@ VidiFrontend.Grid = {
 						delete data.draw;
 					},
 					error: function() {
-						var message = 'Oups! Something went wrong with the Ajax request... Investigate the problem in the Network Monitor. <br />';
+						var message = 'Oups! Something went wrong with the Ajax request... Investigate the problem in the Network Monitor.';
 						console.log(message);
 					}
 				};
