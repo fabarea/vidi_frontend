@@ -15831,8 +15831,6 @@ VidiFrontend.Grid = {
 							}
 						}
 
-						console.log(data);
-
 						data['dataType'] = VidiFrontend.settings[identifier].dataType;
 						data['format'] = 'json';
 
