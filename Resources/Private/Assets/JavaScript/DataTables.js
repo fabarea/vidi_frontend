@@ -3,7 +3,7 @@
  * DataTables 1.10 or newer.
  *
  * This file overrides:
- * EXT:vidi_frontend/Resources/Public/BowerComponents/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js
+ * EXT:vidi_frontend/Resources/Private/BowerComponents/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js
  */
 (function(window, document, undefined) {
 

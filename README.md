@@ -525,7 +525,7 @@ Install the required Web Components:
 
 	cd typo3conf/ext/vidi_frontend
 
-	# This will populate the directory Resources/Public/BowerComponents.
+	# This will populate the directory Resources/Private/BowerComponents.
 	bower install
 
 	# Install the necessary NodeJS package.
@@ -548,17 +548,17 @@ Patch VisualSearch
 To improve the User experience, [Visual Search](http://documentcloud.github.io/visualsearch/) plugin has been patched avoiding the drop down menu to appear inopportunely.
 It means when making a fresh build, the patch must be (for now) manually added:
 
-	cd Resources/Public/BowerComponents/visualsearch/
+	cd Resources/Private/BowerComponents/visualsearch/
 	grep -lr "app.searchBox.searchEvent(e)" .
 
 	-> There should be 2 occurrences. Comment lines below related to "_.defer".
 
 	# Remove assumed already jQuery from dependency
-	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.core.js > Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
-	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.position.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
-	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.widget.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
-	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.menu.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
-	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.autocomplete.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
-	curl http://documentcloud.github.io/visualsearch/vendor/underscore-1.5.2.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
-	curl http://documentcloud.github.io/visualsearch/vendor/backbone-1.1.0.js >> Resources/Public/BowerComponents/visualsearch/build-min/dependencies.js
+	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.core.js > Resources/Private/BowerComponents/visualsearch/build-min/dependencies.js
+	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.position.js >> Resources/Private/BowerComponents/visualsearch/build-min/dependencies.js
+	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.widget.js >> Resources/Private/BowerComponents/visualsearch/build-min/dependencies.js
+	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.menu.js >> Resources/Private/BowerComponents/visualsearch/build-min/dependencies.js
+	curl http://documentcloud.github.io/visualsearch/vendor/jquery.ui.autocomplete.js >> Resources/Private/BowerComponents/visualsearch/build-min/dependencies.js
+	curl http://documentcloud.github.io/visualsearch/vendor/underscore-1.5.2.js >> Resources/Private/BowerComponents/visualsearch/build-min/dependencies.js
+	curl http://documentcloud.github.io/visualsearch/vendor/backbone-1.1.0.js >> Resources/Private/BowerComponents/visualsearch/build-min/dependencies.js
 

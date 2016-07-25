@@ -2,9 +2,9 @@ module.exports = (grunt) ->
 	grunt.initConfig
 		pkg: grunt.file.readJSON("package.json")
 		directory:
-			components: "Resources/Public/BowerComponents"
+			components: "Resources/Private/BowerComponents"
 			build: "Resources/Public/Build"
-			source: "Resources/Public/Source"
+			source: "Resources/Private/Assets"
 		file:
 			visualsearch: ".tmp/visualsearch/visualsearch.js"
 
