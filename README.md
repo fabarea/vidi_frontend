@@ -159,49 +159,49 @@ The associate class
 
     <?php
     namespace Vendor\MyExt\Facets;
-    
-    
+
+
     use Fab\Vidi\Facet\FacetInterface;
     use Fab\Vidi\Facet\StandardFacet;
     use Fab\Vidi\Persistence\Matcher;
-    
+
     /**
      * Class for configuring a custom Facet item.
      */
-    class CategoryPublicationFacet implements FacetInterface 
+    class CategoryPublicationFacet implements FacetInterface
     {
-    
+
         /**
          * @var string
          */
         protected $name = '__categories_publications';
-    
+
         /**
          * @var string
          */
         protected $label = 'Categories';
-    
+
         /**
          * @var array
          */
         protected $suggestions = array();
-    
+
         /**
          * @var string
          */
         protected $fieldNameAndPath = 'metadata.categories';
-    
+
         /**
          * @var string
          */
         protected $dataType;
-    
+
         /**
          * @var string
          */
         protected $canModifyMatcher = true;
-    
-    
+
+
         /**
          * Constructor of a Generic Facet in Vidi.
          *
@@ -210,75 +210,75 @@ The associate class
          * @param array $suggestions
          * @param string $fieldNameAndPath
          */
-        public function __construct($name = '', $label = '', array $suggestions = array(), $fieldNameAndPath = '') 
+        public function __construct($name = '', $label = '', array $suggestions = array(), $fieldNameAndPath = '')
         {
         }
-    
+
         /**
          * @return string
          */
-        public function getName() 
+        public function getName()
         {
             return $this->name;
         }
-    
+
         /**
          * @return string
          */
-        public function getLabel() 
+        public function getLabel()
         {
             return $this->label;
         }
-    
+
         /**
          * @return array
          */
-        public function getSuggestions() 
+        public function getSuggestions()
         {
-    
+
             return [1 => 'foo', 2 => 'bar', ];
         }
-    
+
         /**
          * @return bool
          */
-        public function hasSuggestions() 
+        public function hasSuggestions()
         {
             return true;
         }
-    
+
         /**
          * @return string
          */
-        public function getFieldNameAndPath() 
+        public function getFieldNameAndPath()
         {
             return $this->fieldNameAndPath;
         }
-    
+
         /**
          * @param string $dataType
          * @return $this
          */
-        public function setDataType($dataType) 
+        public function setDataType($dataType)
         {
             $this->dataType = $dataType;
             return $this;
         }
-    
+
         /**
          * @return bool
          */
-        public function canModifyMatcher() 
+        public function canModifyMatcher()
         {
             return $this->canModifyMatcher;
         }
-    
+
         /**
          * @param Matcher $matcher
          * @param $value
          * @return Matcher
          */
-        public function modifyMatcher(Matcher $matcher, $value) 
+        public function modifyMatcher(Matcher $matcher, $value)
         {
             if (MathUtility::canBeInterpretedAsInteger($value)) {
                 $matcher->equals('metadata.categories', $value);
@@ -287,14 +287,14 @@ The associate class
             }
             return $matcher;
         }
-    
+
         /**
          * Magic method implementation for retrieving state.
          *
          * @param array $states
          * @return StandardFacet
          */
-        static public function __set_state($states) 
+        static public function __set_state($states)
         {
             return new CategoryPublicationFacet($states['name'], $states['label'], $states['suggestions'], $states['fieldNameAndPath']);
         }
@@ -391,6 +391,17 @@ Next step is to write and customise the PHP class as given as example below. You
 
     }
 
+Transmit dynamic parameter
+==========================
+
+We can transmit additional GET / POST parameter to dynamically filter the result set in the Grid.
+A typical use case is to add a drop down menu to do some additional filter. In this case,
+the parameter name must look like where "foo" is a field name.
+The value can be a simple value (equals) or a CSV list which will be interpreted as an array (in).
+
+    tx_vididfrontend_pi1[matches][foo]=bar
+    tx_vididfrontend_pi1[matches][foo]=bar,baz
+
 Add custom Actions
 ==================
 
@@ -406,35 +417,35 @@ By default, Vidi Frontend includes some default mass actions such as XML, CSV, X
             ]
         ],
     );
-    
+
     \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TCA']['tx_domain_model_foo'], $tca);
-    
+
 Then, you need to declare your own class and implement the ```MassActionInterface``` where we have two main methods:
- 
+
 * ```render()``` where the HTML for the menu item is assembled.
 * ```execute()``` where we get the items from the request and we can process them according to our needs. The ```execute()``` method must return a ```ResultActionInterface``` which includes the response plus possibles headers to be sent to the client (browser).
-     
+
 ```
 
     <?php
     namespace Vendor\MyExt\MassAction;
-    
-    
+
+
     use Fab\VidiFrontend\Service\ContentService;
     use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-    
-    
+
+
     /**
      * Class MyAction
      */
     class MyAction extends AbstractMassAction
     {
-    
+
         /**
          * @var string
          */
         protected $name = 'my_action';
-    
+
         /**
          * @return string
          */
@@ -446,7 +457,7 @@ Then, you need to declare your own class and implement the ```MassActionInterfac
             );
             return $result;
         }
-    
+
         /**
          * Return the name of this action..
          *
@@ -456,7 +467,7 @@ Then, you need to declare your own class and implement the ```MassActionInterfac
         {
             return $this->name;
         }
-    
+
         /**
          * Execute the action.
          *
@@ -467,19 +478,19 @@ Then, you need to declare your own class and implement the ```MassActionInterfac
         {
             $result = new JsonResultAction();
             $objects = $contentService->getObjects();
-    
+
             // Make sure we have something to process...
             if ((bool)$objects) {
-    
+
                 // do something
                 ...
-                
+
                 $result->setOuptut('foo')
             }
-    
+
             return $result;
         }
-    
+
     }
 
 ```
@@ -490,7 +501,7 @@ On the top of that you may consider loading your own JS to catch the action and 
 RealURL configuration
 =====================
 
-RealURL configuration could look as follows to display nice URL to a detail view. 
+RealURL configuration could look as follows to display nice URL to a detail view.
 
 ```
     'postVarSets' => [

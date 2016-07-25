@@ -85,7 +85,6 @@ class ContentService
             $querySettings->setEnableFieldsToBeIgnored($ignoreFields);
             $querySettings->setIgnoreEnableFields(true);
             $contentRepository->setDefaultQuerySettings($querySettings);
-            $contentRepository->resetDefaultQuerySettings(); // reset default query settings as object is singleton.
         }
 
         $objects = $contentRepository->findBy($matcher, $order, $limit, $offset);
@@ -101,6 +100,8 @@ class ContentService
             $this->numberOfObjects = ContentRepositoryFactory::getInstance($this->dataType)->countBy($matcher);
         }
 
+        // reset default query settings as repository is a singleton.
+        $contentRepository->resetDefaultQuerySettings();
         return $this;
     }
 

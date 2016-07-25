@@ -94,7 +94,7 @@ class MatcherFactory implements SingletonInterface
     {
         foreach ($matches as $fieldNameAndPath => $value) {
             // CSV values should be considered as "in" operator in Query, otherwise "equals".
-            $explodedValues = GeneralUtility::trimExplode(',', $value, TRUE);
+            $explodedValues = GeneralUtility::trimExplode(',', $value, true);
             if (count($explodedValues) > 1) {
                 $matcher->in($fieldNameAndPath, $explodedValues);
             } else {

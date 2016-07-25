@@ -68,14 +68,15 @@ class ContentController extends ActionController
     /**
      * List action for this controller.
      *
-     * @return void
+     * @param array $matches
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \InvalidArgumentException
      * @throws \BadMethodCallException
      */
-    public function indexAction()
+    public function indexAction(array $matches = [])
     {
         $settings = $this->computeFinalSettings($this->settings);
 
@@ -107,7 +108,7 @@ class ContentController extends ActionController
         if (!$settings['loadContentByAjax']) {
 
             // Initialize some objects related to the query.
-            $matcher = MatcherFactory::getInstance()->getMatcher($settings, array(), $dataType);
+            $matcher = MatcherFactory::getInstance()->getMatcher($settings, $matches, $dataType);
             $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
 
             // Fetch objects via the Content Service.
@@ -126,6 +127,7 @@ class ContentController extends ActionController
     /**
      * List Row action for this controller. Output a json list of contents
      *
+     * @param array $matches
      * @param array $contentData
      * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
      * @return void
@@ -133,7 +135,7 @@ class ContentController extends ActionController
      * @throws \InvalidArgumentException
      * @throws \BadMethodCallException
      */
-    public function listAction(array $contentData)
+    public function listAction(array $contentData, array $matches = [])
     {
         $settings = ContentElementConfiguration::getInstance($contentData)->getSettings();
         $settings = $this->computeFinalSettings($settings);
@@ -145,7 +147,7 @@ class ContentController extends ActionController
         $this->configurationManager->setContentObject($contentObjectRenderer);
 
         // Initialize some objects related to the query.
-        $matcher = MatcherFactory::getInstance()->getMatcher($settings, array(), $dataType);
+        $matcher = MatcherFactory::getInstance()->getMatcher($settings, $matches, $dataType);
         $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
         $pager = PagerFactory::getInstance()->getPager();
 
