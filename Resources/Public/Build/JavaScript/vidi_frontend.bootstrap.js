@@ -15481,7 +15481,7 @@ else if ( jQuery ) {
  * DataTables 1.10 or newer.
  *
  * This file overrides:
- * EXT:vidi_frontend/Resources/Public/BowerComponents/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js
+ * EXT:vidi_frontend/Resources/Private/BowerComponents/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js
  */
 (function(window, document, undefined) {
 
@@ -16026,20 +16026,20 @@ VidiFrontend.Grid = {
 
 						// Get the parameter related to filter from the URL and "re-inject" them into the Ajax request
 						var uri = new Uri(window.location.href);
+
 						for (var index = 0; index < uri.queryPairs.length; index++) {
 							var queryPair = uri.queryPairs[index];
 							var parameterName = queryPair[0];
 							var parameterValue = queryPair[1];
 
-							// Transmit a few other parameters as well, e.g the page id if present
-							var transmittedParameters = ['id', 'L'];
-							for (var parameterIndex = 0; parameterIndex < transmittedParameters.length; parameterIndex++) {
-								var transmittedParameter = transmittedParameters[parameterIndex];
-								if (transmittedParameter === parameterName) {
-									data[decodeURI(parameterName)] = parameterValue;
-								}
+							// Transmit parameter to the ajax request from the main URL.
+							var keptParameters = ['id', 'L'];
+							if (parameterName.indexOf('tx_vidifrontend_pi1[matches]') > -1 || $.inArray(parameterName, keptParameters)) {
+								data[decodeURI(parameterName)] = parameterValue;
 							}
 						}
+
+						console.log(data);
 
 						data['dataType'] = VidiFrontend.settings[identifier].dataType;
 						data['format'] = 'json';
@@ -16067,7 +16067,7 @@ VidiFrontend.Grid = {
 						delete data.draw;
 					},
 					error: function() {
-						var message = 'Oups! Something went wrong with the Ajax request... Investigate the problem in the Network Monitor. <br />';
+						var message = 'Oups! Something went wrong with the Ajax request... Investigate the problem in the Network Monitor.';
 						console.log(message);
 					}
 				};
@@ -16155,16 +16155,21 @@ VidiFrontend.Grid = {
 			 */
 			$(document).on('click', '#grid-' + settings.gridIdentifier + ' .btn-export', function(e) {
 				e.preventDefault();
-				var uri = $(this).attr('href');
+				var currentLocation = new Uri(document.location.href);
+				var uri = new Uri($(this).attr('href'))
+					.setProtocol(currentLocation.protocol())
+					.setHost(currentLocation.host())
+					.setPath(currentLocation.path());
+
 				if (VidiFrontend.Grid.hasSelectedRows(identifier)) {
 					var selectedIdentifiers = VidiFrontend.Grid.getSelectedIdentifiers(identifier);
-					uri = uri.replace(encodeURI('[matches]='), decodeURI('[matches][uid]=' + selectedIdentifiers.join(',')));
+					uri.addQueryParam(encodeURI(VidiFrontend.parameterPrefix + '[matches][uid]'), selectedIdentifiers.join(','));
 				}
 
 				if (typeof(VidiFrontend.Grid.storage[identifier]) === 'string') {
-					uri += '&search=' + VidiFrontend.Grid.storage[identifier];
+					uri.addQueryParam('search', VidiFrontend.Grid.storage[identifier]);
 				}
-				window.location = uri;
+				window.location = uri.toString();
 			});
 
 			/**
