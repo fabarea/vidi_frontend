@@ -69,6 +69,9 @@ class ContentController extends ActionController
      * List action for this controller.
      *
      * @return void
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \InvalidArgumentException
      * @throws \BadMethodCallException
      */
@@ -126,6 +129,7 @@ class ContentController extends ActionController
      * @param array $contentData
      * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
      * @return void
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \InvalidArgumentException
      * @throws \BadMethodCallException
      */
@@ -176,6 +180,8 @@ class ContentController extends ActionController
      * @param array $matches
      * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
      * @return string
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \InvalidArgumentException
      * @throws \BadMethodCallException
      */

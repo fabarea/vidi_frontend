@@ -55,10 +55,11 @@ class MatcherFactory implements SingletonInterface
      * @param array $matches
      * @param string $dataType
      * @return Matcher
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \InvalidArgumentException
      */
-    public function getMatcher(array $settings, $matches = array(), $dataType)
+    public function getMatcher(array $settings, array $matches = array(), $dataType)
     {
         $this->settings = $settings;
 
@@ -181,6 +182,7 @@ class MatcherFactory implements SingletonInterface
      * @param Matcher $matcher
      * @param string $dataType
      * @return Matcher $matcher
+     * @throws \InvalidArgumentException
      */
     protected function applyCriteriaFromSelection(Matcher $matcher, $dataType)
     {
@@ -206,6 +208,7 @@ class MatcherFactory implements SingletonInterface
      * @param Matcher $matcher
      * @param string $dataType
      * @return Matcher $matcher
+     * @throws \InvalidArgumentException
      */
     protected function parseQuery(array $queryParts, Matcher $matcher, $dataType)
     {
@@ -271,6 +274,7 @@ class MatcherFactory implements SingletonInterface
      * Get the SignalSlot dispatcher
      *
      * @return Dispatcher
+     * @throws \InvalidArgumentException
      */
     protected function getSignalSlotDispatcher()
     {
