@@ -129,20 +129,20 @@ VidiFrontend.Grid = {
 
 						// Get the parameter related to filter from the URL and "re-inject" them into the Ajax request
 						var uri = new Uri(window.location.href);
+
 						for (var index = 0; index < uri.queryPairs.length; index++) {
 							var queryPair = uri.queryPairs[index];
 							var parameterName = queryPair[0];
 							var parameterValue = queryPair[1];
 
-							// Transmit a few other parameters as well, e.g the page id if present
-							var transmittedParameters = ['id', 'L'];
-							for (var parameterIndex = 0; parameterIndex < transmittedParameters.length; parameterIndex++) {
-								var transmittedParameter = transmittedParameters[parameterIndex];
-								if (transmittedParameter === parameterName) {
-									data[decodeURI(parameterName)] = parameterValue;
-								}
+							// Transmit parameter to the ajax request from the main URL.
+							var keptParameters = ['id', 'L'];
+							if (parameterName.indexOf('tx_vidifrontend_pi1[matches]') > -1 || $.inArray(parameterName, keptParameters)) {
+								data[decodeURI(parameterName)] = parameterValue;
 							}
 						}
+
+						console.log(data);
 
 						data['dataType'] = VidiFrontend.settings[identifier].dataType;
 						data['format'] = 'json';
