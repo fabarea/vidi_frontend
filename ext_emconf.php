@@ -9,6 +9,10 @@ $EM_CONF[$_EXTKEY] = [
 	'author_company' => 'Ecodev',
 	'state' => 'beta',
 	'version' => '1.2.0-dev',
+	'autoload' => 
+		[
+            		'psr-4' => ['Fab\\VidiFrontend\\' => 'Classes']
+		],
 	'constraints' => [
 		'depends' => [
 			'typo3' => '7.6.0-7.99.99',
