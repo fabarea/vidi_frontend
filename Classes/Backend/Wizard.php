@@ -27,8 +27,9 @@ class Wizard
      *
      * @param array $wizardItems : The wizard items
      * @return array
+     * @throws \BadFunctionCallException
      */
-    function proc($wizardItems)
+    public function proc($wizardItems)
     {
         $wizardItems['plugins_tx_vidifrontend_pi1'] = array(
             'icon' => ExtensionManagementUtility::extRelPath('vidi_frontend') . 'Resources/Public/Images/VidiFrontend.png',
