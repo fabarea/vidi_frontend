@@ -22,6 +22,7 @@ class ColumnsConfiguration
      * Returns the configuration of a content element.
      *
      * @return ColumnsConfiguration
+     * @throws \InvalidArgumentException
      */
     static public function getInstance()
     {

@@ -99,6 +99,7 @@ class ShowButtonRenderer extends ColumnRendererAbstract
 
     /**
      * @return ObjectManager
+     * @throws \InvalidArgumentException
      */
     protected function getObjectManager()
     {

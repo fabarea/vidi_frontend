@@ -315,6 +315,7 @@ class ContentController extends ActionController
      * Get the Vidi Module Loader.
      *
      * @return ContentService
+     * @throws \InvalidArgumentException
      */
     protected function getContentService()
     {
@@ -326,6 +327,7 @@ class ContentController extends ActionController
      *
      * @param string $dataType
      * @return ContentElementService
+     * @throws \InvalidArgumentException
      */
     protected function getContentElementService($dataType)
     {
@@ -334,6 +336,7 @@ class ContentController extends ActionController
 
     /**
      * @return ContentType
+     * @throws \InvalidArgumentException
      */
     protected function getContentType()
     {

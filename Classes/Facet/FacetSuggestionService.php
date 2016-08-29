@@ -129,6 +129,7 @@ class FacetSuggestionService
 
     /**
      * @return \Fab\Vidi\Resolver\FieldPathResolver
+     * @throws \InvalidArgumentException
      */
     protected function getFieldPathResolver()
     {
