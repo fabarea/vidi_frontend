@@ -8,8 +8,8 @@ $EM_CONF[$_EXTKEY] = [
 	'category' => 'plugin',
 	'author_company' => 'Ecodev',
 	'state' => 'beta',
-	'version' => '1.2.0-dev',
-	'autoload' => 
+	'version' => '1.1.1',
+	'autoload' =>
 		[
             		'psr-4' => ['Fab\\VidiFrontend\\' => 'Classes']
 		],
