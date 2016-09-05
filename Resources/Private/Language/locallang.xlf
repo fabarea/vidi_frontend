@@ -168,6 +168,9 @@
 			<trans-unit id="export.xml">
 				<source>Export XML</source>
 			</trans-unit>
+			<trans-unit id="export.download">
+				<source>Download</source>
+			</trans-unit>
 			<trans-unit id="export.csv">
 				<source>Export CSV</source>
 			</trans-unit>

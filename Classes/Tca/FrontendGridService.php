@@ -8,6 +8,11 @@ namespace Fab\VidiFrontend\Tca;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Fab\VidiFrontend\MassAction\DividerMenuItem;
+use Fab\VidiFrontend\MassAction\DownloadAction;
+use Fab\VidiFrontend\MassAction\ExportCsvAction;
+use Fab\VidiFrontend\MassAction\ExportXlsAction;
+use Fab\VidiFrontend\MassAction\ExportXmlAction;
 use Fab\VidiFrontend\MassAction\MassActionInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use Fab\Vidi\Exception\InvalidKeyInArrayException;
@@ -57,6 +62,7 @@ class FrontendGridService extends GridService
      *
      * @param string $fieldNameAndPath
      * @return string
+     * @throws \Fab\Vidi\Exception\InvalidKeyInArrayException
      */
     public function getLabel($fieldNameAndPath)
     {
@@ -77,6 +83,7 @@ class FrontendGridService extends GridService
      * Returns an array containing column names.
      *
      * @return array
+     * @throws \Fab\Vidi\Exception\NotExistingClassException
      */
     public function getFields()
     {
@@ -93,17 +100,18 @@ class FrontendGridService extends GridService
     public function getMassActions()
     {
 
-
         // Default classes
-        $xlsAction = new \Fab\VidiFrontend\MassAction\ExportXlsAction();
-        $xmlAction = new \Fab\VidiFrontend\MassAction\ExportXmlAction();
-        $csvAction = new \Fab\VidiFrontend\MassAction\ExportCsvAction();
-        $divider = new \Fab\VidiFrontend\MassAction\DividerMenuItem();
+        $xlsAction = new ExportXlsAction();
+        $xmlAction = new ExportXmlAction();
+        $csvAction = new ExportCsvAction();
+        $downloadAction = new DownloadAction();
+        $divider = new DividerMenuItem();
 
         $massAction = [
             $xlsAction->getName() => $xlsAction,
             $xmlAction->getName() => $xmlAction,
             $csvAction->getName() => $csvAction,
+            $downloadAction->getName() => $downloadAction,
             $divider->getName() => $divider,
         ];
 
@@ -131,10 +139,11 @@ class FrontendGridService extends GridService
      * Returns an array containing facets fields.
      *
      * @return FacetInterface[]
+     * @throws \Fab\Vidi\Exception\NotExistingClassException
      */
     public function getFacets()
     {
-        if (is_null($this->facets)) {
+        if ($this->facets === null) {
 
             // Default facets
             $this->facets = Tca::grid($this->tableName)->getFacets();
@@ -159,6 +168,8 @@ class FrontendGridService extends GridService
      *
      * @param string $fieldNameAndPath
      * @return int|string
+     * @throws \Fab\Vidi\Exception\NotExistingClassException
+     * @throws \Fab\Vidi\Exception\InvalidKeyInArrayException
      */
     public function isSortable($fieldNameAndPath)
     {
@@ -194,7 +205,7 @@ class FrontendGridService extends GridService
                 $facet = $facet->getName();
             }
 
-            if (!in_array($facet, $facetNames)) {
+            if (!in_array($facet, $facetNames, true)) {
                 $facetNames[] = $facet;
             }
         }

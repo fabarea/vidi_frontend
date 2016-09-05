@@ -1,7 +1,7 @@
 <?php
 namespace Fab\VidiFrontend\MassAction;
 
-/*
+/**
  * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
@@ -129,7 +129,7 @@ class ExportXmlAction extends AbstractMassAction
         file_put_contents($this->exportFileNameAndPath, $this->formatXml($xml->asXML()));
     }
 
-    /*
+    /**
      * Convert an array to xml
      *
      * @return \SimpleXMLElement
@@ -149,7 +149,7 @@ class ExportXmlAction extends AbstractMassAction
         return $xml;
     }
 
-    /*
+    /**
      * Format the XML so that is looks human friendly.
      *
      * @param string $xml

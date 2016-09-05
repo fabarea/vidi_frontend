@@ -8,7 +8,6 @@ namespace Fab\VidiFrontend\MassAction;
  * LICENSE.md file that was distributed with this source code.
  */
 
-
 /**
  * Class AbstractMassAction
  */
