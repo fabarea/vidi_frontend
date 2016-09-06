@@ -75,7 +75,10 @@ class ExportXlsAction extends AbstractMassAction
             $this->writeXlsFile($objects, $contentService->getDataType());
 
             $result->setHeaders($this->getHeaders());
-            readfile($this->exportFileNameAndPath);
+            $result->setFile($this->exportFileNameAndPath);
+            $result->setCleanUpTask(function() {
+                GeneralUtility::rmdir($this->temporaryDirectory, true);
+            });
 
             $this->cleanUpTemporaryFiles();
         }
@@ -105,6 +108,7 @@ class ExportXlsAction extends AbstractMassAction
      *
      * @param array $objects
      * @param string $dataType
+     * @throws \InvalidArgumentException
      */
     protected function writeXlsFile(array $objects, $dataType)
     {
@@ -159,6 +163,7 @@ class ExportXlsAction extends AbstractMassAction
 
     /**
      * @return FieldPathResolver
+     * @throws \InvalidArgumentException
      */
     protected function getFieldPathResolver()
     {

@@ -82,10 +82,13 @@ class DownloadAction extends AbstractMassAction
 
             $this->writeZipFile($collectedFiles);
 
-            $result->setHeaders($this->getHeaders());
-            readfile($this->zipFileNameAndPath);
+            // Prepare output.
+            $result->setFile($this->zipFileNameAndPath);
+            $result->setCleanUpTask(function() {
+                GeneralUtility::rmdir($this->temporaryDirectory, true);
+            });
 
-            $this->cleanUpTemporaryFiles();
+            $result->setHeaders($this->getHeaders());
         }
 
         return $result;

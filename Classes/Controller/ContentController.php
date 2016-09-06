@@ -176,6 +176,8 @@ class ContentController extends ActionController
      * @param array $matches
      * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
      * @return string
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \InvalidArgumentException
@@ -223,7 +225,14 @@ class ContentController extends ActionController
         }
         $response->sendHeaders();
 
-        return $result->getOutput();
+        if ($result->hasFile()) {
+            readfile($result->getFile());
+            $task = $result->getCleanUpTask();
+            $task();
+            exit();
+        } else {
+            return $result->getOutput();
+        }
     }
 
     /**

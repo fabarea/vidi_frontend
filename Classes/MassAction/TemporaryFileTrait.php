@@ -8,11 +8,7 @@ namespace Fab\VidiFrontend\MassAction;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Fab\Vidi\Service\SpreadSheetService;
-use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
-use Fab\VidiFrontend\Service\ContentService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Class WriteFileTrait

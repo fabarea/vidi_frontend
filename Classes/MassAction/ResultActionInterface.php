@@ -37,4 +37,31 @@ interface ResultActionInterface
      */
     public function setHeaders(array $headers);
 
+    /**
+     * @return bool
+     */
+    public function hasFile();
+
+    /**
+     * @return string
+     */
+    public function getFile();
+
+    /**
+     * @param string $fileNameAndPath
+     * @return $this
+     */
+    public function setFile($fileNameAndPath);
+
+    /**
+     * @return \Closure
+     */
+    public function getCleanUpTask();
+
+    /**
+     * @param \Closure $task
+     * @return $this
+     */
+    public function setCleanUpTask(\Closure $task);
+
 }

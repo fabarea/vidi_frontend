@@ -76,9 +76,10 @@ class ExportXmlAction extends AbstractMassAction
             $this->writeXmlFile($objects, $contentService->getDataType());
 
             $result->setHeaders($this->getHeaders());
-            readfile($this->exportFileNameAndPath);
-
-            $this->cleanUpTemporaryFiles();
+            $result->setFile($this->exportFileNameAndPath);
+            $result->setCleanUpTask(function() {
+                GeneralUtility::rmdir($this->temporaryDirectory, true);
+            });
         }
 
         return $result;
@@ -166,6 +167,7 @@ class ExportXmlAction extends AbstractMassAction
 
     /**
      * @return FieldPathResolver
+     * @throws \InvalidArgumentException
      */
     protected function getFieldPathResolver()
     {

@@ -24,6 +24,16 @@ class GenericResultAction implements ResultActionInterface
     protected $output = '';
 
     /**
+     * @var string
+     */
+    protected $file = '';
+
+    /**
+     * @var \Closure
+     */
+    protected $cleanUpTask;
+
+    /**
      * @return string
      */
     public function getOutput()
@@ -58,5 +68,52 @@ class GenericResultAction implements ResultActionInterface
     {
         $this->headers = $headers;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFile()
+    {
+        return $this->file !== '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param string $fileNameAndPath
+     * @return $this
+     */
+    public function setFile($fileNameAndPath)
+    {
+
+        $this->file = $fileNameAndPath;
+    }
+
+    /**
+     * @return \Closure
+     */
+    public function getCleanUpTask()
+    {
+        $cleanUpTask = $this->cleanUpTask;
+        if (false === $cleanUpTask instanceof \Closure) {
+            $cleanUpTask = function() {};
+        }
+        return $cleanUpTask;
+    }
+
+    /**
+     * @param \Closure $task
+     * @return $this
+     */
+    public function setCleanUpTask(\Closure $task)
+    {
+        $this->cleanUpTask = $task;
     }
 }

@@ -60,4 +60,46 @@ class JsonResultAction implements ResultActionInterface
         $this->headers = $headers;
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasFile()
+    {
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFile()
+    {
+        return '';
+    }
+
+    /**
+     * @param string $fileNameAndPath
+     * @return $this
+     */
+    public function setFile($fileNameAndPath)
+    {
+        return $this;
+    }
+
+    /**
+     * @return \Closure
+     */
+    public function getCleanUpTask()
+    {
+        return function() {};
+    }
+
+    /**
+     * @param \Closure $task
+     * @return $this
+     */
+    public function setCleanUpTask(\Closure $task)
+    {
+        return $this;
+    }
 }
