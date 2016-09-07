@@ -144,6 +144,7 @@ class ContentController extends ActionController
         $matcher = MatcherFactory::getInstance()->getMatcher($settings, $matches, $dataType);
         $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
         $pager = PagerFactory::getInstance()->getPager();
+        $pager->setLimit(0);
 
         // Restrict number of records.
         if ((int)$settings['limit'] > 0) {
