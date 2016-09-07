@@ -117,7 +117,7 @@ class ContentElementConfiguration implements SingletonInterface
     public function getColumnsNames()
     {
         $columnList = $this->getColumnList();
-        $columnNames = GeneralUtility::trimExplode(',', $columnList, TRUE);
+        $columnNames = GeneralUtility::trimExplode(',', $columnList, true);
         return $columnNames;
     }
 
@@ -151,8 +151,8 @@ class ContentElementConfiguration implements SingletonInterface
      */
     protected function normalizeFlexForm(array $flexForm, $languagePointer = 'lDEF', $valuePointer = 'vDEF')
     {
-        $settings = array();
-        $flexForm = isset($flexForm['data']) ? $flexForm['data'] : array();
+        $settings = [];
+        $flexForm = isset($flexForm['data']) ? $flexForm['data'] : [];
         foreach (array_values($flexForm) as $languages) {
             if (!is_array($languages[$languagePointer])) {
                 continue;
@@ -191,7 +191,7 @@ class ContentElementConfiguration implements SingletonInterface
     protected function walkFlexFormNode($nodeArray, $valuePointer = 'vDEF')
     {
         if (is_array($nodeArray)) {
-            $return = array();
+            $return = [];
             foreach ($nodeArray as $nodeKey => $nodeValue) {
                 if ($nodeKey === $valuePointer) {
                     return $nodeValue;

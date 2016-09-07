@@ -47,7 +47,7 @@ class ContentConverter extends AbstractTypeConverter
      * @return File
      * @api
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), PropertyMappingConfigurationInterface $configuration = NULL)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
     {
 
         $dataType = $this->getContentType()->getCurrentType();

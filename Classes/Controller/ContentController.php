@@ -96,7 +96,7 @@ class ContentController extends ActionController
         $this->view->assign('gridIdentifier', $this->getGridIdentifier($settings));
         $this->view->assign('contentElementIdentifier', $this->configurationManager->getContentObject()->data['uid']);
         $this->view->assign('dataType', $dataType);
-        $this->view->assign('objects', array());
+        $this->view->assign('objects', []);
         $this->view->assign('numberOfColumns', count($columns));
 
         if (!$settings['loadContentByAjax']) {

@@ -137,7 +137,7 @@ class ExportXlsAction extends AbstractMassAction
         foreach ($objects as $object) {
 
             // Make sure we have a flat array of values for the CSV purpose.
-            $flattenValues = array();
+            $flattenValues = [];
             foreach ($columns as $fieldNameAndPath => $configuration) {
 
                 if (Tca::table($dataType)->hasField($fieldNameAndPath)) {

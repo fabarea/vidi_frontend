@@ -47,13 +47,13 @@ class ArrayConverter extends AbstractTypeConverter
      * @return File
      * @api
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), PropertyMappingConfigurationInterface $configuration = NULL)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
     {
         $listOfValues = '';
         if (isset($source[0])) {
             $listOfValues = $source[0];
         }
-        return GeneralUtility::trimExplode(',', $listOfValues, TRUE);
+        return GeneralUtility::trimExplode(',', $listOfValues, true);
     }
 
 }

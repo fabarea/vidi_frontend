@@ -27,8 +27,8 @@ class SuggestionsViewHelper extends AbstractViewHelper
     {
         $settings = $this->templateVariableContainer->get('settings');
 
-        $suggestions = array();
-        $facets = GeneralUtility::trimExplode(',', $settings['facets'], TRUE);
+        $suggestions = [];
+        $facets = GeneralUtility::trimExplode(',', $settings['facets'], true);
         foreach ($facets as $facetName) {
             $suggestions[$facetName] = $this->getFacetSuggestionService()->getSuggestions($facetName);
         }
@@ -41,7 +41,7 @@ class SuggestionsViewHelper extends AbstractViewHelper
      */
     protected function getFacetSuggestionService()
     {
-        $settings = array();
+        $settings = [];
         $dataType = $this->templateVariableContainer->get('dataType');
         return GeneralUtility::makeInstance('Fab\VidiFrontend\Facet\FacetSuggestionService', $settings, $dataType);
     }

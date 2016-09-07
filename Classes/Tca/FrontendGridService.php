@@ -189,7 +189,7 @@ class FrontendGridService extends GridService
      */
     public function getFacetNames()
     {
-        $facetNames = array();
+        $facetNames = [];
 
         if (is_array($this->tca['facets'])) {
             foreach ($this->tca['facets'] as $facet) {

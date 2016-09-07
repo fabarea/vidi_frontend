@@ -40,14 +40,14 @@ class PagerFactory implements SingletonInterface
         $pager = GeneralUtility::makeInstance(Pager::class);
 
         // Set items per page
-        if (GeneralUtility::_GET('length') !== NULL) {
+        if (GeneralUtility::_GET('length') !== null) {
             $limit = (int)GeneralUtility::_GET('length');
             $pager->setLimit($limit);
         }
 
         // Set offset
         $offset = 0;
-        if (GeneralUtility::_GET('start') !== NULL) {
+        if (GeneralUtility::_GET('start') !== null) {
             $offset = (int)GeneralUtility::_GET('start');
         }
         $pager->setOffset($offset);

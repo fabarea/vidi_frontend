@@ -59,7 +59,7 @@ trait TemporaryFileTrait
      */
     protected function cleanUpTemporaryFiles()
     {
-        GeneralUtility::rmdir($this->temporaryDirectory, TRUE);
+        GeneralUtility::rmdir($this->temporaryDirectory, true);
     }
 
 }

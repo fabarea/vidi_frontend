@@ -29,7 +29,7 @@ class ShowViewHelper extends AbstractViewHelper
         /** @var Content $object */
         $object = $this->templateVariableContainer->get('object');
 
-        $output = array();
+        $output = [];
         foreach ($object->toArray() as $fieldName => $value) {
             $output[] = sprintf(
                 '<tr><td>%s</td><td>%s</td></tr>',

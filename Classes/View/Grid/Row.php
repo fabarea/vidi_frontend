@@ -49,7 +49,7 @@ class Row extends AbstractComponentView
     /**
      * @param array $columns
      */
-    public function __construct(array $columns = array())
+    public function __construct(array $columns = [])
     {
         $this->columns = $columns;
     }
@@ -61,11 +61,11 @@ class Row extends AbstractComponentView
      * @param int $rowIndex
      * @return array
      */
-    public function render(Content $object = NULL, $rowIndex = 0)
+    public function render(Content $object = null, $rowIndex = 0)
     {
 
         // Initialize returned array
-        $output = array();
+        $output = [];
         $dataType = $object->getDataType();
 
         foreach ($this->columns as $fieldNameAndPath => $configuration) {
@@ -219,7 +219,7 @@ class Row extends AbstractComponentView
 
             $fieldNameOfForeignTable = $this->getFieldPathResolver()->stripFieldPath($fieldNameAndPath, $object->getDataType());
 
-            // TRUE means the field name does not contains a path. "title" vs "metadata.title"
+            // true means the field name does not contains a path. "title" vs "metadata.title"
             // Fetch the default label
             if ($fieldNameOfForeignTable === $fieldName) {
                 $foreignTable = Tca::table($object->getDataType())->field($fieldName)->getForeignTable();

@@ -56,7 +56,7 @@ class OrderFactory implements SingletonInterface
             $direction = $orderings[0]['dir'];
 
             if ($columnPosition > 0) {
-                $columns = GeneralUtility::trimExplode(',', $settings['columns'], TRUE);
+                $columns = GeneralUtility::trimExplode(',', $settings['columns'], true);
                 $field = $columns[$columnPosition];
 
                 $order = array(

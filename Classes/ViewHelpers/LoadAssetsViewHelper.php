@@ -86,14 +86,14 @@ class LoadAssetsViewHelper extends AbstractViewHelper
 
     /**
      * @param array $asset
-     * @return string|NULL
+     * @return string|null
      */
     protected function getDevelopmentFile(array $asset)
     {
         $possibleDevelopmentFile = str_replace('.min.', '.', $asset['path']);
         $developmentFile = GeneralUtility::getFileAbsFileName($possibleDevelopmentFile);
         if (!file_exists($developmentFile)) {
-            $developmentFile = NULL;
+            $developmentFile = null;
         }
         return $developmentFile;
     }

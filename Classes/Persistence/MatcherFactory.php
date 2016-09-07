@@ -29,7 +29,7 @@ class MatcherFactory implements SingletonInterface
     /**
      * @var array
      */
-    protected $settings = array();
+    protected $settings = [];
 
     /**
      * Gets a singleton instance of this class.
@@ -53,7 +53,7 @@ class MatcherFactory implements SingletonInterface
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \InvalidArgumentException
      */
-    public function getMatcher(array $settings, array $matches = array(), $dataType)
+    public function getMatcher(array $settings, array $matches = [], $dataType)
     {
         $this->settings = $settings;
 
@@ -109,7 +109,7 @@ class MatcherFactory implements SingletonInterface
     {
 
         if (!empty($this->settings['additionalEquals'])) {
-            $constraints = GeneralUtility::trimExplode("\n", $this->settings['additionalEquals'], TRUE);
+            $constraints = GeneralUtility::trimExplode("\n", $this->settings['additionalEquals'], true);
             foreach ($constraints as $constraint) {
 
                 // hidden feature, constraint should not starts with # which considered a commented statement
@@ -159,7 +159,7 @@ class MatcherFactory implements SingletonInterface
 
             // Parse the json query coming from the Visual Search.
             $query = rawurldecode($query);
-            $queryParts = json_decode($query, TRUE);
+            $queryParts = json_decode($query, true);
 
             if (is_array($queryParts)) {
                 $matcher = $this->parseQuery($queryParts, $matcher, $dataType);
@@ -189,7 +189,7 @@ class MatcherFactory implements SingletonInterface
 
             /** @var Selection $selection */
             $selection = $selectionRepository->findByUid($selectionIdentifier);
-            $queryParts = json_decode($selection->getQuery(), TRUE);
+            $queryParts = json_decode($selection->getQuery(), true);
             $matcher = $this->parseQuery($queryParts, $matcher, $dataType);
         }
         return $matcher;

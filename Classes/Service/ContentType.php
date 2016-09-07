@@ -21,7 +21,7 @@ class ContentType implements SingletonInterface
     /**
      * @var array
      */
-    protected $contentTypes = array();
+    protected $contentTypes = [];
 
     /**
      * Return the current content type.

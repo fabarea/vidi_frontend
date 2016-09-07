@@ -131,7 +131,7 @@ Best is to learn by example and get inspired by ``EXT:vidi_frontend/Configuratio
 			'columns' => array(
 
 				# Custom fields for the FE goes here
-				'title' => array(),
+				'title' => [],
 			),
 		),
 	);
@@ -184,7 +184,7 @@ The associate class
         /**
          * @var array
          */
-        protected $suggestions = array();
+        protected $suggestions = [];
 
         /**
          * @var string
@@ -210,7 +210,7 @@ The associate class
          * @param array $suggestions
          * @param string $fieldNameAndPath
          */
-        public function __construct($name = '', $label = '', array $suggestions = array(), $fieldNameAndPath = '')
+        public function __construct($name = '', $label = '', array $suggestions = [], $fieldNameAndPath = '')
         {
         }
 

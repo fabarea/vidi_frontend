@@ -36,9 +36,9 @@ class RowsViewHelper extends AbstractViewHelper
      * @param array $objects
      * @return string
      */
-    public function render(array $objects = array())
+    public function render(array $objects = [])
     {
-        $rows = array();
+        $rows = [];
 
         $columns = ContentElementConfiguration::getInstance()->getColumns();
 

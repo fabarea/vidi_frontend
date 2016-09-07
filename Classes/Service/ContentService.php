@@ -119,7 +119,7 @@ class ContentService
             ->setMatcher($matcher)
             ->setLimit($limit)
             ->setOffset($offset)
-            ->setHasBeenProcessed(FALSE);
+            ->setHasBeenProcessed(false);
 
         $signalResult = $this->getSignalSlotDispatcher()->dispatch(ContentService::class, 'afterFindContentObjects', array($signalArguments));
         return $signalResult[0];

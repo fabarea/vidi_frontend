@@ -52,7 +52,7 @@ class FacetSuggestionService
     public function getSuggestions($fieldNameAndPath)
     {
 
-        $values = array();
+        $values = [];
 
         $dataType = $this->getFieldPathResolver()->getDataType($fieldNameAndPath, $this->dataType);
         $fieldName = $this->getFieldPathResolver()->stripFieldPath($fieldNameAndPath, $this->dataType);
@@ -69,7 +69,7 @@ class FacetSuggestionService
                 $table = Tca::table($foreignTable);
 
                 // Initialize the matcher object.
-                $matcher = MatcherObjectFactory::getInstance()->getMatcher(array(), $foreignTable);
+                $matcher = MatcherObjectFactory::getInstance()->getMatcher([], $foreignTable);
 
                 $numberOfValues = $contentRepository->countBy($matcher);
                 if ($numberOfValues <= $this->getLimit()) {
@@ -87,7 +87,7 @@ class FacetSuggestionService
                 $contentRepository = ContentRepositoryFactory::getInstance($this->dataType);
 
                 /** @var $matcher Matcher */
-                $matcher = GeneralUtility::makeInstance('Fab\Vidi\Persistence\Matcher', array(), $dataType);
+                $matcher = GeneralUtility::makeInstance('Fab\Vidi\Persistence\Matcher', [], $dataType);
 
                 // Count the number of objects.
                 $numberOfValues = $contentRepository->countDistinctValues($fieldName, $matcher);

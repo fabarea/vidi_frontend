@@ -28,8 +28,8 @@ class FacetsViewHelper extends AbstractViewHelper
         $dataType = $this->templateVariableContainer->get('dataType');
         $settings = $this->templateVariableContainer->get('settings');
 
-        $facetIdentifiers = GeneralUtility::trimExplode(',', $settings['facets'], TRUE);
-        $facets = array();
+        $facetIdentifiers = GeneralUtility::trimExplode(',', $settings['facets'], true);
+        $facets = [];
         foreach ($facetIdentifiers as $facetName) {
             $name = FrontendTca::grid($dataType)->facet($facetName)->getName();
             $facets[$name] = FrontendTca::grid($dataType)->facet($facetName)->getLabel();

@@ -35,12 +35,13 @@ class ColumnsConfiguration
      * @param string $dataType
      * @param string $columnList
      * @return array
+     * @throws \Fab\Vidi\Exception\InvalidKeyInArrayException
      */
     public function get($dataType, $columnList = '')
     {
 
         $configuration = [];
-        $columns = GeneralUtility::trimExplode(',', $columnList, TRUE);
+        $columns = GeneralUtility::trimExplode(',', $columnList, true);
         foreach ($columns as $fieldNameAndPath) {
             $configuration[$fieldNameAndPath] = FrontendTca::grid($dataType)->getField($fieldNameAndPath);
         }
