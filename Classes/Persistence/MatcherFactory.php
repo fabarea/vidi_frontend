@@ -124,7 +124,7 @@ class MatcherFactory implements SingletonInterface
                         $matcher->$operator($operand, $value);
                     } elseif (preg_match('/(.+) (in) (.+)/is', $constraint, $matches) && count($matches) === 4) {
 
-                        $operator = $matcher->getSupportedOperators()[trim($matches[2])];
+                        $operator = $matcher->getSupportedOperators()[strtolower(trim($matches[2]))];
                         $operand = trim($matches[1]);
                         $value = trim($matches[3]);
                         $matcher->$operator($operand, GeneralUtility::trimExplode(',', $value, true));
