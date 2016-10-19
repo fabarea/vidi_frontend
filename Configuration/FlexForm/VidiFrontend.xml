@@ -68,6 +68,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.limit</label>
 							<config>
 								<type>input</type>
+								<default>10</default>
 							</config>
 						</TCEforms>
 					</settings.limit>

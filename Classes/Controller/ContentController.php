@@ -144,12 +144,18 @@ class ContentController extends ActionController
         $matcher = MatcherFactory::getInstance()->getMatcher($settings, $matches, $dataType);
         $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
         $pager = PagerFactory::getInstance()->getPager();
-        $pager->setLimit(0);
+
+        // Set a default value since it wasn't a default one in FlexForm firstly.
+        if ($settings['limit'] === '') {
+            $settings['limit'] = 10;
+        }
 
         // Restrict number of records.
         if ((int)$settings['limit'] > 0) {
             $pager->setLimit((int)$settings['limit']);
             $pager->setOffset((int)$settings['limit']);
+        } else {
+            $pager->setLimit(0);
         }
 
         // Fetch objects via the Content Service.
