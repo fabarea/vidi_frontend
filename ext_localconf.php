@@ -24,7 +24,7 @@ if (false === isset($configuration['autoload_typoscript']) || true === (bool)$co
     'Fab.vidi_frontend',
     'Pi1',
     [
-        'Content' => 'index, list, show, execute, warn',
+        'Content' => 'index, list, show, execute',
     ],
     [
         'Content' => 'list, execute',

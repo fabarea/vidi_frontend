@@ -98,7 +98,6 @@ page_1457381088 {
 		switchableControllerActions {
 			Content {
 				1 = execute
-				2 = warn
 			}
 		}
 	}
