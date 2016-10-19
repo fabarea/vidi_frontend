@@ -137,7 +137,7 @@ VidiFrontend.Grid = {
 
 							// Transmit parameter to the ajax request from the main URL.
 							var keptParameters = ['id', 'L'];
-							if (parameterName.indexOf('tx_vidifrontend_pi1[matches]') > -1 || $.inArray(parameterName, keptParameters)) {
+							if (parameterName.indexOf('tx_vidifrontend_pi1[matches]') > -1 || $.inArray(parameterName, keptParameters) > -1) {
 								data[decodeURI(parameterName)] = parameterValue;
 							}
 						}
