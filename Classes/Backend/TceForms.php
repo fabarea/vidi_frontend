@@ -293,6 +293,7 @@ class TceForms
             if (empty($configuredDataType)) {
                 $parameters['items'][] = array('No columns to display yet! Select a content type first.', '', null);
             } else {
+
                 foreach (FrontendTca::grid($configuredDataType)->getFields() as $fieldNameAndPath => $configuration) {
                     $values = array($fieldNameAndPath, $fieldNameAndPath, null);
                     $parameters['items'][] = $values;
@@ -395,37 +396,6 @@ class TceForms
                     foreach ($selections as $selection) {
                         /** @var Selection $selection */
                         $values = array($selection->getName(), $selection->getUid(), null);
-                        $parameters['items'][] = $values;
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * This method modifies the list of items for FlexForm "sorting".
-     *
-     * @param array $parameters
-     */
-    public function getSorting(&$parameters)
-    {
-        $configuration = $this->getPluginConfiguration();
-
-        if (0 === count($configuration) || empty($configuration['settings']['templates'])) {
-            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
-        } else {
-
-            if (version_compare(TYPO3_branch, '7.0', '<')) {
-                $configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
-            } else {
-                $configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
-            }
-
-            $parameters['items'][] = array('', '', null);
-            if (!empty($configuredDataType)) {
-                foreach (FrontendTca::grid($configuredDataType)->getFields() as $fieldNameAndPath => $configuration) {
-                    if (false === strpos($fieldNameAndPath, '__')) {
-                        $values = array($fieldNameAndPath, $fieldNameAndPath, null);
                         $parameters['items'][] = $values;
                     }
                 }

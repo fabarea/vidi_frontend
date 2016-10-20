@@ -76,10 +76,7 @@
 						<TCEforms>
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.sorting</label>
 							<config>
-								<type>select</type>
-								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getSorting</itemsProcFunc>
-								<size>1</size>
-								<maxitems>1</maxitems>
+								<type>input</type>
 							</config>
 						</TCEforms>
 					</settings.sorting>
