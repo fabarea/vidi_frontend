@@ -54,12 +54,4 @@ trait TemporaryFileTrait
         $this->zipFileNameAndPath = $this->temporaryDirectory . $zipFileName;
     }
 
-    /**
-     * @return void
-     */
-    protected function cleanUpTemporaryFiles()
-    {
-        GeneralUtility::rmdir($this->temporaryDirectory, true);
-    }
-
 }

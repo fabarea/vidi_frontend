@@ -79,8 +79,6 @@ class ExportXlsAction extends AbstractMassAction
             $result->setCleanUpTask(function() {
                 GeneralUtility::rmdir($this->temporaryDirectory, true);
             });
-
-            $this->cleanUpTemporaryFiles();
         }
 
         return $result;
