@@ -26,6 +26,7 @@ use Fab\VidiFrontend\TypeConverter\ContentConverter;
 use Fab\VidiFrontend\TypeConverter\ContentDataConverter;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Fab\Vidi\Domain\Model\Content;
@@ -151,6 +152,14 @@ class ContentController extends ActionController
         $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
         $pager = PagerFactory::getInstance()->getPager();
 
+        $length = GeneralUtility::_GET('length');
+        if ($length !== null && MathUtility::canBeInterpretedAsInteger($length)) {
+            $length = (int)$length;
+            if ($length > -1) {
+                $settings['limit'] = $length;
+            }
+        }
+        
         // Restrict number of records.
         if ((int)$settings['limit'] > 0) {
             $pager->setLimit((int)$settings['limit']);
