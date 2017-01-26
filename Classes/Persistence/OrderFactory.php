@@ -64,9 +64,9 @@ class OrderFactory implements SingletonInterface
             $columns = GeneralUtility::trimExplode(',', $settings['columns'], TRUE);
             $field = $columns[$columnPosition];
             if ($field !== '__checkbox') {
-                $order = array(
+                $order = [
                     $field => strtoupper($direction)
-                );
+                ];
             }
         }
 
