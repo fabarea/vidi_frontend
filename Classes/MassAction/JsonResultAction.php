@@ -1,17 +1,11 @@
 <?php
 namespace Fab\VidiFrontend\MassAction;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+/*
+ * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE.md file that was distributed with this source code.
  */
 
 
@@ -64,6 +58,48 @@ class JsonResultAction implements ResultActionInterface
     public function setHeaders(array $headers)
     {
         $this->headers = $headers;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFile()
+    {
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFile()
+    {
+        return '';
+    }
+
+    /**
+     * @param string $fileNameAndPath
+     * @return $this
+     */
+    public function setFile($fileNameAndPath)
+    {
+        return $this;
+    }
+
+    /**
+     * @return \Closure
+     */
+    public function getCleanUpTask()
+    {
+        return function() {};
+    }
+
+    /**
+     * @param \Closure $task
+     * @return $this
+     */
+    public function setCleanUpTask(\Closure $task)
+    {
         return $this;
     }
 }

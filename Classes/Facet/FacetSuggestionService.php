@@ -1,17 +1,11 @@
 <?php
 namespace Fab\VidiFrontend\Facet;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+/*
+ * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE.md file that was distributed with this source code.
  */
 
 use Fab\VidiFrontend\Tca\FrontendTca;
@@ -58,7 +52,7 @@ class FacetSuggestionService
     public function getSuggestions($fieldNameAndPath)
     {
 
-        $values = array();
+        $values = [];
 
         $dataType = $this->getFieldPathResolver()->getDataType($fieldNameAndPath, $this->dataType);
         $fieldName = $this->getFieldPathResolver()->stripFieldPath($fieldNameAndPath, $this->dataType);
@@ -75,7 +69,7 @@ class FacetSuggestionService
                 $table = Tca::table($foreignTable);
 
                 // Initialize the matcher object.
-                $matcher = MatcherObjectFactory::getInstance()->getMatcher(array(), $foreignTable);
+                $matcher = MatcherObjectFactory::getInstance()->getMatcher([], $foreignTable);
 
                 $numberOfValues = $contentRepository->countBy($matcher);
                 if ($numberOfValues <= $this->getLimit()) {
@@ -93,7 +87,7 @@ class FacetSuggestionService
                 $contentRepository = ContentRepositoryFactory::getInstance($this->dataType);
 
                 /** @var $matcher Matcher */
-                $matcher = GeneralUtility::makeInstance('Fab\Vidi\Persistence\Matcher', array(), $dataType);
+                $matcher = GeneralUtility::makeInstance('Fab\Vidi\Persistence\Matcher', [], $dataType);
 
                 // Count the number of objects.
                 $numberOfValues = $contentRepository->countDistinctValues($fieldName, $matcher);
@@ -135,6 +129,7 @@ class FacetSuggestionService
 
     /**
      * @return \Fab\Vidi\Resolver\FieldPathResolver
+     * @throws \InvalidArgumentException
      */
     protected function getFieldPathResolver()
     {

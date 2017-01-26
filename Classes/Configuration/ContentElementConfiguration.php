@@ -1,17 +1,11 @@
 <?php
 namespace Fab\VidiFrontend\Configuration;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+/*
+ * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE.md file that was distributed with this source code.
  */
 
 use TYPO3\CMS\Core\SingletonInterface;
@@ -123,7 +117,7 @@ class ContentElementConfiguration implements SingletonInterface
     public function getColumnsNames()
     {
         $columnList = $this->getColumnList();
-        $columnNames = GeneralUtility::trimExplode(',', $columnList, TRUE);
+        $columnNames = GeneralUtility::trimExplode(',', $columnList, true);
         return $columnNames;
     }
 
@@ -157,8 +151,8 @@ class ContentElementConfiguration implements SingletonInterface
      */
     protected function normalizeFlexForm(array $flexForm, $languagePointer = 'lDEF', $valuePointer = 'vDEF')
     {
-        $settings = array();
-        $flexForm = isset($flexForm['data']) ? $flexForm['data'] : array();
+        $settings = [];
+        $flexForm = isset($flexForm['data']) ? $flexForm['data'] : [];
         foreach (array_values($flexForm) as $languages) {
             if (!is_array($languages[$languagePointer])) {
                 continue;
@@ -197,7 +191,7 @@ class ContentElementConfiguration implements SingletonInterface
     protected function walkFlexFormNode($nodeArray, $valuePointer = 'vDEF')
     {
         if (is_array($nodeArray)) {
-            $return = array();
+            $return = [];
             foreach ($nodeArray as $nodeKey => $nodeValue) {
                 if ($nodeKey === $valuePointer) {
                     return $nodeValue;

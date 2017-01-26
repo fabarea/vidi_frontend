@@ -1,17 +1,11 @@
 <?php
 namespace Fab\VidiFrontend\MassAction;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+/*
+ * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE.md file that was distributed with this source code.
  */
 
 use Fab\Vidi\Tca\Tca;
@@ -64,6 +58,7 @@ class ExportCsvAction extends AbstractMassAction
      *
      * @param ContentService $contentService
      * @return ResultActionInterface
+     * @throws \InvalidArgumentException
      */
     public function execute(ContentService $contentService)
     {
@@ -81,9 +76,10 @@ class ExportCsvAction extends AbstractMassAction
             $this->writeCsvFile($objects, $contentService->getDataType());
 
             $result->setHeaders($this->getHeaders());
-            readfile($this->exportFileNameAndPath);
-
-            $this->cleanUpTemporaryFiles();
+            $result->setFile($this->exportFileNameAndPath);
+            $result->setCleanUpTask(function() {
+                GeneralUtility::rmdir($this->temporaryDirectory, true);
+            });
         }
 
         return $result;
@@ -94,6 +90,8 @@ class ExportCsvAction extends AbstractMassAction
      *
      * @param array $objects
      * @param string $dataType
+     * @throws \InvalidArgumentException
+     * @throws \Fab\Vidi\Exception\NotExistingClassException
      */
     protected function writeCsvFile(array $objects, $dataType)
     {
@@ -107,7 +105,8 @@ class ExportCsvAction extends AbstractMassAction
         $finalFields = [];
         foreach ($columns as $fieldNameAndPath => $configuration) {
 
-            if (Tca::table($dataType)->hasField($fieldNameAndPath) || $this->getFieldPathResolver()->containsPath($fieldNameAndPath, $dataType)) {
+            if (Tca::table($dataType)->hasField($fieldNameAndPath)
+                || $this->getFieldPathResolver()->containsPath($fieldNameAndPath, $dataType)) {
                 $finalFields[] = $fieldNameAndPath;
             }
         }
@@ -157,6 +156,7 @@ class ExportCsvAction extends AbstractMassAction
 
     /**
      * @return FieldPathResolver
+     * @throws \InvalidArgumentException
      */
     protected function getFieldPathResolver()
     {

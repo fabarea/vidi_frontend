@@ -68,6 +68,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.limit</label>
 							<config>
 								<type>input</type>
+								<default>10</default>
 							</config>
 						</TCEforms>
 					</settings.limit>
@@ -75,10 +76,7 @@
 						<TCEforms>
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.sorting</label>
 							<config>
-								<type>select</type>
-								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getSorting</itemsProcFunc>
-								<size>1</size>
-								<maxitems>1</maxitems>
+								<type>input</type>
 							</config>
 						</TCEforms>
 					</settings.sorting>

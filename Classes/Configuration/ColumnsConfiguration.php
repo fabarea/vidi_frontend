@@ -1,17 +1,11 @@
 <?php
 namespace Fab\VidiFrontend\Configuration;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+/*
+ * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE.md file that was distributed with this source code.
  */
 
 use Fab\VidiFrontend\Tca\FrontendTca;
@@ -28,6 +22,7 @@ class ColumnsConfiguration
      * Returns the configuration of a content element.
      *
      * @return ColumnsConfiguration
+     * @throws \InvalidArgumentException
      */
     static public function getInstance()
     {
@@ -40,12 +35,13 @@ class ColumnsConfiguration
      * @param string $dataType
      * @param string $columnList
      * @return array
+     * @throws \Fab\Vidi\Exception\InvalidKeyInArrayException
      */
     public function get($dataType, $columnList = '')
     {
 
         $configuration = [];
-        $columns = GeneralUtility::trimExplode(',', $columnList, TRUE);
+        $columns = GeneralUtility::trimExplode(',', $columnList, true);
         foreach ($columns as $fieldNameAndPath) {
             $configuration[$fieldNameAndPath] = FrontendTca::grid($dataType)->getField($fieldNameAndPath);
         }

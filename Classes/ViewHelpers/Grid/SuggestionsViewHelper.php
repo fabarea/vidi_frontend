@@ -1,17 +1,11 @@
 <?php
 namespace Fab\VidiFrontend\ViewHelpers\Grid;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+/*
+ * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE.md file that was distributed with this source code.
  */
 
 use Fab\VidiFrontend\Tca\FrontendTca;
@@ -33,8 +27,8 @@ class SuggestionsViewHelper extends AbstractViewHelper
     {
         $settings = $this->templateVariableContainer->get('settings');
 
-        $suggestions = array();
-        $facets = GeneralUtility::trimExplode(',', $settings['facets'], TRUE);
+        $suggestions = [];
+        $facets = GeneralUtility::trimExplode(',', $settings['facets'], true);
         foreach ($facets as $facetName) {
             $suggestions[$facetName] = $this->getFacetSuggestionService()->getSuggestions($facetName);
         }
@@ -47,7 +41,7 @@ class SuggestionsViewHelper extends AbstractViewHelper
      */
     protected function getFacetSuggestionService()
     {
-        $settings = array();
+        $settings = [];
         $dataType = $this->templateVariableContainer->get('dataType');
         return GeneralUtility::makeInstance('Fab\VidiFrontend\Facet\FacetSuggestionService', $settings, $dataType);
     }

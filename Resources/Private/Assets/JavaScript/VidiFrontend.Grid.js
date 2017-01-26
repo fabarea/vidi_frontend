@@ -123,12 +123,14 @@ VidiFrontend.Grid = {
 
 			// Add loading by ajax handler
 			if (settings.loadContentByAjax) {
+				var uri = new Uri(window.location.pathname).deleteQueryParam('cHash').addQueryParam('type', '1416239670');
 				options.ajax = {
-					url: settings.loadContentByAjax ? window.location.pathname + '?type=1416239670' : '',
+					url: settings.loadContentByAjax ? uri : '',
+
 					data: function(data) {
 
 						// Get the parameter related to filter from the URL and "re-inject" them into the Ajax request
-						var uri = new Uri(window.location.href);
+						var uri = new Uri(window.location.href).deleteQueryParam('cHash');
 
 						for (var index = 0; index < uri.queryPairs.length; index++) {
 							var queryPair = uri.queryPairs[index];
@@ -137,7 +139,7 @@ VidiFrontend.Grid = {
 
 							// Transmit parameter to the ajax request from the main URL.
 							var keptParameters = ['id', 'L'];
-							if (parameterName.indexOf('tx_vidifrontend_pi1[matches]') > -1 || $.inArray(parameterName, keptParameters)) {
+							if (parameterName.indexOf('tx_vidifrontend_pi1[matches]') > -1 || $.inArray(parameterName, keptParameters) > -1) {
 								data[decodeURI(parameterName)] = parameterValue;
 							}
 						}

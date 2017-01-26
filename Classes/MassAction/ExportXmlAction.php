@@ -2,16 +2,10 @@
 namespace Fab\VidiFrontend\MassAction;
 
 /**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE.md file that was distributed with this source code.
  */
 
 use Fab\Vidi\Domain\Model\Content;
@@ -82,9 +76,10 @@ class ExportXmlAction extends AbstractMassAction
             $this->writeXmlFile($objects, $contentService->getDataType());
 
             $result->setHeaders($this->getHeaders());
-            readfile($this->exportFileNameAndPath);
-
-            $this->cleanUpTemporaryFiles();
+            $result->setFile($this->exportFileNameAndPath);
+            $result->setCleanUpTask(function() {
+                GeneralUtility::rmdir($this->temporaryDirectory, true);
+            });
         }
 
         return $result;
@@ -135,7 +130,7 @@ class ExportXmlAction extends AbstractMassAction
         file_put_contents($this->exportFileNameAndPath, $this->formatXml($xml->asXML()));
     }
 
-    /*
+    /**
      * Convert an array to xml
      *
      * @return \SimpleXMLElement
@@ -155,7 +150,7 @@ class ExportXmlAction extends AbstractMassAction
         return $xml;
     }
 
-    /*
+    /**
      * Format the XML so that is looks human friendly.
      *
      * @param string $xml
@@ -172,6 +167,7 @@ class ExportXmlAction extends AbstractMassAction
 
     /**
      * @return FieldPathResolver
+     * @throws \InvalidArgumentException
      */
     protected function getFieldPathResolver()
     {

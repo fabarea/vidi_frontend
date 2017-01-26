@@ -1,17 +1,11 @@
 <?php
 namespace Fab\VidiFrontend\Persistence;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+/*
+ * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE.md file that was distributed with this source code.
  */
 
 use Fab\Vidi\Persistence\Pager;
@@ -46,14 +40,14 @@ class PagerFactory implements SingletonInterface
         $pager = GeneralUtility::makeInstance(Pager::class);
 
         // Set items per page
-        if (GeneralUtility::_GET('length') !== NULL) {
+        if (GeneralUtility::_GET('length') !== null) {
             $limit = (int)GeneralUtility::_GET('length');
             $pager->setLimit($limit);
         }
 
         // Set offset
         $offset = 0;
-        if (GeneralUtility::_GET('start') !== NULL) {
+        if (GeneralUtility::_GET('start') !== null) {
             $offset = (int)GeneralUtility::_GET('start');
         }
         $pager->setOffset($offset);

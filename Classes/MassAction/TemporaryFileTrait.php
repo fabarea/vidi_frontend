@@ -1,24 +1,14 @@
 <?php
 namespace Fab\VidiFrontend\MassAction;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+/*
+ * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE.md file that was distributed with this source code.
  */
 
-use Fab\Vidi\Service\SpreadSheetService;
-use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
-use Fab\VidiFrontend\Service\ContentService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Class WriteFileTrait
@@ -62,14 +52,6 @@ trait TemporaryFileTrait
         // Compute file name and path variable for zip
         $zipFileName = $object->getDataType() . '-' . date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']) . '.zip';
         $this->zipFileNameAndPath = $this->temporaryDirectory . $zipFileName;
-    }
-
-    /**
-     * @return void
-     */
-    protected function cleanUpTemporaryFiles()
-    {
-        GeneralUtility::rmdir($this->temporaryDirectory, TRUE);
     }
 
 }

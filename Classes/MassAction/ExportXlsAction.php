@@ -1,17 +1,11 @@
 <?php
 namespace Fab\VidiFrontend\MassAction;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+/*
+ * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE.md file that was distributed with this source code.
  */
 
 use Fab\Vidi\Service\SpreadSheetService;
@@ -81,9 +75,10 @@ class ExportXlsAction extends AbstractMassAction
             $this->writeXlsFile($objects, $contentService->getDataType());
 
             $result->setHeaders($this->getHeaders());
-            readfile($this->exportFileNameAndPath);
-
-            $this->cleanUpTemporaryFiles();
+            $result->setFile($this->exportFileNameAndPath);
+            $result->setCleanUpTask(function() {
+                GeneralUtility::rmdir($this->temporaryDirectory, true);
+            });
         }
 
         return $result;
@@ -111,6 +106,7 @@ class ExportXlsAction extends AbstractMassAction
      *
      * @param array $objects
      * @param string $dataType
+     * @throws \InvalidArgumentException
      */
     protected function writeXlsFile(array $objects, $dataType)
     {
@@ -139,7 +135,7 @@ class ExportXlsAction extends AbstractMassAction
         foreach ($objects as $object) {
 
             // Make sure we have a flat array of values for the CSV purpose.
-            $flattenValues = array();
+            $flattenValues = [];
             foreach ($columns as $fieldNameAndPath => $configuration) {
 
                 if (Tca::table($dataType)->hasField($fieldNameAndPath)) {
@@ -165,6 +161,7 @@ class ExportXlsAction extends AbstractMassAction
 
     /**
      * @return FieldPathResolver
+     * @throws \InvalidArgumentException
      */
     protected function getFieldPathResolver()
     {

@@ -1,17 +1,11 @@
 <?php
 namespace Fab\VidiFrontend\Controller;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+/*
+ * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE.md file that was distributed with this source code.
  */
 
 use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
@@ -70,19 +64,14 @@ class ContentController extends ActionController
      * List action for this controller.
      *
      * @param array $matches
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @throws \InvalidArgumentException
-     * @throws \BadMethodCallException
+     * @return string
      */
     public function indexAction(array $matches = [])
     {
         $settings = $this->computeFinalSettings($this->settings);
 
         if (empty($settings['dataType'])) {
-            $this->redirect('warn', null, null, ['code' => 1457540575]);
+            return '<strong style="color: red">Please select a content type to be displayed!</strong>';
         }
         $dataType = $settings['dataType'];
 
@@ -94,7 +83,7 @@ class ContentController extends ActionController
         // Handle columns case
         $columns = ColumnsConfiguration::getInstance()->get($dataType, $settings['columns']);
         if (count($columns) === 0) {
-            $this->redirect('warn', null, null, ['code' => 1457540589]);
+            return '<strong style="color: red">Please select at least one column to be displayed!</strong>';
         }
 
         // Assign values.
@@ -103,7 +92,7 @@ class ContentController extends ActionController
         $this->view->assign('gridIdentifier', $this->getGridIdentifier($settings));
         $this->view->assign('contentElementIdentifier', $this->configurationManager->getContentObject()->data['uid']);
         $this->view->assign('dataType', $dataType);
-        $this->view->assign('objects', array());
+        $this->view->assign('objects', []);
         $this->view->assign('numberOfColumns', count($columns));
 
         if (!$settings['loadContentByAjax']) {
@@ -132,9 +121,6 @@ class ContentController extends ActionController
      * @param array $contentData
      * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
      * @return void
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \InvalidArgumentException
-     * @throws \BadMethodCallException
      */
     public function listAction(array $contentData, array $matches = [])
     {
@@ -160,11 +146,13 @@ class ContentController extends ActionController
             }
         }
         
-        // Restrict number of records.
-        if ((int)$settings['limit'] > 0) {
-            $pager->setLimit((int)$settings['limit']);
-            $pager->setOffset((int)$settings['limit']);
+        // Set a default value. It wasn't a default value in FlexForm at first
+        // and we want an integer value in any case.
+        if ($settings['limit'] === '') {
+            $settings['limit'] = 10;
         }
+
+        $pager->setLimit((int)$settings['limit']);
 
         // Fetch objects via the Content Service.
         $contentService = $this->getContentService()
@@ -191,10 +179,6 @@ class ContentController extends ActionController
      * @param array $matches
      * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
      * @return string
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @throws \InvalidArgumentException
-     * @throws \BadMethodCallException
      */
     public function executeAction(array $contentData, $actionName, array $matches = [])
     {
@@ -206,7 +190,7 @@ class ContentController extends ActionController
         $massActions = FrontendTca::grid($dataType)->getMassActions();
 
         if (empty($massActions[$actionName])) {
-            $this->redirect('warn', null, null, ['code' => 1457540597]);
+            return '<strong style="color: red">Action Name is not valid.</strong>';
         }
 
         // In the context of Ajax, we must define manually the current Content Element object.
@@ -238,36 +222,19 @@ class ContentController extends ActionController
         }
         $response->sendHeaders();
 
-        return $result->getOutput();
-    }
-
-    /**
-     * @param int $code
-     * @return string
-     */
-    public function warnAction($code = null)
-    {
-        $message = 'An unknown error happened';
-        if ((int)$code === 1457540575) {
-            $message = 'Please select a content type to be displayed!';
-        } elseif ((int)$code === 1457540589) {
-            $message = 'Please select at least one column to be displayed!';
-        } elseif ((int)$code === 1457540597) {
-            $message = 'Action Name is not valid';
-        } elseif ((int)$code === 1457551693) {
-            $message = 'I could not find the appropriate template file';
+        if ($result->hasFile()) {
+            readfile($result->getFile());
+            $task = $result->getCleanUpTask();
+            $task();
+            exit();
+        } else {
+            return $result->getOutput();
         }
-
-        return sprintf(
-            '<strong style="color: red">%s%s</strong>',
-            $message,
-            GeneralUtility::getApplicationContext()->isDevelopment() ? ', code: ' . $code : ''
-        );
     }
 
     /**
      * @param Content $content
-     * @return void
+     * @return string
      */
     public function showAction(Content $content)
     {
@@ -276,8 +243,7 @@ class ContentController extends ActionController
         // Configure the template path according to the Plugin settings.
         $pathAbs = GeneralUtility::getFileAbsFileName($settings['templateDetail']);
         if (!is_file($pathAbs)) {
-            return ''; // Prevent bug if two vidi plugins are installed on the same page and one has not template detail.
-            $this->redirect('warn', null, null, ['code' => 1457551693]);
+            return '<strong style="color: red">I could not find the appropriate template file.</strong>';
         }
 
         $variableName = 'object';
@@ -330,6 +296,7 @@ class ContentController extends ActionController
      * Get the Vidi Module Loader.
      *
      * @return ContentService
+     * @throws \InvalidArgumentException
      */
     protected function getContentService()
     {
@@ -341,6 +308,7 @@ class ContentController extends ActionController
      *
      * @param string $dataType
      * @return ContentElementService
+     * @throws \InvalidArgumentException
      */
     protected function getContentElementService($dataType)
     {
@@ -349,6 +317,7 @@ class ContentController extends ActionController
 
     /**
      * @return ContentType
+     * @throws \InvalidArgumentException
      */
     protected function getContentType()
     {

@@ -1,17 +1,11 @@
 <?php
 namespace Fab\VidiFrontend\Backend;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+/*
+ * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE.md file that was distributed with this source code.
  */
 
 use Fab\Vidi\Domain\Model\Selection;
@@ -256,7 +250,7 @@ class TceForms
         $configuration = $this->getPluginConfiguration();
 
         if (0 === count($configuration) || empty($configuration['settings']['templates'])) {
-            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
+            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
         } else {
 
             if (version_compare(TYPO3_branch, '7.0', '<')) {
@@ -286,7 +280,7 @@ class TceForms
         $configuration = $this->getPluginConfiguration();
 
         if (0 === count($configuration) || empty($configuration['settings']['templates'])) {
-            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
+            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
         } else {
 
 
@@ -299,6 +293,7 @@ class TceForms
             if (empty($configuredDataType)) {
                 $parameters['items'][] = array('No columns to display yet! Select a content type first.', '', null);
             } else {
+
                 foreach (FrontendTca::grid($configuredDataType)->getFields() as $fieldNameAndPath => $configuration) {
                     $values = array($fieldNameAndPath, $fieldNameAndPath, null);
                     $parameters['items'][] = $values;
@@ -318,7 +313,7 @@ class TceForms
         $configuration = $this->getPluginConfiguration();
 
         if (0 === count($configuration) || empty($configuration['settings']['templates'])) {
-            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
+            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
         } else {
 
             if (version_compare(TYPO3_branch, '7.0', '<')) {
@@ -328,10 +323,10 @@ class TceForms
             }
 
             if (empty($configuredDataType)) {
-                $parameters['items'][] = array('No columns to display yet! Select a content type first.', '', NULL);
+                $parameters['items'][] = array('No columns to display yet! Select a content type first.', '', null);
             } else {
                 foreach (FrontendTca::grid($configuredDataType)->getMassActions() as $action) {
-                    $values = array($action->getName(), $action->getName(), NULL);
+                    $values = array($action->getName(), $action->getName(), null);
                     $parameters['items'][] = $values;
                 }
             }
@@ -348,7 +343,7 @@ class TceForms
         $configuration = $this->getPluginConfiguration();
 
         if (0 === count($configuration) || empty($configuration['settings']['templates'])) {
-            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
+            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
         } else {
 
             if (version_compare(TYPO3_branch, '7.0', '<')) {
@@ -379,7 +374,7 @@ class TceForms
         $configuration = $this->getPluginConfiguration();
 
         if (0 === count($configuration) || empty($configuration['settings']['templates'])) {
-            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
+            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
         } else {
 
             $parameters['items'][] = array('', '', null);
@@ -409,37 +404,6 @@ class TceForms
     }
 
     /**
-     * This method modifies the list of items for FlexForm "sorting".
-     *
-     * @param array $parameters
-     */
-    public function getSorting(&$parameters)
-    {
-        $configuration = $this->getPluginConfiguration();
-
-        if (0 === count($configuration) || empty($configuration['settings']['templates'])) {
-            $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', NULL);
-        } else {
-
-            if (version_compare(TYPO3_branch, '7.0', '<')) {
-                $configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
-            } else {
-                $configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
-            }
-
-            $parameters['items'][] = array('', '', null);
-            if (!empty($configuredDataType)) {
-                foreach (FrontendTca::grid($configuredDataType)->getFields() as $fieldNameAndPath => $configuration) {
-                    if (false === strpos($fieldNameAndPath, '__')) {
-                        $values = array($fieldNameAndPath, $fieldNameAndPath, null);
-                        $parameters['items'][] = $values;
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * @param $parameters
      * @return string
      */
@@ -459,7 +423,7 @@ class TceForms
      * @param array $flexform
      * @return string
      */
-    protected function getDataTypeFromFlexform(array $flexform = array())
+    protected function getDataTypeFromFlexform(array $flexform = [])
     {
         return $this->getSettings($flexform, 'dataType');
     }
@@ -469,7 +433,7 @@ class TceForms
      * @param string $key
      * @return string
      */
-    protected function getSettings(array $flexform = array(), $key)
+    protected function getSettings(array $flexform = [], $key)
     {
 
         $value = '';
@@ -496,7 +460,7 @@ class TceForms
     {
         $setup = $this->getConfigurationManager()->getTypoScriptSetup();
 
-        $pluginConfiguration = array();
+        $pluginConfiguration = [];
         if (is_array($setup['plugin.']['tx_vidifrontend.'])) {
             /** @var TypoScriptService $typoScriptService */
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
@@ -536,8 +500,8 @@ class TceForms
      */
     protected function normalizeFlexForm(array $flexForm, $languagePointer = 'lDEF', $valuePointer = 'vDEF')
     {
-        $settings = array();
-        $flexForm = isset($flexForm['data']) ? $flexForm['data'] : array();
+        $settings = [];
+        $flexForm = isset($flexForm['data']) ? $flexForm['data'] : [];
         foreach (array_values($flexForm) as $languages) {
             if (!is_array($languages[$languagePointer])) {
                 continue;
@@ -576,7 +540,7 @@ class TceForms
     protected function walkFlexFormNode($nodeArray, $valuePointer = 'vDEF')
     {
         if (is_array($nodeArray)) {
-            $return = array();
+            $return = [];
             foreach ($nodeArray as $nodeKey => $nodeValue) {
                 if ($nodeKey === $valuePointer) {
                     return $nodeValue;
@@ -619,7 +583,7 @@ class TceForms
      */
     public function getLegacyFlexform(array $parameters)
     {
-        $flexform = array();
+        $flexform = [];
         if ($parameters['row']['pi_flexform']) {
             $flexform = GeneralUtility::xml2array($parameters['row']['pi_flexform']);
         }

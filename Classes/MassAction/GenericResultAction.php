@@ -1,17 +1,11 @@
 <?php
 namespace Fab\VidiFrontend\MassAction;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+/*
+ * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE.md file that was distributed with this source code.
  */
 
 /**
@@ -28,6 +22,16 @@ class GenericResultAction implements ResultActionInterface
      * @var string
      */
     protected $output = '';
+
+    /**
+     * @var string
+     */
+    protected $file = '';
+
+    /**
+     * @var \Closure
+     */
+    protected $cleanUpTask;
 
     /**
      * @return string
@@ -64,5 +68,52 @@ class GenericResultAction implements ResultActionInterface
     {
         $this->headers = $headers;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFile()
+    {
+        return $this->file !== '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param string $fileNameAndPath
+     * @return $this
+     */
+    public function setFile($fileNameAndPath)
+    {
+
+        $this->file = $fileNameAndPath;
+    }
+
+    /**
+     * @return \Closure
+     */
+    public function getCleanUpTask()
+    {
+        $cleanUpTask = $this->cleanUpTask;
+        if (false === $cleanUpTask instanceof \Closure) {
+            $cleanUpTask = function() {};
+        }
+        return $cleanUpTask;
+    }
+
+    /**
+     * @param \Closure $task
+     * @return $this
+     */
+    public function setCleanUpTask(\Closure $task)
+    {
+        $this->cleanUpTask = $task;
     }
 }
