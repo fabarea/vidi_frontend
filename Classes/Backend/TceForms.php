@@ -404,6 +404,42 @@ class TceForms
     }
 
     /**
+     * Render a template menu.
+     *
+     * @param array $params
+     * @param object $tsObj
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public function renderTemplateMenu(&$params, &$tsObj)
+    {
+        $configuration = $this->getPluginConfiguration();
+        $output = '';
+        if (is_array($configuration['settings']['listTemplates'])) {
+            $selectedItem = '';
+            if (!empty($params['row']['pi_flexform'])) {
+                $values = $params['row']['pi_flexform'];
+                if (!empty($values['data']['sDEF']['lDEF']['settings.templateList'])) {
+                    $selectedItem = $values['data']['sDEF']['lDEF']['settings.templateList']['vDEF'];
+                }
+            }
+            $options = array();
+            foreach ($configuration['settings']['listTemplates'] as $template) {
+                $options[] = sprintf('<option value="%s" %s>%s</option>',
+                    $template['path'],
+                    $selectedItem == $template['path'] ? 'selected="selected"' : '',
+                    $template['label']
+                );
+            }
+            $output = sprintf('<select name="data[tt_content][%s][pi_flexform][data][sDEF][lDEF][settings.templateList][vDEF]">%s</select>',
+                $params['row']['uid'],
+                implode("\n", $options)
+            );
+        }
+        return $output;
+    }
+
+    /**
      * @param $parameters
      * @return string
      */
@@ -581,7 +617,7 @@ class TceForms
      * @param array $parameters
      * @return array
      */
-    public function getLegacyFlexform(array $parameters)
+    protected function getLegacyFlexform(array $parameters)
     {
         $flexform = [];
         if ($parameters['row']['pi_flexform']) {

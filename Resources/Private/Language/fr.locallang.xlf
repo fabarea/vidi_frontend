@@ -25,6 +25,9 @@
 			<trans-unit id="flexform.tab.detailView">
 				<target>Vue détail</target>
 			</trans-unit>
+			<trans-unit id="flexform.tab.template">
+				<target>Template</target>
+			</trans-unit>
 			<trans-unit id="settings.select">
 				<target>Sélectionner une entrée...</target>
 			</trans-unit>
@@ -48,6 +51,9 @@
 			</trans-unit>
 			<trans-unit id="settings.isVisualSearchBar">
 				<target>Afficher la barre de recherche visuelle pour des recherches par facettes.</target>
+			</trans-unit>
+			<trans-unit id="settings.loadByAjax">
+				<target>Charger le contenu par Ajax</target>
 			</trans-unit>
 			<trans-unit id="settings.loadContentByAjax">
 				<target>Charger le contenu par Ajax, pour des longues listes par exemple. Implicitement activé pour la bar de recherche "visuelle".</target>
@@ -81,6 +87,12 @@
 			</trans-unit>
 			<trans-unit id="settings.gridConfiguration">
 				<target>Configuration Grille</target>
+			</trans-unit>
+			<trans-unit id="settings.enableFields">
+				<target>Respecter les "enableFields"</target>
+			</trans-unit>
+			<trans-unit id="settings.templateList">
+				<target>Fichier de template</target>
 			</trans-unit>
 			<trans-unit id="info.gridConfiguration">
 				<target>DataTables s'insipre de CSS 3 Advanced Layout Module pour configurer ses éléments. Veuillez vous référer à la documentation %s pour davantage d'information. Notez que la configuration est automatiquement mise à jour, lorsque l'option VisualSearch barre est activée dans la tabulation "facets", sauf si vous l'avez personnalisée. Les options disponibles sont::</target>

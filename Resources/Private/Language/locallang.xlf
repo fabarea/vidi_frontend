@@ -25,6 +25,9 @@
 			<trans-unit id="flexform.tab.detailView">
 				<source>Detail view</source>
 			</trans-unit>
+			<trans-unit id="flexform.tab.template">
+				<source>Template</source>
+			</trans-unit>
 			<trans-unit id="flexform.tab.massActions">
 				<source>Mass actions</source>
 			</trans-unit>
@@ -51,6 +54,9 @@
 			</trans-unit>
 			<trans-unit id="settings.isVisualSearchBar">
 				<source>Display the Visual Search bar to search by facets.</source>
+			</trans-unit>
+			<trans-unit id="settings.loadByAjax">
+				<source>Load content by Ajax</source>
 			</trans-unit>
 			<trans-unit id="settings.loadContentByAjax">
 				<source>Load content by Ajax e.g. for long lists. Implicitly set if the Visual Search bar is activated.</source>
@@ -93,6 +99,9 @@
 			</trans-unit>
 			<trans-unit id="settings.enableFields">
 				<source>Respect enabled fields</source>
+			</trans-unit>
+			<trans-unit id="settings.templateList">
+				<source>Template file</source>
 			</trans-unit>
 			<trans-unit id="info.gridConfiguration">
 				<source>To address the customising issue, DataTables takes inspiration from the CSS 3 Advanced Layout Module. Please

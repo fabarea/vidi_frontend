@@ -31,6 +31,17 @@ if (false === isset($configuration['autoload_typoscript']) || true === (bool)$co
     ]
 );
 
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'Fab.vidi_frontend',
+    'TemplateBasedContent',
+    [
+        'TemplateBasedContent' => 'index, list, show',
+    ],
+    [
+        'TemplateBasedContent' => 'list',
+    ]
+);
+
 // Connect "preProcessTca" signal slot with the metadata service.
 $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 $signalSlotDispatcher->connect(

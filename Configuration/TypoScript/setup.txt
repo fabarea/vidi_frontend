@@ -10,6 +10,14 @@ plugin.tx_vidifrontend {
 
 	settings {
 
+		# Used in plugin "Generic List - with template
+		listTemplates {
+			1 {
+				label = Demo template list
+				path = EXT:vidi_frontend/Resources/Private/Standalone/DemoTemplateList.html
+			}
+		}
+
 		templates {
 			1 {
 				title = Default detail view
@@ -53,6 +61,9 @@ plugin.tx_vidifrontend {
 	}
 }
 
+###################
+# List view by Ajax
+###################
 page_1416239670 = PAGE
 page_1416239670 {
     typeNum = 1416239670
@@ -78,6 +89,9 @@ page_1416239670 {
 	}
 }
 
+#########################
+# Mass action in the Grid
+#########################
 page_1457381088 = PAGE
 page_1457381088 {
 	typeNum = 1457381088

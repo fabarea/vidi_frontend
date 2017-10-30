@@ -1,0 +1,139 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<sheets>
+		<general>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.source</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.dataType>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.contentType</label>
+							<onChange>reload</onChange>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getDataTypes</itemsProcFunc>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.dataType>
+					<settings.selection>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.selection</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getSelections</itemsProcFunc>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.selection>
+					<settings.additionalEquals>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.additionalEquals</label>
+							<config>
+								<type>text</type>
+								<rows>5</rows>
+								<cols>30</cols>
+								<default><![CDATA[# Example for Files (sys_file):
+# storage = 1,
+# identifier like /images/%,
+# metadata.categories = 1
+
+# Example for Frontend Users (fe_users):
+# usergroup.uid = 1,2
+# lastname like customer%
+]]></default>
+							</config>
+						</TCEforms>
+					</settings.additionalEquals>
+					<settings.limit>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.limit</label>
+							<config>
+								<type>input</type>
+								<default>10</default>
+							</config>
+						</TCEforms>
+					</settings.limit>
+					<settings.sorting>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.sorting</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</settings.sorting>
+					<settings.direction>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.direction</label>
+							<config>
+								<type>select</type>
+								<items>
+									<numIndex index="0" type="array">
+										<numIndex index="0"></numIndex>
+										<numIndex index="1"></numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">ASC</numIndex>
+										<numIndex index="1">ASC</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">DESC</numIndex>
+										<numIndex index="1">DESC</numIndex>
+									</numIndex>
+								</items>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.direction>
+					<settings.enableFields>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.enableFields</label>
+							<config>
+								<type>user</type>
+								<userFunc>Fab\VidiFrontend\Backend\TceForms->getEnableFields</userFunc>
+							</config>
+						</TCEforms>
+					</settings.enableFields>
+					<!--<settings.loadByAjax>-->
+						<!--<TCEforms>-->
+							<!--<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.loadByAjax</label>-->
+							<!--<config>-->
+								<!--<type>check</type>-->
+								<!--<default>0</default>-->
+							<!--</config>-->
+						<!--</TCEforms>-->
+					<!--</settings.loadByAjax>-->
+				</el>
+			</ROOT>
+		</general>
+
+		<template>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.template</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+                    <settings.templateList>
+                        <TCEforms>
+                            <label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.templateList</label>
+                            <config>
+                                <type>user</type>
+                                <userFunc>Fab\VidiFrontend\Backend\TceForms->renderTemplateMenu</userFunc>
+                            </config>
+                        </TCEforms>
+                    </settings.templateList>
+				</el>
+			</ROOT>
+		</template>
+	</sheets>
+
+</T3DataStructure>

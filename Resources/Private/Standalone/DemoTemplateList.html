@@ -1,0 +1,468 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"
+      xmlns:f="http://typo3.org/ns/fluid/ViewHelpers"
+      xmlns:v="http://typo3.org/ns/Fab/Vidi/ViewHelpers"
+      xmlns:vf="http://typo3.org/ns/Fab/VidiFrontend/ViewHelpers">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"
+        integrity="sha384-JDmRxRiXkNkskRM5AD4qHRGk9ItwZ9flbqOpsRYs8SOrIRwcMtTGKP2Scnjptzgm"
+        crossorigin="anonymous"></script>
+
+
+<script>
+
+	var contentElementIdentifier = '{contentElement.uid}';
+
+	<![CDATA[
+	window.HackerLists = window.HackerLists || [];
+
+	// without jQuery (doesn't work in older IEs)
+	document.addEventListener('DOMContentLoaded', function() {
+
+		HackerLists[contentElementIdentifier] = {
+
+			/**
+			 * @param Array
+			 */
+			filteredItems: [],
+
+			/**
+			 * @param int
+			 */
+			offset: 0,
+
+			/**
+			 *
+			 * @param int
+			 */
+			limit: 10,
+
+			/**
+			 * @param Array
+			 */
+			filters: ['name', 'customer', 'region', 'degree', 'situation', 'offer'],
+
+			/**
+			 * @param {List}
+			 */
+			list: {},
+
+			/**
+			 * @returns {this}
+			 */
+			initialize: function() {
+
+				/*
+                 * Initialize the data
+                 */
+				this.list = new List('list-objects-' + contentElementIdentifier, {
+					valueNames: this.filters,
+					page: this.limit
+				});
+
+				this.filteredItems = this.list.items;
+
+				this.initializeSearchInput()
+					.initializeFilters()
+					.initializeSortingButtons()
+					.initializePaginationButtons()
+					.initializeResetButton()
+					.updatePagination();
+				return this;
+			},
+
+			/**
+			 * Add handler upon the search field.
+			 *
+			 * @returns {this}
+			 */
+			initializeSearchInput: function() {
+				var me = this;
+				document.querySelector('.search-field').addEventListener('keyup', function(event) {
+					me.handleFilter();
+				});
+				return this;
+			},
+
+			/**
+			 * Add handler upon the filters.
+			 *
+			 * @returns {this}
+			 */
+			initializeFilters: function() {
+				var me = this;
+
+				forEach(
+					document.querySelectorAll('.filter-field'),
+					function(index, node) {
+						node.addEventListener('change', function(event) {
+							me.handleFilter();
+						});
+					}
+				);
+				return this;
+			},
+
+			/**
+			 * Add handler upon the filters.
+			 *
+			 * @returns {this}
+			 */
+			initializeSortingButtons: function() {
+				var me = this;
+
+				forEach(
+					document.querySelectorAll('.btn-sorting'),
+					function(index, node) {
+						node.addEventListener('click', function(event) {
+							event.preventDefault();
+
+							me.list.sort(
+								'name',
+								{order: this.hasClass('asc') ? 'asc' : 'desc'}
+							);
+						});
+					}
+				);
+
+				return this;
+			},
+
+			/**
+			 * Add handler upon the filters.
+			 *
+			 * @returns {this}
+			 */
+			initializePaginationButtons: function() {
+				var me = this;
+
+				forEach(
+					document.querySelectorAll('.btn-pagination'),
+					function(index, node) {
+						node.addEventListener('click', function(event) {
+							event.preventDefault();
+
+							if (this.hasClass('next')) {
+								me.offset++;
+							} else {
+								me.offset--;
+							}
+							var position = (me.offset * me.limit) + 1;
+							me.list.show(position, me.limit);
+
+							// Possible show / hide of pagination button
+							me.updatePagination();
+						});
+					}
+				);
+
+				return this;
+			},
+
+			/**
+			 * @returns {this}
+			 */
+			updatePagination: function() {
+				this.updatePaginationCounter()
+					.updatePaginationButtons();
+				return this;
+			},
+
+			/**
+			 * @returns {this}
+			 */
+			resetPagination: function() {
+				this.offset = 0; // reset pagination after filter me
+				this.updatePagination();
+				return this;
+			},
+
+			/**
+			 * Add handler upon the filters.
+			 *
+			 * @returns {this}
+			 */
+			updatePaginationButtons: function() {
+				var me = this;
+
+				document.querySelector('.btn-pagination.previous').style.visibility = me.offset <= 0
+					? 'hidden'
+					: 'visible';
+
+				var maxOffset = this.filteredItems.length / me.limit - 1;
+				document.querySelector('.btn-pagination.next').style.visibility = me.offset >= maxOffset
+					? 'hidden'
+					: 'visible';
+
+				return this;
+			},
+
+			/**
+			 * Add handler upon the "reset button".
+			 *
+			 * @returns {this}
+			 */
+			handleFilter: function() {
+				var me = this;
+
+				// We reset the filteredItems array
+				this.filteredItems = [];
+
+				this.list.filter(function(item) {
+
+					// default: the item is displayed
+					var isDisplayed = true;
+
+					// Loop around the filters and check whether there is a value set.
+					forEach(me.filters, function(index, filterName) {
+						if (isDisplayed) {
+
+							// Fetch the value of filter
+							var value = document.getElementById(filterName + '-filter').value;
+
+							// Only if we have a value we check if we have a match
+							if (value) {
+								var haystack = item.values()[filterName].toLowerCase();
+								var needle = value.toLowerCase();
+								isDisplayed = haystack.indexOf(needle) > -1;
+							}
+						}
+					});
+
+					// Feed the result array
+					if (isDisplayed) {
+						me.filteredItems.push(item)
+					}
+					return isDisplayed
+				});
+
+				this.resetPagination();
+				return this;
+			},
+
+			/**
+			 * Add handler upon the "reset button".
+			 *
+			 * @returns {this}
+			 */
+			initializeResetButton: function() {
+				var me = this;
+
+				document.querySelector('.btn-cancel').addEventListener('click', function(event) {
+
+					event.preventDefault();
+
+					// Reset the controls
+					forEach(
+						document.querySelectorAll('#list-objects-' + contentElementIdentifier + ' .form-control'),
+						function(index, node) {
+							node.value = '';
+						}
+					);
+
+					// Reset the filter
+					me.handleFilter()
+						.resetPagination();
+				});
+
+				return this;
+			},
+
+			/**
+			 * GUI: update the number of objects which was found.
+			 *
+			 * @returns {this}
+			 */
+			updatePaginationCounter: function() {
+				var position = this.offset + 1;
+				var numberOfPages = Math.round(this.filteredItems.length / this.limit) + 1;
+				document
+					.getElementById('number-of-objects-' + contentElementIdentifier)
+					.innerHTML = '(' + this.filteredItems.length + ' - ' + position + '/' + numberOfPages + ')';
+
+				return this;
+			}
+
+		};
+
+		// Initialize the list
+		HackerLists[contentElementIdentifier].initialize();
+	});
+
+	/*
+     * Helper function
+     */
+	var forEach = function(array, callback, scope) {
+		for (var i = 0; i < array.length; i++) {
+			callback.call(scope, i, array[i]); // passes back stuff we need
+		}
+	};
+
+	/*
+     * Extend the Node Element object
+     */
+	Element.prototype.hasClass = function(className) {
+		return this.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(this.className);
+	};
+	]]>
+</script>
+
+
+<div id="list-objects-{contentElement.uid}">
+
+    <form class="mb-3">
+        <legend>Rechercher une institution</legend>
+        <div class="form-group">
+            <label for="name-filter">Nom</label>
+
+            <input class="form-control search-field" type="text" id="name-filter" name="testInput" value="">
+        </div>
+
+        <div class="form-group">
+            <label for="customer-filter">Clientèle</label>
+            <select class="form-control filter-field" id="customer-filter" autocomplete="off">
+                <option value="">Tous</option>
+                <f:for each="{v:content.find(matches: {pid: 52409}, orderings: {title: 'ASC'}, type: 'tt_address_group')}"
+                       as="addressGroup">
+                    <option value="{addressGroup.title}">{addressGroup.title}</option>
+                </f:for>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="region-filter">Région</label>
+            <select class="form-control filter-field" id="region-filter" autocomplete="off">
+                <option value="">Tous</option>
+                <f:for each="{v:content.find(matches: {pid: 52411}, orderings: {title: 'ASC'}, type: 'tt_address_group')}"
+                       as="addressGroup">
+                    <option value="{addressGroup.title}">{addressGroup.title}</option>
+                </f:for>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="degree-filter">Degré</label>
+            <select class="form-control filter-field" id="degree-filter" autocomplete="off">
+                <option value="">Tous</option>
+                <f:for each="{v:content.find(matches: {pid: 52408}, orderings: {title: 'ASC'}, type: 'tt_address_group')}"
+                       as="addressGroup">
+                    <option value="{addressGroup.title}">{addressGroup.title}</option>
+                </f:for>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="situation-filter">Situation</label>
+            <select class="form-control filter-field" id="situation-filter" autocomplete="off">
+                <option value="">Tous</option>
+                <f:for each="{v:content.find(matches: {pid: 52410}, orderings: {title: 'ASC'}, type: 'tt_address_group')}"
+                       as="addressGroup">
+                    <option value="{addressGroup.title}">{addressGroup.title}</option>
+                </f:for>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="offer-filter">Offre</label>
+            <select class="form-control filter-field" id="offer-filter" autocomplete="off">
+                <option value="">Tous</option>
+                <f:for each="{v:content.find(matches: {pid: 52407}, orderings: {title: 'ASC'}, type: 'tt_address_group')}"
+                       as="addressGroup">
+                    <option value="{addressGroup.title}">{addressGroup.title}</option>
+                </f:for>
+            </select>
+        </div>
+
+        <!--<a href="#" title="Rechercher link to somewhere" class="btn btn-dark">Rechercher</a>-->
+        <a href="#" title="Annuler link to somewhere" class="btn btn-secondary btn-cancel">Annuler</a>
+
+    </form>
+
+    <h2>Ordre de tri</h2>
+    <ul>
+        <li>
+            <a href="#" class="btn-sorting asc">Trier par ordre alphabétique</a>
+        </li>
+        <li>
+            <a href="#" class="btn-sorting desc">Trier par ordre alphabétique inverse</a>
+        </li>
+    </ul>
+    <h2>Liste des résultats <span id="number-of-objects-{contentElement.uid}"></span></h2>
+
+    <f:if condition="{objects}">
+        <ul class="list list-unstyled hacker-list">
+
+            <f:for each="{objects}" as="object">
+                <li>
+                    <h3 class="name">{object.name}</h3>
+
+                    <dl class="row">
+                        <dt class="col-md-4">Région</dt>
+                        <dd class="col-md-8 region">
+                            <f:for each="{object.tx_vdaddrgeneral_categoryid1}" as="addressGroup" iteration="iterator">
+                                <f:if condition="{iterator.isLast}">
+                                    <f:then>{addressGroup.title}</f:then>
+                                    <f:else>{addressGroup.title},</f:else>
+                                </f:if>
+                            </f:for>
+                        </dd>
+                        <dt class="col-md-4">Situation</dt>
+                        <dd class="col-md-8 situation">
+                            <f:for each="{object.tx_vdaddrgeneral_categoryid2}" as="addressGroup" iteration="iterator">
+                                <f:if condition="{iterator.isLast}">
+                                    <f:then>{addressGroup.title}</f:then>
+                                    <f:else>{addressGroup.title},</f:else>
+                                </f:if>
+                            </f:for>
+                        </dd>
+                        <dt class="col-md-4">Clientèle</dt>
+                        <dd class="col-md-8 customer">
+                            <f:for each="{object.tx_vdaddrgeneral_categoryid3}" as="addressGroup" iteration="iterator">
+                                <f:if condition="{iterator.isLast}">
+                                    <f:then>{addressGroup.title}</f:then>
+                                    <f:else>{addressGroup.title},</f:else>
+                                </f:if>
+                            </f:for>
+                        </dd>
+                        <dt class="col-md-4">Degré</dt>
+                        <dd class="col-md-8 degree">
+                            <f:for each="{object.tx_vdaddrgeneral_categoryid4}" as="addressGroup" iteration="iterator">
+                                <f:if condition="{iterator.isLast}">
+                                    <f:then>{addressGroup.title}</f:then>
+                                    <f:else>{addressGroup.title},</f:else>
+                                </f:if>
+                            </f:for>
+                        </dd>
+                        <dt class="col-md-4">Offre</dt>
+                        <dd class="col-md-8 offer">
+                            <f:for each="{object.tx_vdaddrgeneral_categoryid5}" as="addressGroup" iteration="iterator">
+                                <f:if condition="{iterator.isLast}">
+                                    <f:then>{addressGroup.title}</f:then>
+                                    <f:else>{addressGroup.title},</f:else>
+                                </f:if>
+                            </f:for>
+                        </dd>
+                    </dl>
+                </li>
+            </f:for>
+        </ul>
+
+        <nav>
+            <h3 class="sr-only">Pagination</h3>
+            <div class="d-flex justify-content-between">
+                <a href="#"
+                   title="Lien précédent"
+                   class="btn btn-link btn-pagination previous"><span class="fa fa-chevron-left"
+                                                                      aria-hidden="true"></span>
+                    Précédent
+                </a>
+
+                <a href="#" title="Lien suivant" class="btn btn-link btn-pagination next">Suivant
+                    <span class="fa fa-chevron-right"
+                          aria-hidden="true"></span>
+                </a>
+
+            </div>
+        </nav>
+    </f:if>
+</div>
+</html>
