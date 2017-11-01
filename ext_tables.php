@@ -16,7 +16,7 @@ if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
         'Fab.vidi_frontend',
         'Pi1',
-        'Generic List - dynamic table'
+        'LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:plugin.pi1'
     );
 
     $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['vidifrontend_pi1'] = 'pi_flexform';
@@ -32,7 +32,7 @@ if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
         'Fab.vidi_frontend',
         'TemplateBasedContent',
-        'Generic List - with template'
+        'LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:plugin.templateBasedContent'
     );
 
     $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['vidifrontend_templatebasedcontent'] = 'pi_flexform';

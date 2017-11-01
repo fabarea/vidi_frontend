@@ -12,6 +12,14 @@
 				<target>List interactive avec possibilité de filter le contenu de manière avancée... Veni, vidi, vici!</target>
 			</trans-unit>
 
+			<!-- Plugin -->
+			<trans-unit id="plugin.pi1">
+				<target>Vidi Liste - grille dynamique</target>
+			</trans-unit>
+			<trans-unit id="plugin.templateBasedContent">
+				<target>Vidi Liste - avec template</target>
+			</trans-unit>
+
 			<!-- Settings -->
 			<trans-unit id="flexform.tab.source">
 				<target>Source</target>

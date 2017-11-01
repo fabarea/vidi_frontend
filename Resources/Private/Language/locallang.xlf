@@ -12,6 +12,14 @@
 				<source>Generic List Component where content can be filtered in an advanced way... Veni, vidi, vici!</source>
 			</trans-unit>
 
+			<!-- Plugin -->
+			<trans-unit id="plugin.pi1">
+				<source>Generic List - dynamic table</source>
+			</trans-unit>
+			<trans-unit id="plugin.templateBasedContent">
+				<source>Generic List - with template</source>
+			</trans-unit>
+
 			<!-- Settings -->
 			<trans-unit id="flexform.tab.source">
 				<source>Source</source>
