@@ -7,7 +7,6 @@
         integrity="sha384-JDmRxRiXkNkskRM5AD4qHRGk9ItwZ9flbqOpsRYs8SOrIRwcMtTGKP2Scnjptzgm"
         crossorigin="anonymous"></script>
 
-
 <script>
 
 	var contentElementIdentifier = '{contentElement.uid}';
@@ -309,7 +308,7 @@
 
 <div id="list-objects-{contentElement.uid}">
 
-    <form class="mb-3">
+    <form class="mb-3" onsubmit="return false">
         <legend>Rechercher une institution</legend>
         <div class="form-group">
             <label for="name-filter">Nom</label>
@@ -396,51 +395,76 @@
                     <h3 class="name">{object.name}</h3>
 
                     <dl class="row">
-                        <dt class="col-md-4">Région</dt>
-                        <dd class="col-md-8 region">
-                            <f:for each="{object.tx_vdaddrgeneral_categoryid1}" as="addressGroup" iteration="iterator">
-                                <f:if condition="{iterator.isLast}">
-                                    <f:then>{addressGroup.title}</f:then>
-                                    <f:else>{addressGroup.title},</f:else>
-                                </f:if>
-                            </f:for>
-                        </dd>
-                        <dt class="col-md-4">Situation</dt>
-                        <dd class="col-md-8 situation">
-                            <f:for each="{object.tx_vdaddrgeneral_categoryid2}" as="addressGroup" iteration="iterator">
-                                <f:if condition="{iterator.isLast}">
-                                    <f:then>{addressGroup.title}</f:then>
-                                    <f:else>{addressGroup.title},</f:else>
-                                </f:if>
-                            </f:for>
-                        </dd>
-                        <dt class="col-md-4">Clientèle</dt>
-                        <dd class="col-md-8 customer">
-                            <f:for each="{object.tx_vdaddrgeneral_categoryid3}" as="addressGroup" iteration="iterator">
-                                <f:if condition="{iterator.isLast}">
-                                    <f:then>{addressGroup.title}</f:then>
-                                    <f:else>{addressGroup.title},</f:else>
-                                </f:if>
-                            </f:for>
-                        </dd>
-                        <dt class="col-md-4">Degré</dt>
-                        <dd class="col-md-8 degree">
-                            <f:for each="{object.tx_vdaddrgeneral_categoryid4}" as="addressGroup" iteration="iterator">
-                                <f:if condition="{iterator.isLast}">
-                                    <f:then>{addressGroup.title}</f:then>
-                                    <f:else>{addressGroup.title},</f:else>
-                                </f:if>
-                            </f:for>
-                        </dd>
-                        <dt class="col-md-4">Offre</dt>
-                        <dd class="col-md-8 offer">
-                            <f:for each="{object.tx_vdaddrgeneral_categoryid5}" as="addressGroup" iteration="iterator">
-                                <f:if condition="{iterator.isLast}">
-                                    <f:then>{addressGroup.title}</f:then>
-                                    <f:else>{addressGroup.title},</f:else>
-                                </f:if>
-                            </f:for>
-                        </dd>
+
+                        <f:if condition="{object.tx_vdaddrgeneral_categoryid1}">
+                            <dt class="col-md-4">Région</dt>
+                            <dd class="col-md-8 region">
+                                <f:for each="{object.tx_vdaddrgeneral_categoryid1}"
+                                       as="addressGroup"
+                                       iteration="iterator">
+                                    <f:if condition="{iterator.isLast}">
+                                        <f:then>{addressGroup.title}</f:then>
+                                        <f:else>{addressGroup.title},</f:else>
+                                    </f:if>
+                                </f:for>
+                            </dd>
+                        </f:if>
+
+                        <f:if condition="{object.tx_vdaddrgeneral_categoryid2}">
+                            <dt class="col-md-4">Situation</dt>
+                            <dd class="col-md-8 situation">
+                                <f:for each="{object.tx_vdaddrgeneral_categoryid2}"
+                                       as="addressGroup"
+                                       iteration="iterator">
+                                    <f:if condition="{iterator.isLast}">
+                                        <f:then>{addressGroup.title}</f:then>
+                                        <f:else>{addressGroup.title},</f:else>
+                                    </f:if>
+                                </f:for>
+                            </dd>
+                        </f:if>
+
+                        <f:if condition="{object.tx_vdaddrgeneral_categoryid3}">
+                            <dt class="col-md-4">Clientèle</dt>
+                            <dd class="col-md-8 customer">
+                                <f:for each="{object.tx_vdaddrgeneral_categoryid3}"
+                                       as="addressGroup"
+                                       iteration="iterator">
+                                    <f:if condition="{iterator.isLast}">
+                                        <f:then>{addressGroup.title}</f:then>
+                                        <f:else>{addressGroup.title},</f:else>
+                                    </f:if>
+                                </f:for>
+                            </dd>
+                        </f:if>
+
+                        <f:if condition="{object.tx_vdaddrgeneral_categoryid4}">
+                            <dt class="col-md-4">Degré</dt>
+                            <dd class="col-md-8 degree">
+                                <f:for each="{object.tx_vdaddrgeneral_categoryid4}"
+                                       as="addressGroup"
+                                       iteration="iterator">
+                                    <f:if condition="{iterator.isLast}">
+                                        <f:then>{addressGroup.title}</f:then>
+                                        <f:else>{addressGroup.title},</f:else>
+                                    </f:if>
+                                </f:for>
+                            </dd>
+                        </f:if>
+
+                        <f:if condition="{object.tx_vdaddrgeneral_categoryid5}">
+                            <dt class="col-md-4">Offre</dt>
+                            <dd class="col-md-8 offer">
+                                <f:for each="{object.tx_vdaddrgeneral_categoryid5}"
+                                       as="addressGroup"
+                                       iteration="iterator">
+                                    <f:if condition="{iterator.isLast}">
+                                        <f:then>{addressGroup.title}</f:then>
+                                        <f:else>{addressGroup.title},</f:else>
+                                    </f:if>
+                                </f:for>
+                            </dd>
+                        </f:if>
                     </dl>
                 </li>
             </f:for>
