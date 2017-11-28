@@ -22,8 +22,20 @@
 							</config>
 						</TCEforms>
 					</settings.dataType>
+					<settings.columns>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.columns</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getColumns</itemsProcFunc>
+								<size>10</size>
+								<maxitems>100</maxitems>
+							</config>
+						</TCEforms>
+					</settings.columns>
 					<settings.selection>
 						<TCEforms>
+							<displayCond>USER:Fab\VidiFrontend\Backend\DisplayCondition->hasSelection</displayCond>
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.selection</label>
 							<config>
 								<type>select</type>
@@ -102,38 +114,102 @@
 							</config>
 						</TCEforms>
 					</settings.enableFields>
-					<!--<settings.loadByAjax>-->
-						<!--<TCEforms>-->
-							<!--<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.loadByAjax</label>-->
-							<!--<config>-->
-								<!--<type>check</type>-->
-								<!--<default>0</default>-->
-							<!--</config>-->
-						<!--</TCEforms>-->
-					<!--</settings.loadByAjax>-->
 				</el>
 			</ROOT>
 		</general>
 
-		<template>
+		<facet>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.template</sheetTitle>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.facets</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.facets>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.filters</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getFacets</itemsProcFunc>
+								<size>10</size>
+								<maxitems>100</maxitems>
+							</config>
+						</TCEforms>
+					</settings.facets>
+				</el>
+			</ROOT>
+		</facet>
+		<listView>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.listView
+					</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
                     <settings.templateList>
                         <TCEforms>
-                            <label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.templateList</label>
+                            <label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.templateForListView</label>
                             <config>
                                 <type>user</type>
                                 <userFunc>Fab\VidiFrontend\Backend\TceForms->renderTemplateMenu</userFunc>
                             </config>
                         </TCEforms>
                     </settings.templateList>
+					<settings.additionalSettingsList>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.additionalSettings</label>
+							<config>
+								<type>text</type>
+								<rows>5</rows>
+								<cols>30</cols>
+							</config>
+						</TCEforms>
+					</settings.additionalSettingsList>
 				</el>
 			</ROOT>
-		</template>
+		</listView>
+		<detailView>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.detailView
+					</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.templateDetail>
+						<TCEforms>
+							<label>
+								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.templateForDetailView
+							</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getTemplates</itemsProcFunc>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.templateDetail>
+					<settings.targetPageDetail>
+						<TCEforms>
+							<label>
+								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.targetPageDetail
+							</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>pages</allowed>
+								<size>1</size>
+								<maxitems>1</maxitems>
+								<minitems>0</minitems>
+								<show_thumbs>1</show_thumbs>
+							</config>
+						</TCEforms>
+					</settings.targetPageDetail>
+				</el>
+			</ROOT>
+		</detailView>
+
 	</sheets>
 
 </T3DataStructure>

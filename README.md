@@ -364,10 +364,12 @@ class ProductsAspect {
      * Post-process the constraints object to respect the file mounts.
      *
      * @param Query $query
-     * @param ConstraintInterface|NULL $constraints
+     * @param ConstraintInterface|null $constraints
+     * @param $constraintContainer|null
      * @return array
      */
-    public function processConstraints(Query $query, $constraints) {
+    public function processConstraints(Query $query, $constraints, $constraintContainer)
+    {
         if ($this->isFrontendMode() && $query->getType() === 'tt_products') {
 
             $additionalConstraints = $query->logicalAnd(
@@ -375,17 +377,14 @@ class ProductsAspect {
                 $query->logicalNot($query->equals('image', ''))
             );
 
-            if (is_null($constraints)) {
-                $constraints = $additionalConstraints;
-            } else {
-
-                $constraints = $query->logicalAnd(
+            $constraints = null === $constraints
+                ? $additionalConstraints
+                : $query->logicalAnd(
                     $constraints,
                     $additionalConstraints
                 );
-            }
         }
-        return array($query, $constraints);
+        return [$query, $constraints, $constraintContainer];
     }
 
     /**
@@ -395,7 +394,7 @@ class ProductsAspect {
      */
     protected function isFrontendMode()
     {
-        return TYPO3_MODE == 'FE';
+        return TYPO3_MODE === 'FE';
     }
 }
 ```

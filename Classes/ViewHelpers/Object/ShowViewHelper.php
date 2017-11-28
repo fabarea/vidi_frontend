@@ -12,7 +12,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use Fab\Vidi\Domain\Model\Content;
 
 /**
- * View helper for rendering multiple rows.
+ * Class ShowViewHelper
  */
 class ShowViewHelper extends AbstractViewHelper
 {
@@ -25,7 +25,6 @@ class ShowViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-
         /** @var Content $object */
         $object = $this->templateVariableContainer->get('object');
 

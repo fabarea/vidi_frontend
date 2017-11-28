@@ -145,7 +145,7 @@ class ContentController extends ActionController
                 $settings['limit'] = $length;
             }
         }
-        
+
         // Set a default value. It wasn't a default value in FlexForm at first
         // and we want an integer value in any case.
         if ($settings['limit'] === '') {

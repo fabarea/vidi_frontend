@@ -11,24 +11,25 @@ namespace Fab\VidiFrontend\Persistence;
 
 use Fab\Vidi\Persistence\Order;
 use Fab\Vidi\Tca\Tca;
-use Fab\VidiFrontend\Tca\FrontendTca;
+use Fab\VidiFrontend\Service\ArgumentService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
  * Factory class related to Order object.
  */
-class OrderFactory implements SingletonInterface
+class TemplateBasedContentOrderFactory implements SingletonInterface
 {
 
     /**
      * Gets a singleton instance of this class.
      *
-     * @return OrderFactory|object
+     * @return $this|Object
      */
     static public function getInstance()
     {
-        return GeneralUtility::makeInstance(OrderFactory::class);
+        return GeneralUtility::makeInstance(self::class);
     }
 
     /**
@@ -40,29 +41,22 @@ class OrderFactory implements SingletonInterface
      */
     public function getOrder(array $settings, $dataType)
     {
-
-        if (isset($settings['sorting']) && !empty($settings['sorting'])) {
+        $argumentService = ArgumentService::getInstance();
+        $possibleDirections = [QueryInterface::ORDER_ASCENDING, QueryInterface::ORDER_DESCENDING];
+        $order = [];
+        if (is_array($argumentService->getArgument('orderings'))) {
+            foreach ($argumentService->getArgument('orderings') as $fieldName => $direction) {
+                if (Tca::table($dataType)->hasField($fieldName)
+                    && in_array(strtoupper($direction), $possibleDirections, true)) {
+                    $order[$fieldName] = $direction;
+                }
+            }
+        } elseif (isset($settings['sorting']) && !empty($settings['sorting'])) {
             $direction = isset($settings['direction']) ? $settings['direction'] : 'ASC';
             $order = [$settings['sorting'] => $direction];
         } else {
             // Default ordering
             $order = Tca::table($dataType)->getDefaultOrderings();
-        }
-
-        // Retrieve a possible id of the column from the request
-        $orderings = GeneralUtility::_GP('order');
-
-        if (is_array($orderings) && isset($orderings[0])) {
-            $columnPosition = $orderings[0]['column'];
-            $direction = $orderings[0]['dir'];
-
-            $columns = GeneralUtility::trimExplode(',', $settings['columns'], TRUE);
-            $field = $columns[$columnPosition];
-            if ($field !== '__checkbox') {
-                $order = [
-                    $field => strtoupper($direction)
-                ];
-            }
         }
 
         return GeneralUtility::makeInstance(Order::class, $order);

@@ -9,10 +9,8 @@ namespace Fab\VidiFrontend\TypeConverter;
  */
 
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
-use Fab\Vidi\Domain\Repository\ContentRepositoryFactory;
 
 /**
  * Convert a content identifier to an data array.

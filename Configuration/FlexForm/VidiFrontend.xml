@@ -35,6 +35,7 @@
 					</settings.columns>
 					<settings.selection>
 						<TCEforms>
+							<displayCond>USER:Fab\VidiFrontend\Backend\DisplayCondition->hasSelection</displayCond>
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.selection</label>
 							<config>
 								<type>select</type>

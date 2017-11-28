@@ -33,8 +33,8 @@
 			<trans-unit id="flexform.tab.detailView">
 				<source>Detail view</source>
 			</trans-unit>
-			<trans-unit id="flexform.tab.template">
-				<source>Template</source>
+			<trans-unit id="flexform.tab.listView">
+				<source>List View</source>
 			</trans-unit>
 			<trans-unit id="flexform.tab.massActions">
 				<source>Mass actions</source>
@@ -55,7 +55,10 @@
 				<source>Selection coming from the Backend module to be used as pre-filter</source>
 			</trans-unit>
 			<trans-unit id="settings.facets">
-				<source>Pick available Facets to be displayed the Visual Search bar.</source>
+				<source>Select Facets to be displayed the Visual Search bar.</source>
+			</trans-unit>
+			<trans-unit id="settings.filters">
+				<source>Select Filters to be displayed.</source>
 			</trans-unit>
 			<trans-unit id="settings.logicalSeparator">
 				<source>Logical separator between facets</source>
@@ -93,6 +96,9 @@
 			<trans-unit id="settings.additionalEquals">
 				<source><![CDATA[Additional constraints with possible operators = , >, >= , < , <=, like, in. Use one constraint per line.]]></source>
 			</trans-unit>
+			<trans-unit id="settings.additionalSettings">
+				<source><![CDATA[Additional settings]]></source>
+			</trans-unit>
 			<trans-unit id="settings.gridClassName">
 				<source>Grid class name</source>
 			</trans-unit>
@@ -108,8 +114,8 @@
 			<trans-unit id="settings.enableFields">
 				<source>Respect enabled fields</source>
 			</trans-unit>
-			<trans-unit id="settings.templateList">
-				<source>Template file</source>
+			<trans-unit id="settings.templateForListView">
+				<source>Template for the "list" view.</source>
 			</trans-unit>
 			<trans-unit id="info.gridConfiguration">
 				<source>To address the customising issue, DataTables takes inspiration from the CSS 3 Advanced Layout Module. Please

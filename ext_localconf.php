@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 
 $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['vidi_frontend']);
 
-if (false === isset($configuration['autoload_typoscript']) || true === (bool)$configuration['autoload_typoscript']) {
+if (!isset($configuration['autoload_typoscript']) || true === (bool)$configuration['autoload_typoscript']) {
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
         'vidi_frontend',
@@ -31,6 +31,10 @@ if (false === isset($configuration['autoload_typoscript']) || true === (bool)$co
     ]
 );
 
+$nonCacheableControllerActions = !isset($configuration['is_index_view_cached']) || (bool)$configuration['is_index_view_cached']
+    ? 'list'
+    : 'index, list';
+
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'Fab.vidi_frontend',
     'TemplateBasedContent',
@@ -38,7 +42,7 @@ if (false === isset($configuration['autoload_typoscript']) || true === (bool)$co
         'TemplateBasedContent' => 'index, list, show',
     ],
     [
-        'TemplateBasedContent' => 'list',
+        'TemplateBasedContent' => $nonCacheableControllerActions,
     ]
 );
 

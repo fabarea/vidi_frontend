@@ -1,4 +1,5 @@
 <?php
+
 namespace Fab\VidiFrontend\Controller;
 
 /*
@@ -9,12 +10,16 @@ namespace Fab\VidiFrontend\Controller;
  */
 
 use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
+use Fab\VidiFrontend\Persistence\TemplateBasedContentOrderFactory;
+use Fab\VidiFrontend\Persistence\TemplateBasedContentPagerFactory;
 use Fab\VidiFrontend\Persistence\PagerFactory;
+use Fab\VidiFrontend\Service\ArgumentService;
 use Fab\VidiFrontend\Service\ContentElementService;
 use Fab\VidiFrontend\Service\ContentService;
 use Fab\VidiFrontend\Service\ContentType;
 use Fab\VidiFrontend\TypeConverter\ContentConverter;
 use Fab\VidiFrontend\TypeConverter\ContentDataConverter;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -65,6 +70,8 @@ class TemplateBasedContentController extends ActionController
      */
     public function indexAction(array $matches = [])
     {
+        $matches = array_filter($matches); // filter empty values from array
+
         $settings = $this->computeFinalSettings($this->settings);
 
         $contentObjectRender = $this->configurationManager->getContentObject();
@@ -79,27 +86,41 @@ class TemplateBasedContentController extends ActionController
         }
         $view->setTemplatePathAndFilename($fileNameAndPath);
 
+        $view->setPartialRootPaths($this->getTemplatePaths('partialRootPaths'));
+        $view->setLayoutRootPaths($this->getTemplatePaths('layoutRootPaths'));
+
         $settings = $this->computeFinalSettings($this->settings);
 
         // Assign values.
-        $view->assign('settings', $settings);
-        $view->assign('page', $this->getTypoScriptFrontendController()->page);
-        $view->assign('contentElement', $contentObjectRender->data);
-        $view->assign('dataType', $settings['dataType']);
-        $view->assign('objects', []);
+        $view->assignMultiple([
+            'settings' => $settings,
+            'arguments' => ArgumentService::getInstance()->getArguments(),
+            'matches' => $matches,
+            'page' => $this->getTypoScriptFrontendController()->page,
+            'contentElement' => $contentObjectRender->data,
+            'dataType' => $settings['dataType'],
+            'objects' => [],
+        ]);
 
         if (!$settings['loadByAjax']) {
 
             // Initialize some objects related to the query.
             $matcher = MatcherFactory::getInstance()->getMatcher($settings, $matches, $settings['dataType']);
-            $order = OrderFactory::getInstance()->getOrder($settings, $settings['dataType']);
+            $order = TemplateBasedContentOrderFactory::getInstance()->getOrder($settings, $settings['dataType']);
+            $pager = TemplateBasedContentPagerFactory::getInstance()->getPager($settings);
 
             // Fetch objects via the Content Service.
             $contentService = $this->getContentService()
                 ->setDataType($settings['dataType'])
                 ->setSettings($settings)
-                ->findBy($matcher, $order, (int)$settings['limit']);
-            $view->assign('objects', $contentService->getObjects());
+                ->findBy($matcher, $order, $pager->getLimit(), $pager->getOffset());
+
+            $pager->setCount($contentService->getNumberOfObjects());
+
+            $view->assignMultiple([
+                'objects' => $contentService->getObjects(),
+                'pager' => $pager,
+            ]);
         }
 
         return $view->render();
@@ -156,10 +177,12 @@ class TemplateBasedContentController extends ActionController
         $this->request->setFormat('json');
 
         // Assign values.
-        $this->view->assign('objects', $contentService->getObjects());
-        $this->view->assign('numberOfObjects', $contentService->getNumberOfObjects());
-        $this->view->assign('pager', $pager);
-        $this->view->assign('response', $this->response);
+        $this->view->assignMultiple([
+            'objects' => $contentService->getObjects(),
+            'numberOfObjects' => $contentService->getNumberOfObjects(),
+            'pager' => $pager,
+            'response' => $this->response,
+        ]);
     }
 
     /**
@@ -192,13 +215,23 @@ class TemplateBasedContentController extends ActionController
      * @param array $settings
      * @return array
      */
-    protected function computeFinalSettings(array $settings) {
-
+    protected function computeFinalSettings(array $settings)
+    {
         $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         $ts = GeneralUtility::removeDotsFromTS($configuration['plugin.']['tx_vidifrontend.']['settings.']);
         ArrayUtility::mergeRecursiveWithOverrule($settings, $ts);
+        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings());
 
         return $settings;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getTemplatePaths($partName)
+    {
+        $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        return GeneralUtility::removeDotsFromTS($configuration['plugin.']['tx_vidifrontend.']['view.'][$partName . '.']);
     }
 
     /**
@@ -238,6 +271,26 @@ class TemplateBasedContentController extends ActionController
     protected function getContentType()
     {
         return GeneralUtility::makeInstance(ContentType::class);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAdditionalSettings()
+    {
+        // Assign values.
+        $parseObj = $this->getTypoScriptParser();
+        $parseObj->setup = [];
+        $parseObj->parse($this->settings['additionalSettingsList']);
+        return (array)$parseObj->setup;
+    }
+
+    /**
+     * @return object|TypoScriptParser
+     */
+    protected function getTypoScriptParser()
+    {
+        return GeneralUtility::makeInstance(TypoScriptParser::class);
     }
 
 }

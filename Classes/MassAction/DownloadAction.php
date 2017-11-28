@@ -8,10 +8,6 @@ namespace Fab\VidiFrontend\MassAction;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Fab\Vidi\Domain\Model\Content;
-use Fab\VidiFrontend\Resolver\FieldPathResolver;
-use Fab\Vidi\Tca\Tca;
-use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
 use Fab\VidiFrontend\Service\ContentService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;

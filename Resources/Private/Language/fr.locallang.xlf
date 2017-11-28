@@ -33,8 +33,8 @@
 			<trans-unit id="flexform.tab.detailView">
 				<target>Vue détail</target>
 			</trans-unit>
-			<trans-unit id="flexform.tab.template">
-				<target>Template</target>
+			<trans-unit id="flexform.tab.listView">
+				<target>Vue liste</target>
 			</trans-unit>
 			<trans-unit id="settings.select">
 				<target>Sélectionner une entrée...</target>
@@ -52,7 +52,10 @@
 				<target>Préfiltre avec une Sélection venant du module Backend.</target>
 			</trans-unit>
 			<trans-unit id="settings.facets">
-				<target>Sélectionner les facettes de la barre de recherche visuelle</target>
+				<target>Sélectionner les facettes de la barre de recherche visuelle.</target>
+			</trans-unit>
+			<trans-unit id="settings.filters">
+				<target>Sélectionner les filtres à afficher.</target>
 			</trans-unit>
 			<trans-unit id="settings.logicalSeparator">
 				<source>Séparateur logique entre les facettes</source>
@@ -87,6 +90,9 @@
 			<trans-unit id="settings.additionalEquals">
 				<target>Contraintes supplémentaires séparées par des virgules. Exemple pour Files: storage= 1, identifier like /images/%, metadata.categories = 1</target>
 			</trans-unit>
+			<trans-unit id="settings.additionalSettings">
+				<target>Configuration supplémentaire</target>
+			</trans-unit>
 			<trans-unit id="settings.gridClassName">
 				<target>Classes Grille</target>
 			</trans-unit>
@@ -99,8 +105,8 @@
 			<trans-unit id="settings.enableFields">
 				<target>Respecter les "enableFields"</target>
 			</trans-unit>
-			<trans-unit id="settings.templateList">
-				<target>Fichier de template</target>
+			<trans-unit id="settings.templateForListView">
+				<target>Template pour la vue de "liste"</target>
 			</trans-unit>
 			<trans-unit id="info.gridConfiguration">
 				<target>DataTables s'insipre de CSS 3 Advanced Layout Module pour configurer ses éléments. Veuillez vous référer à la documentation %s pour davantage d'information. Notez que la configuration est automatiquement mise à jour, lorsque l'option VisualSearch barre est activée dans la tabulation "facets", sauf si vous l'avez personnalisée. Les options disponibles sont::</target>
@@ -114,7 +120,7 @@
 				<target>Traitement en cours...</target>
 			</trans-unit>
 			<trans-unit id="grid.searchPlaceholder">
-				<target>Recherche...</target>
+				<target>Rechercher</target>
 			</trans-unit>
 			<trans-unit id="grid.lengthMenu">
 				<target>Afficher _MENU_</target>

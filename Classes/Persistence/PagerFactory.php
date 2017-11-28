@@ -1,4 +1,5 @@
 <?php
+
 namespace Fab\VidiFrontend\Persistence;
 
 /*
@@ -21,11 +22,11 @@ class PagerFactory implements SingletonInterface
     /**
      * Gets a singleton instance of this class.
      *
-     * @return PagerFactory
+     * @return $this|object
      */
-    static public function getInstance()
+    public static function getInstance()
     {
-        return GeneralUtility::makeInstance(PagerFactory::class);
+        return GeneralUtility::makeInstance(self::class);
     }
 
     /**

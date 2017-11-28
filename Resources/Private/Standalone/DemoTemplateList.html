@@ -14,7 +14,6 @@
 	<![CDATA[
 	window.HackerLists = window.HackerLists || [];
 
-	// without jQuery (doesn't work in older IEs)
 	document.addEventListener('DOMContentLoaded', function() {
 
 		HackerLists[contentElementIdentifier] = {
@@ -38,7 +37,7 @@
 			/**
 			 * @param Array
 			 */
-			filters: ['name', 'customer', 'region', 'degree', 'situation', 'offer'],
+			filters: ['name', 'customer'],
 
 			/**
 			 * @param {List}
@@ -279,6 +278,22 @@
 					.innerHTML = '(' + this.filteredItems.length + ' - ' + position + '/' + numberOfPages + ')';
 
 				return this;
+			},
+
+			/**
+			 * @param {string} selector
+			 * @returns {Element}
+			 */
+			getOne: function(selector) {
+				return document.querySelector('#list-objects-' + contentElementIdentifier +  ' ' + selector)
+			},
+
+			/**
+			 * @param selector
+			 * @returns {*}
+			 */
+			getMany: function(selector) {
+				return document.querySelectorAll('#list-objects-' + contentElementIdentifier +  ' ' + selector)
 			}
 
 		};
@@ -305,90 +320,44 @@
 	]]>
 </script>
 
-
 <div id="list-objects-{contentElement.uid}">
 
     <form class="mb-3" onsubmit="return false">
-        <legend>Rechercher une institution</legend>
+        <legend>Search</legend>
         <div class="form-group">
-            <label for="name-filter">Nom</label>
+            <label for="name-filter">Name</label>
 
-            <input class="form-control search-field" type="text" id="name-filter" name="testInput" value="">
+            <input class="form-control search-field" type="text" id="name-filter" name="searchTerm" value="">
         </div>
 
         <div class="form-group">
-            <label for="customer-filter">Clientèle</label>
+            <label for="customer-filter">Title</label>
             <select class="form-control filter-field" id="customer-filter" autocomplete="off">
-                <option value="">Tous</option>
-                <f:for each="{v:content.find(matches: {pid: 52409}, orderings: {title: 'ASC'}, type: 'tt_address_group')}"
+                <option value="">All</option>
+                <f:for each="{v:content.find(matches: {pid: 1}, orderings: {title: 'ASC'}, type: 'tt_address_group')}"
                        as="addressGroup">
                     <option value="{addressGroup.title}">{addressGroup.title}</option>
                 </f:for>
             </select>
         </div>
 
-        <div class="form-group">
-            <label for="region-filter">Région</label>
-            <select class="form-control filter-field" id="region-filter" autocomplete="off">
-                <option value="">Tous</option>
-                <f:for each="{v:content.find(matches: {pid: 52411}, orderings: {title: 'ASC'}, type: 'tt_address_group')}"
-                       as="addressGroup">
-                    <option value="{addressGroup.title}">{addressGroup.title}</option>
-                </f:for>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="degree-filter">Degré</label>
-            <select class="form-control filter-field" id="degree-filter" autocomplete="off">
-                <option value="">Tous</option>
-                <f:for each="{v:content.find(matches: {pid: 52408}, orderings: {title: 'ASC'}, type: 'tt_address_group')}"
-                       as="addressGroup">
-                    <option value="{addressGroup.title}">{addressGroup.title}</option>
-                </f:for>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="situation-filter">Situation</label>
-            <select class="form-control filter-field" id="situation-filter" autocomplete="off">
-                <option value="">Tous</option>
-                <f:for each="{v:content.find(matches: {pid: 52410}, orderings: {title: 'ASC'}, type: 'tt_address_group')}"
-                       as="addressGroup">
-                    <option value="{addressGroup.title}">{addressGroup.title}</option>
-                </f:for>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="offer-filter">Offre</label>
-            <select class="form-control filter-field" id="offer-filter" autocomplete="off">
-                <option value="">Tous</option>
-                <f:for each="{v:content.find(matches: {pid: 52407}, orderings: {title: 'ASC'}, type: 'tt_address_group')}"
-                       as="addressGroup">
-                    <option value="{addressGroup.title}">{addressGroup.title}</option>
-                </f:for>
-            </select>
-        </div>
-
-        <!--<a href="#" title="Rechercher link to somewhere" class="btn btn-dark">Rechercher</a>-->
-        <a href="#" title="Annuler link to somewhere" class="btn btn-secondary btn-cancel">Annuler</a>
+        <a href="#" title="Cancel" class="btn btn-secondary btn-cancel">Cancel</a>
 
     </form>
 
-    <h2>Ordre de tri</h2>
+    <h2>Sorting</h2>
     <ul>
         <li>
-            <a href="#" class="btn-sorting asc">Trier par ordre alphabétique</a>
+            <a href="#" class="btn-sorting asc">Name ascending</a>
         </li>
         <li>
-            <a href="#" class="btn-sorting desc">Trier par ordre alphabétique inverse</a>
+            <a href="#" class="btn-sorting desc">Name descending</a>
         </li>
     </ul>
-    <h2>Liste des résultats <span id="number-of-objects-{contentElement.uid}"></span></h2>
+    <h2>Results <span id="number-of-objects-{contentElement.uid}"></span></h2>
 
     <f:if condition="{objects}">
-        <ul class="list list-unstyled hacker-list">
+        <ul class="list list-unstyled hacker-list" aria-live="polite">
 
             <f:for each="{objects}" as="object">
                 <li>
@@ -409,78 +378,22 @@
                                 </f:for>
                             </dd>
                         </f:if>
-
-                        <f:if condition="{object.tx_vdaddrgeneral_categoryid2}">
-                            <dt class="col-md-4">Situation</dt>
-                            <dd class="col-md-8 situation">
-                                <f:for each="{object.tx_vdaddrgeneral_categoryid2}"
-                                       as="addressGroup"
-                                       iteration="iterator">
-                                    <f:if condition="{iterator.isLast}">
-                                        <f:then>{addressGroup.title}</f:then>
-                                        <f:else>{addressGroup.title},</f:else>
-                                    </f:if>
-                                </f:for>
-                            </dd>
-                        </f:if>
-
-                        <f:if condition="{object.tx_vdaddrgeneral_categoryid3}">
-                            <dt class="col-md-4">Clientèle</dt>
-                            <dd class="col-md-8 customer">
-                                <f:for each="{object.tx_vdaddrgeneral_categoryid3}"
-                                       as="addressGroup"
-                                       iteration="iterator">
-                                    <f:if condition="{iterator.isLast}">
-                                        <f:then>{addressGroup.title}</f:then>
-                                        <f:else>{addressGroup.title},</f:else>
-                                    </f:if>
-                                </f:for>
-                            </dd>
-                        </f:if>
-
-                        <f:if condition="{object.tx_vdaddrgeneral_categoryid4}">
-                            <dt class="col-md-4">Degré</dt>
-                            <dd class="col-md-8 degree">
-                                <f:for each="{object.tx_vdaddrgeneral_categoryid4}"
-                                       as="addressGroup"
-                                       iteration="iterator">
-                                    <f:if condition="{iterator.isLast}">
-                                        <f:then>{addressGroup.title}</f:then>
-                                        <f:else>{addressGroup.title},</f:else>
-                                    </f:if>
-                                </f:for>
-                            </dd>
-                        </f:if>
-
-                        <f:if condition="{object.tx_vdaddrgeneral_categoryid5}">
-                            <dt class="col-md-4">Offre</dt>
-                            <dd class="col-md-8 offer">
-                                <f:for each="{object.tx_vdaddrgeneral_categoryid5}"
-                                       as="addressGroup"
-                                       iteration="iterator">
-                                    <f:if condition="{iterator.isLast}">
-                                        <f:then>{addressGroup.title}</f:then>
-                                        <f:else>{addressGroup.title},</f:else>
-                                    </f:if>
-                                </f:for>
-                            </dd>
-                        </f:if>
                     </dl>
                 </li>
             </f:for>
         </ul>
 
         <nav>
-            <h3 class="sr-only">Pagination</h3>
+            <h3 class="sr-only">Browser</h3>
             <div class="d-flex justify-content-between">
                 <a href="#"
                    title="Lien précédent"
                    class="btn btn-link btn-pagination previous"><span class="fa fa-chevron-left"
                                                                       aria-hidden="true"></span>
-                    Précédent
+                    Previous
                 </a>
 
-                <a href="#" title="Lien suivant" class="btn btn-link btn-pagination next">Suivant
+                <a href="#" title="Lien suivant" class="btn btn-link btn-pagination next">Next
                     <span class="fa fa-chevron-right"
                           aria-hidden="true"></span>
                 </a>
