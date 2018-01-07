@@ -93,6 +93,9 @@
 			<trans-unit id="settings.additionalSettings">
 				<target>Configuration supplémentaire</target>
 			</trans-unit>
+			<trans-unit id="settings.availableAdditionalSettings">
+				<target>Configuration disponible</target>
+			</trans-unit>
 			<trans-unit id="settings.gridClassName">
 				<target>Classes Grille</target>
 			</trans-unit>

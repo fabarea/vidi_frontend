@@ -166,6 +166,15 @@
 							</config>
 						</TCEforms>
 					</settings.additionalSettingsList>
+					<settings.additionalSettingsListHelp>
+						<TCEforms>
+							<config>
+								<type>user</type>
+								<userFunc>Fab\VidiFrontend\Backend\TceForms->renderAdditionalSettingsListHelp</userFunc>
+								<typoscriptConfigurationKey>listTemplates</typoscriptConfigurationKey>
+							</config>
+						</TCEforms>
+					</settings.additionalSettingsListHelp>
 				</el>
 			</ROOT>
 		</listView>
@@ -206,6 +215,25 @@
 							</config>
 						</TCEforms>
 					</settings.targetPageDetail>
+					<settings.additionalSettingsDetail>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.additionalSettings</label>
+							<config>
+								<type>text</type>
+								<rows>5</rows>
+								<cols>30</cols>
+							</config>
+						</TCEforms>
+					</settings.additionalSettingsDetail>
+					<settings.additionalSettingsDetailHelp>
+						<TCEforms>
+							<config>
+								<type>user</type>
+								<userFunc>Fab\VidiFrontend\Backend\TceForms->renderAdditionalSettingsListHelp</userFunc>
+								<typoscriptConfigurationKey>templates</typoscriptConfigurationKey>
+							</config>
+						</TCEforms>
+					</settings.additionalSettingsDetailHelp>
 				</el>
 			</ROOT>
 		</detailView>

@@ -1,4 +1,5 @@
 <?php
+
 namespace Fab\VidiFrontend\Backend;
 
 /*
@@ -427,7 +428,7 @@ class TceForms
             foreach ($configuration['settings']['listTemplates'] as $template) {
                 $options[] = sprintf('<option value="%s" %s>%s</option>',
                     $template['path'],
-                    $selectedItem == $template['path'] ? 'selected="selected"' : '',
+                    $selectedItem === $template['path'] ? 'selected="selected"' : '',
                     $template['label']
                 );
             }
@@ -435,6 +436,65 @@ class TceForms
                 $params['row']['uid'],
                 implode("\n", $options)
             );
+        }
+        return $output;
+    }
+
+    /**
+     * @param array $params
+     * @param object $tsObj
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public function renderAdditionalSettingsListHelp(&$params, &$tsObj)
+    {
+        $configuration = $this->getPluginConfiguration();
+
+        $output = '';
+
+        $typoscriptConfigurationKey = $params['fieldConf']['config']['typoscriptConfigurationKey'];
+        if (is_array($configuration['settings'][$typoscriptConfigurationKey])) {
+            $selectedItem = '';
+            if (!empty($params['row']['pi_flexform'])) {
+                $values = $params['row']['pi_flexform'];
+                if (!empty($values['data']['sDEF']['lDEF']['settings.templateList'])) {
+                    $selectedItem = $values['data']['sDEF']['lDEF']['settings.templateList']['vDEF'];
+                }
+            }
+
+            $lines = [];
+            foreach ($configuration['settings'][$typoscriptConfigurationKey] as $template) {
+                if ($selectedItem === $template['path']
+                    && isset($template['additionalSettingsHelp'])
+                    && trim($template['additionalSettingsHelp']) !== '') {
+
+                    $rawLines = explode("\n", $template['additionalSettingsHelp']);
+                    foreach ($rawLines as $rawLine) {
+                        $formattedLine = trim(htmlspecialchars($rawLine));
+                        if (preg_match('/^#/', $formattedLine)) {
+                            $formattedLine = sprintf('<div style="color: grey">%s</div>', $formattedLine);
+                        } else {
+                            $formattedLine = sprintf('<div>%s</div>', $formattedLine);
+                        }
+                        $lines[] = $formattedLine;
+                    }
+                }
+            }
+
+            if (!empty($lines)) {
+
+                $output = sprintf(
+                    '
+<div>
+    <label class="t3js-formengine-label">
+        %s
+    </label>
+</div>
+%s',
+                    $this->getLanguageService()->sL('LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.availableAdditionalSettings'),
+                    implode("\n", $lines)
+                );
+            }
         }
         return $output;
     }

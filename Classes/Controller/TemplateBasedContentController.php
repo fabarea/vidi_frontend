@@ -220,7 +220,8 @@ class TemplateBasedContentController extends ActionController
         $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         $ts = GeneralUtility::removeDotsFromTS($configuration['plugin.']['tx_vidifrontend.']['settings.']);
         ArrayUtility::mergeRecursiveWithOverrule($settings, $ts);
-        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings());
+        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings('additionalSettingsList'));
+        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings('additionalSettingsDetail'));
 
         return $settings;
     }
@@ -274,14 +275,15 @@ class TemplateBasedContentController extends ActionController
     }
 
     /**
+     * @param string $settingName
      * @return array
      */
-    protected function getAdditionalSettings()
+    protected function getAdditionalSettings($settingName)
     {
         // Assign values.
         $parseObj = $this->getTypoScriptParser();
         $parseObj->setup = [];
-        $parseObj->parse($this->settings['additionalSettingsList']);
+        $parseObj->parse($this->settings[$settingName]);
         return (array)$parseObj->setup;
     }
 

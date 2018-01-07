@@ -97,7 +97,10 @@
 				<source><![CDATA[Additional constraints with possible operators = , >, >= , < , <=, like, in. Use one constraint per line.]]></source>
 			</trans-unit>
 			<trans-unit id="settings.additionalSettings">
-				<source><![CDATA[Additional settings]]></source>
+				<source>Additional settings</source>
+			</trans-unit>
+			<trans-unit id="settings.availableAdditionalSettings">
+				<source>Available settings</source>
 			</trans-unit>
 			<trans-unit id="settings.gridClassName">
 				<source>Grid class name</source>
