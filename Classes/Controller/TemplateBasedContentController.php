@@ -73,6 +73,7 @@ class TemplateBasedContentController extends ActionController
         $matches = array_filter($matches); // filter empty values from array
 
         $settings = $this->computeFinalSettings($this->settings);
+        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings('additionalSettingsList'));
 
         $contentObjectRender = $this->configurationManager->getContentObject();
 
@@ -89,7 +90,6 @@ class TemplateBasedContentController extends ActionController
         $view->setPartialRootPaths($this->getTemplatePaths('partialRootPaths'));
         $view->setLayoutRootPaths($this->getTemplatePaths('layoutRootPaths'));
 
-        $settings = $this->computeFinalSettings($this->settings);
 
         // Assign values.
         $view->assignMultiple([
@@ -138,6 +138,7 @@ class TemplateBasedContentController extends ActionController
     {
         $settings = ContentElementConfiguration::getInstance($contentData)->getSettings();
         $settings = $this->computeFinalSettings($settings);
+        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings('additionalSettingsList'));
 
         $dataType = $settings['dataType'];
 
@@ -192,6 +193,7 @@ class TemplateBasedContentController extends ActionController
     public function showAction(Content $content)
     {
         $settings = $this->computeFinalSettings($this->settings);
+        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings('additionalSettingsDetail'));
 
         // Configure the template path according to the Plugin settings.
         $fileNameAndPath = GeneralUtility::getFileAbsFileName($settings['templateDetail']);
@@ -220,8 +222,6 @@ class TemplateBasedContentController extends ActionController
         $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         $ts = GeneralUtility::removeDotsFromTS($configuration['plugin.']['tx_vidifrontend.']['settings.']);
         ArrayUtility::mergeRecursiveWithOverrule($settings, $ts);
-        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings('additionalSettingsList'));
-        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings('additionalSettingsDetail'));
 
         return $settings;
     }
