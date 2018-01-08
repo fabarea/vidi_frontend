@@ -34,12 +34,11 @@ class MatcherFactory implements SingletonInterface
     /**
      * Gets a singleton instance of this class.
      *
-     * @return MatcherFactory
-     * @throws \InvalidArgumentException
+     * @return object|MatcherFactory
      */
     static public function getInstance()
     {
-        return GeneralUtility::makeInstance(MatcherFactory::class);
+        return GeneralUtility::makeInstance(self::class);
     }
 
     /**
@@ -62,7 +61,7 @@ class MatcherFactory implements SingletonInterface
 
         $matcher = $this->applyCriteriaFromDataTables($matcher, $dataType);
         $matcher = $this->applyCriteriaFromSelection($matcher, $dataType);
-        $matcher = $this->applyCriteriaFromMatchesArgument($matcher, $matches);
+        $matcher = $this->applyCriteriaFromMatchesArgument($matcher, $matches, $dataType);
         $matcher = $this->applyCriteriaFromAdditionalConstraints($matcher);
 
         // Trigger signal for post processing Matcher Object.
@@ -82,9 +81,11 @@ class MatcherFactory implements SingletonInterface
     /**
      * @param Matcher $matcher
      * @param array $matches
+     * @param string $dataType
      * @return Matcher $matcher
+     * @throws \Fab\Vidi\Exception\NotExistingClassException
      */
-    protected function applyCriteriaFromMatchesArgument(Matcher $matcher, $matches)
+    protected function applyCriteriaFromMatchesArgument(Matcher $matcher, $matches, $dataType)
     {
         foreach ($matches as $fieldNameAndPath => $value) {
             // CSV values should be considered as "in" operator in Query, otherwise "equals".
@@ -92,7 +93,12 @@ class MatcherFactory implements SingletonInterface
             if (count($explodedValues) > 1) {
                 $matcher->in($fieldNameAndPath, $explodedValues);
             } else {
-                $matcher->equals($fieldNameAndPath, $explodedValues[0]);
+                if (Tca::table($dataType)->field($fieldNameAndPath)->isTextArea()
+                || Tca::table($dataType)->field($fieldNameAndPath)->isText()) {
+                    $matcher->like($fieldNameAndPath, '%' . $this->getDatabaseConnection()->escapeStrForLike($explodedValues[0], $dataType) . '%');
+                } else {
+                    $matcher->equals($fieldNameAndPath, $explodedValues[0]);
+                }
             }
         }
 
@@ -267,8 +273,7 @@ class MatcherFactory implements SingletonInterface
     /**
      * Get the SignalSlot dispatcher
      *
-     * @return Dispatcher
-     * @throws \InvalidArgumentException
+     * @return object|Dispatcher
      */
     protected function getSignalSlotDispatcher()
     {
@@ -276,8 +281,7 @@ class MatcherFactory implements SingletonInterface
     }
 
     /**
-     * @return ObjectManager
-     * @throws \InvalidArgumentException
+     * @return object|ObjectManager
      */
     protected function getObjectManager()
     {
@@ -285,12 +289,21 @@ class MatcherFactory implements SingletonInterface
     }
 
     /**
-     * @return FieldPathResolver
-     * @throws \InvalidArgumentException
+     * @return object|FieldPathResolver
      */
     protected function getFieldPathResolver()
     {
         return GeneralUtility::makeInstance(FieldPathResolver::class);
+    }
+
+    /**
+     * Returns a pointer to the database.
+     *
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 
 }
