@@ -70,7 +70,10 @@ class TemplateBasedContentController extends ActionController
      */
     public function indexAction(array $matches = [])
     {
-        $matches = array_filter($matches); // filter empty values from array
+        // Filter empty value
+        $matches = array_filter($matches, function($value) {
+            return ($value !== null && $value !== false && $value !== '');
+        });
 
         $settings = $this->computeFinalSettings($this->settings);
         ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings('additionalSettingsList'));
