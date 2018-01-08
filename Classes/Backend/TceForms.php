@@ -468,9 +468,14 @@ class TceForms
                     && isset($template['additionalSettingsHelp'])
                     && trim($template['additionalSettingsHelp']) !== '') {
 
-                    $rawLines = explode("\n", $template['additionalSettingsHelp']);
+                    $rawLines = explode("\n", trim($template['additionalSettingsHelp']));
                     foreach ($rawLines as $rawLine) {
                         $formattedLine = trim(htmlspecialchars($rawLine));
+
+                        if ($formattedLine === '') {
+                            $formattedLine = '&nbsp;';
+                        }
+
                         if (preg_match('/^#/', $formattedLine)) {
                             $formattedLine = sprintf('<div style="color: grey">%s</div>', $formattedLine);
                         } else {
