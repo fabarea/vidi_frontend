@@ -25,6 +25,7 @@ class LabelViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('column', 'string', 'Column name', false);
+        $this->registerArgument('dataType', 'string', 'Data type', false);
     }
 
     /**
@@ -32,14 +33,20 @@ class LabelViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        /** @var Content $object */
-        $object = $this->templateVariableContainer->get('object');
-
         $column = $this->templateVariableContainer->exists('column')
             ? $this->templateVariableContainer->get('column')
             : $this->arguments['column'];
 
-        return FrontendTca::grid($object)->getLabel($column);
+
+        if (isset($this->arguments['dataType'])) {
+            $dataType = $this->arguments['dataType'];
+        } else {
+            /** @var Content $object */
+            $object = $this->templateVariableContainer->get('object'); // must exists
+            $dataType = $object->getDataType();
+        }
+
+        return FrontendTca::grid($dataType)->getLabel($column);
     }
 
 }
