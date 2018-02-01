@@ -6,10 +6,16 @@
 
 			<!-- Wizard -->
 			<trans-unit id="wizard.title">
-				<source>Versatile and Interactive Display - List Component</source>
+				<source>List Component - VIDI</source>
 			</trans-unit>
 			<trans-unit id="wizard.description">
-				<source>Generic List Component where content can be filtered in an advanced way... Veni, vidi, vici!</source>
+				<source>Generic List Component where content can be displayed in a flexible way.</source>
+			</trans-unit>
+			<trans-unit id="wizard_template_based.title">
+				<source>List Component template based - VIDI</source>
+			</trans-unit>
+			<trans-unit id="wizard_template_based.description">
+				<source>Generic List Component - template based - where content can be displayed in a flexible way.</source>
 			</trans-unit>
 
 			<!-- Plugin -->

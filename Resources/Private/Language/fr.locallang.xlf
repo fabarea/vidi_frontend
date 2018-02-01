@@ -6,10 +6,16 @@
 
 			<!-- Wizard -->
 			<trans-unit id="wizard.title">
-				<target>Liste Composant</target>
+				<target>Liste interactive - VIDI</target>
 			</trans-unit>
 			<trans-unit id="wizard.description">
-				<target>List interactive avec possibilité de filter le contenu de manière avancée... Veni, vidi, vici!</target>
+				<target>Liste interactive avec affichage paramétrable</target>
+			</trans-unit>
+			<trans-unit id="wizard_template_based.title">
+				<target>Liste interactive avec template - VIDI</target>
+			</trans-unit>
+			<trans-unit id="wizard_template_based.description">
+				<target>Liste interactive - avec template - avec affichage paramétrable</target>
 			</trans-unit>
 
 			<!-- Plugin -->
