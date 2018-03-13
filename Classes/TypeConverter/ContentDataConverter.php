@@ -44,7 +44,7 @@ class ContentDataConverter extends AbstractTypeConverter
      * @param PropertyMappingConfigurationInterface $configuration
      * @throws \Exception
      * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
-     * @return File
+     * @return array
      * @api
      */
     public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
