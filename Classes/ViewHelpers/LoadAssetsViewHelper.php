@@ -69,9 +69,9 @@ class LoadAssetsViewHelper extends AbstractViewHelper
         $fileNameAndPath = PathUtility::stripPathSitePrefix($fileNameAndPath);
 
         if ($asset['type'] === 'js') {
-            $this->getPageRenderer()->addJsFooterFile($fileNameAndPath);
+            self::getPageRenderer()->addJsFooterFile($fileNameAndPath);
         } elseif ($asset['type'] === 'css') {
-            $this->getPageRenderer()->addCssFile($fileNameAndPath);
+            self::getPageRenderer()->addCssFile($fileNameAndPath);
         }
     }
 
@@ -119,9 +119,9 @@ class LoadAssetsViewHelper extends AbstractViewHelper
     /**
      * @return \TYPO3\CMS\Core\Page\PageRenderer
      */
-    protected function getPageRenderer()
+    static protected function getPageRenderer()
     {
-        return $this->getFrontendObject()->getPageRenderer();
+        return self::getFrontendObject()->getPageRenderer();
     }
 
     /**
@@ -129,7 +129,7 @@ class LoadAssetsViewHelper extends AbstractViewHelper
      *
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
-    protected function getFrontendObject()
+    static protected function getFrontendObject()
     {
         return $GLOBALS['TSFE'];
     }

@@ -29,8 +29,8 @@ abstract class AbstractMassAction implements MassActionInterface
     protected function getMassActionUrl()
     {
 
-        return $this->getFrontendObject()->cObj->typoLink_URL([
-            'parameter' => $this->getFrontendObject()->id . ',' . 1457381088,
+        return self::getFrontendObject()->cObj->typoLink_URL([
+            'parameter' => self::getFrontendObject()->id . ',' . 1457381088,
             'additionalParams' => $this->getArgumentList()
         ]);
     }
@@ -79,7 +79,7 @@ abstract class AbstractMassAction implements MassActionInterface
      *
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
-    protected function getFrontendObject()
+    static protected function getFrontendObject()
     {
         return $GLOBALS['TSFE'];
     }
