@@ -31,7 +31,7 @@ class RowViewHelper extends AbstractViewHelper
      *
      * @param Content $object
      * @param int $index
-     * @return array
+     * @return string
      */
     public function render(Content $object, $index = 0)
     {
