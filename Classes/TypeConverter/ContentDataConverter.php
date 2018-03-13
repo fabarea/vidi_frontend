@@ -80,7 +80,7 @@ class ContentDataConverter extends AbstractTypeConverter
      */
     static protected function getPageRepository()
     {
-        return $this->getFrontendObject()->sys_page;
+        return self::getFrontendObject()->sys_page;
     }
 
     /**
