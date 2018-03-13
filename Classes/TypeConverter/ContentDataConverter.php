@@ -42,8 +42,7 @@ class ContentDataConverter extends AbstractTypeConverter
      * @param string $targetType
      * @param array $convertedChildProperties
      * @param PropertyMappingConfigurationInterface $configuration
-     * @throws \Exception
-     * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
+     * @throws \RuntimeException
      * @return array
      * @api
      */
@@ -81,7 +80,7 @@ class ContentDataConverter extends AbstractTypeConverter
      */
     protected function getPageRepository()
     {
-        return $GLOBALS['TSFE']->sys_page;
+        return $this->getFrontendObject()->sys_page;
     }
 
     /**
