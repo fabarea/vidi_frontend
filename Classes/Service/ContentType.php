@@ -42,9 +42,9 @@ class ContentType implements SingletonInterface
         if (empty($this->contentTypes[$contentElementIdentifier])) {
 
             $clause = sprintf('uid = %s ', $contentElementIdentifier);
-            $clause .= $this->getPageRepository()->enableFields('tt_content');
-            $clause .= $this->getPageRepository()->deleteClause('tt_content');
-            $contentElement = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tt_content', $clause);
+            $clause .= self::getPageRepository()->enableFields('tt_content');
+            $clause .= self::getPageRepository()->deleteClause('tt_content');
+            $contentElement = self::getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tt_content', $clause);
 
             $xml = GeneralUtility::xml2array($contentElement['pi_flexform']);
 
@@ -64,7 +64,7 @@ class ContentType implements SingletonInterface
      *
      * @return \TYPO3\CMS\Core\Database\DatabaseConnection
      */
-    protected function getDatabaseConnection()
+    static protected function getDatabaseConnection()
     {
         return $GLOBALS['TYPO3_DB'];
     }
@@ -74,7 +74,7 @@ class ContentType implements SingletonInterface
      *
      * @return \TYPO3\CMS\Frontend\Page\PageRepository
      */
-    protected function getPageRepository()
+    static protected function getPageRepository()
     {
         return $GLOBALS['TSFE']->sys_page;
     }

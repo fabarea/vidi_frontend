@@ -42,8 +42,7 @@ class ContentDataConverter extends AbstractTypeConverter
      * @param string $targetType
      * @param array $convertedChildProperties
      * @param PropertyMappingConfigurationInterface $configuration
-     * @throws \Exception
-     * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
+     * @throws \RuntimeException
      * @return array
      * @api
      */
@@ -52,10 +51,10 @@ class ContentDataConverter extends AbstractTypeConverter
 
         $tableName = 'tt_content';
         $clause = 'uid = ' . $source;
-        $clause .= ' AND pid = ' . $this->getFrontendObject()->id; // Make sure we are on the same pid for security reason
-        $clause .= $this->getPageRepository()->enableFields($tableName);
-        $clause .= $this->getPageRepository()->deleteClause($tableName);
-        $record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $tableName, $clause);
+        $clause .= ' AND pid = ' . self::getFrontendObject()->id; // Make sure we are on the same pid for security reason
+        $clause .= self::getPageRepository()->enableFields($tableName);
+        $clause .= self::getPageRepository()->deleteClause($tableName);
+        $record = self::getDatabaseConnection()->exec_SELECTgetSingleRow('*', $tableName, $clause);
 
         if (empty($record)) {
             throw new \RuntimeException('Vidi Frontend: I could not access this resource', 1445352723);
@@ -69,7 +68,7 @@ class ContentDataConverter extends AbstractTypeConverter
      *
      * @return \TYPO3\CMS\Core\Database\DatabaseConnection
      */
-    protected function getDatabaseConnection()
+    static protected function getDatabaseConnection()
     {
         return $GLOBALS['TYPO3_DB'];
     }
@@ -79,9 +78,9 @@ class ContentDataConverter extends AbstractTypeConverter
      *
      * @return \TYPO3\CMS\Frontend\Page\PageRepository
      */
-    protected function getPageRepository()
+    static protected function getPageRepository()
     {
-        return $GLOBALS['TSFE']->sys_page;
+        return $this->getFrontendObject()->sys_page;
     }
 
     /**
@@ -89,7 +88,7 @@ class ContentDataConverter extends AbstractTypeConverter
      *
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
-    protected function getFrontendObject()
+    static protected function getFrontendObject()
     {
         return $GLOBALS['TSFE'];
     }

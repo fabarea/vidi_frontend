@@ -24,7 +24,7 @@ class ContentDataValidator extends AbstractValidator
      */
     public function isValid($contentData)
     {
-        if ((int)$contentData['pid'] !== (int)$this->getFrontendObject()->id) {
+        if ((int)$contentData['pid'] !== (int)self::getFrontendObject()->id) {
             $this->addError('Content element is called from an invalide page.', 1457590642);
         }
     }
@@ -34,7 +34,7 @@ class ContentDataValidator extends AbstractValidator
      *
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
-    protected function getFrontendObject()
+    static protected function getFrontendObject()
     {
         return $GLOBALS['TSFE'];
     }
