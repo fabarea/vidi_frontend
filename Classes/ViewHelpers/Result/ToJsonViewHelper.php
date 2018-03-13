@@ -20,7 +20,7 @@ class ToJsonViewHelper extends AbstractViewHelper
     /**
      * Render a Json response
      *
-     * @return boolean
+     * @return string
      */
     public function render()
     {
