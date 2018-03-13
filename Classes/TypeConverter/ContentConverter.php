@@ -43,8 +43,7 @@ class ContentConverter extends AbstractTypeConverter
      * @param array $convertedChildProperties
      * @param PropertyMappingConfigurationInterface $configuration
      * @throws \Exception
-     * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
-     * @return File
+     * @return \Fab\Vidi\Domain\Model\Content|mixed|null|\TYPO3\CMS\Extbase\Error\Error
      * @api
      */
     public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
