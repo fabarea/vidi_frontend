@@ -13,6 +13,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
  * View helper to load a JavaScript file
@@ -67,11 +68,12 @@ class LoadAssetsViewHelper extends AbstractViewHelper
 
         $fileNameAndPath = GeneralUtility::getFileAbsFileName($file);
         $fileNameAndPath = PathUtility::stripPathSitePrefix($fileNameAndPath);
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 
         if ($asset['type'] === 'js') {
-            self::getPageRenderer()->addJsFooterFile($fileNameAndPath);
+            $pageRenderer->addJsFooterFile($fileNameAndPath);
         } elseif ($asset['type'] === 'css') {
-            self::getPageRenderer()->addCssFile($fileNameAndPath);
+            $pageRenderer->addCssFile($fileNameAndPath);
         }
     }
 
@@ -114,24 +116,6 @@ class LoadAssetsViewHelper extends AbstractViewHelper
             }
         }
         return $resolvedFile;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Page\PageRenderer
-     */
-    static protected function getPageRenderer()
-    {
-        return self::getFrontendObject()->getPageRenderer();
-    }
-
-    /**
-     * Returns an instance of the Frontend object.
-     *
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    static protected function getFrontendObject()
-    {
-        return $GLOBALS['TSFE'];
     }
 
 }
