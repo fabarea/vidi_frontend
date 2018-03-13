@@ -42,7 +42,7 @@ class ContentDataConverter extends AbstractTypeConverter
      * @param string $targetType
      * @param array $convertedChildProperties
      * @param PropertyMappingConfigurationInterface $configuration
-     * @throws \Exception
+     * @throws \RuntimeException
      * @return array
      * @api
      */
@@ -80,7 +80,7 @@ class ContentDataConverter extends AbstractTypeConverter
      */
     static protected function getPageRepository()
     {
-        return $GLOBALS['TSFE']->sys_page;
+        return $this->getFrontendObject()->sys_page;
     }
 
     /**
