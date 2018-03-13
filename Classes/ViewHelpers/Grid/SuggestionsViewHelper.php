@@ -21,7 +21,7 @@ class SuggestionsViewHelper extends AbstractViewHelper
     /**
      * Returns the json serialization of the search fields.
      *
-     * @return boolean
+     * @return string
      */
     public function render()
     {

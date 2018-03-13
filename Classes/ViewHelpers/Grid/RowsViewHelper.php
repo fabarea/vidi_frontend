@@ -34,7 +34,7 @@ class RowsViewHelper extends AbstractViewHelper
      * Returns rows of content as array.
      *
      * @param array $objects
-     * @return string
+     * @return array
      */
     public function render(array $objects = [])
     {
