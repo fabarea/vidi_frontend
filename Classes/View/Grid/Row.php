@@ -8,8 +8,9 @@ namespace Fab\VidiFrontend\View\Grid;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Fab\Vidi\Resolver\ContentObjectResolver;
+use Fab\Vidi\Resolver\FieldPathResolver;
 use Fab\Vidi\Tca\FieldType;
-use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
 use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
 use Fab\VidiFrontend\Plugin\PluginParameter;
 use Fab\VidiFrontend\Tca\FrontendTca;
@@ -284,11 +285,11 @@ class Row extends AbstractComponentView
     }
 
     /**
-     * @return \Fab\Vidi\Resolver\FieldPathResolver
+     * @return FieldPathResolver|Object
      */
     protected function getFieldPathResolver()
     {
-        return GeneralUtility::makeInstance('Fab\Vidi\Resolver\FieldPathResolver');
+        return GeneralUtility::makeInstance(FieldPathResolver::class);
     }
 
     /**
@@ -312,11 +313,11 @@ class Row extends AbstractComponentView
     }
 
     /**
-     * @return \Fab\Vidi\Resolver\ContentObjectResolver
+     * @return ContentObjectResolver|Object
      */
     protected function getContentObjectResolver()
     {
-        return GeneralUtility::makeInstance('Fab\Vidi\Resolver\ContentObjectResolver');
+        return GeneralUtility::makeInstance(ContentObjectResolver::class);
     }
 
 }

@@ -3,23 +3,49 @@
 ########################
 plugin.tx_vidifrontend {
 	view {
-		templateRootPath = {$plugin.tx_vidifrontend.view.templateRootPath}
-		#partialRootPath = {$plugin.tx_vidifrontend.view.partialRootPath}
-		layoutRootPath = {$plugin.tx_vidifrontend.view.layoutRootPath}
+		templateRootPaths {
+			10 = {$plugin.tx_vidifrontend.view.templateRootPath}
+		}
+		partialRootPaths {
+			10 = {$plugin.tx_vidifrontend.view.partialRootPath}
+		}
+		layoutRootPaths {
+			10 = {$plugin.tx_vidifrontend.view.layoutRootPath}
+		}
 	}
 
 	settings {
+
+		# Used in plugin "Generic List - with template
+		listTemplates {
+			1 {
+				label = Demo template list - live search
+				path = EXT:vidi_frontend/Resources/Private/Standalone/DemoTemplateList.html
+				additionalSettingsHelp (
+				)
+			}
+			2 {
+				label = Demo template list - server side search
+				path = EXT:vidi_frontend/Resources/Private/Standalone/DemoTemplateList.html
+				additionalSettingsHelp (
+				)
+			}
+		}
 
 		templates {
 			1 {
 				title = Default detail view
 				path = EXT:vidi_frontend/Resources/Private/Templates/Content/Show.html
+				additionalSettingsHelp (
+				)
 			}
 			2 {
 				# Restrict visibility of this template for "fe_users" only.
 				dataType = fe_users
 				title = User detail view
 				path = EXT:vidi_frontend/Resources/Private/Templates/Content/ShowUser.html
+				additionalSettingsHelp (
+				)
 			}
 		}
 
@@ -53,6 +79,9 @@ plugin.tx_vidifrontend {
 	}
 }
 
+###################
+# List view by Ajax
+###################
 page_1416239670 = PAGE
 page_1416239670 {
     typeNum = 1416239670
@@ -78,6 +107,9 @@ page_1416239670 {
 	}
 }
 
+#########################
+# Mass action in the Grid
+#########################
 page_1457381088 = PAGE
 page_1457381088 {
 	typeNum = 1457381088

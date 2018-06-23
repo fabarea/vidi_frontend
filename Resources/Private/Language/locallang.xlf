@@ -6,10 +6,24 @@
 
 			<!-- Wizard -->
 			<trans-unit id="wizard.title">
-				<source>Versatile and Interactive Display - List Component</source>
+				<source>List Component - VIDI</source>
 			</trans-unit>
 			<trans-unit id="wizard.description">
-				<source>Generic List Component where content can be filtered in an advanced way... Veni, vidi, vici!</source>
+				<source>Generic List Component where content can be displayed in a flexible way.</source>
+			</trans-unit>
+			<trans-unit id="wizard_template_based.title">
+				<source>List Component template based - VIDI</source>
+			</trans-unit>
+			<trans-unit id="wizard_template_based.description">
+				<source>Generic List Component - template based - where content can be displayed in a flexible way.</source>
+			</trans-unit>
+
+			<!-- Plugin -->
+			<trans-unit id="plugin.pi1">
+				<source>Generic List - dynamic table</source>
+			</trans-unit>
+			<trans-unit id="plugin.templateBasedContent">
+				<source>Generic List - with template</source>
 			</trans-unit>
 
 			<!-- Settings -->
@@ -24,6 +38,9 @@
 			</trans-unit>
 			<trans-unit id="flexform.tab.detailView">
 				<source>Detail view</source>
+			</trans-unit>
+			<trans-unit id="flexform.tab.listView">
+				<source>List View</source>
 			</trans-unit>
 			<trans-unit id="flexform.tab.massActions">
 				<source>Mass actions</source>
@@ -44,13 +61,19 @@
 				<source>Selection coming from the Backend module to be used as pre-filter</source>
 			</trans-unit>
 			<trans-unit id="settings.facets">
-				<source>Pick available Facets to be displayed the Visual Search bar.</source>
+				<source>Select Facets to be displayed the Visual Search bar.</source>
+			</trans-unit>
+			<trans-unit id="settings.filters">
+				<source>Select Filters to be displayed.</source>
 			</trans-unit>
 			<trans-unit id="settings.logicalSeparator">
 				<source>Logical separator between facets</source>
 			</trans-unit>
 			<trans-unit id="settings.isVisualSearchBar">
 				<source>Display the Visual Search bar to search by facets.</source>
+			</trans-unit>
+			<trans-unit id="settings.loadByAjax">
+				<source>Load content by Ajax</source>
 			</trans-unit>
 			<trans-unit id="settings.loadContentByAjax">
 				<source>Load content by Ajax e.g. for long lists. Implicitly set if the Visual Search bar is activated.</source>
@@ -79,6 +102,12 @@
 			<trans-unit id="settings.additionalEquals">
 				<source><![CDATA[Additional constraints with possible operators = , >, >= , < , <=, like, in. Use one constraint per line.]]></source>
 			</trans-unit>
+			<trans-unit id="settings.additionalSettings">
+				<source>Additional settings</source>
+			</trans-unit>
+			<trans-unit id="settings.availableAdditionalSettings">
+				<source>Available settings</source>
+			</trans-unit>
 			<trans-unit id="settings.gridClassName">
 				<source>Grid class name</source>
 			</trans-unit>
@@ -93,6 +122,9 @@
 			</trans-unit>
 			<trans-unit id="settings.enableFields">
 				<source>Respect enabled fields</source>
+			</trans-unit>
+			<trans-unit id="settings.templateForListView">
+				<source>Template for the "list" view.</source>
 			</trans-unit>
 			<trans-unit id="info.gridConfiguration">
 				<source>To address the customising issue, DataTables takes inspiration from the CSS 3 Advanced Layout Module. Please

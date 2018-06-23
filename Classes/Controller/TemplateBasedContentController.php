@@ -1,4 +1,5 @@
 <?php
+
 namespace Fab\VidiFrontend\Controller;
 
 /*
@@ -8,16 +9,17 @@ namespace Fab\VidiFrontend\Controller;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
 use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
-use Fab\VidiFrontend\MassAction\MassActionInterface;
+use Fab\VidiFrontend\Persistence\TemplateBasedContentOrderFactory;
+use Fab\VidiFrontend\Persistence\TemplateBasedContentPagerFactory;
 use Fab\VidiFrontend\Persistence\PagerFactory;
+use Fab\VidiFrontend\Service\ArgumentService;
 use Fab\VidiFrontend\Service\ContentElementService;
 use Fab\VidiFrontend\Service\ContentService;
 use Fab\VidiFrontend\Service\ContentType;
-use Fab\VidiFrontend\Tca\FrontendTca;
 use Fab\VidiFrontend\TypeConverter\ContentConverter;
 use Fab\VidiFrontend\TypeConverter\ContentDataConverter;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -26,11 +28,12 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Fab\Vidi\Domain\Model\Content;
 use Fab\VidiFrontend\Persistence\MatcherFactory;
 use Fab\VidiFrontend\Persistence\OrderFactory;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Controller which handles actions related to Vidi in the Backend.
+ * Class TemplateBasedContentController
  */
-class ContentController extends ActionController
+class TemplateBasedContentController extends ActionController
 {
 
     /**
@@ -38,7 +41,6 @@ class ContentController extends ActionController
      */
     public function initializeAction()
     {
-
         if ($this->arguments->hasArgument('content')) {
 
             /** @var ContentConverter $typeConverter */
@@ -68,50 +70,63 @@ class ContentController extends ActionController
      */
     public function indexAction(array $matches = [])
     {
+        // Filter empty value
+        $matches = array_filter($matches, function($value) {
+            return ($value !== null && $value !== false && $value !== '');
+        });
+
         $settings = $this->computeFinalSettings($this->settings);
+        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings('additionalSettingsList'));
 
-        if (empty($settings['dataType'])) {
-            return '<strong style="color: red">Please select a content type to be displayed!</strong>';
-        }
-        $dataType = $settings['dataType'];
+        $contentObjectRender = $this->configurationManager->getContentObject();
 
-        // Set dynamic value for the sake of the Visual Search.
-        if ($settings['isVisualSearchBar']) {
-            $settings['loadContentByAjax'] = 1;
-        }
+        /** @var StandaloneView $view */
+        $view = $this->objectManager->get(StandaloneView::class);
 
-        // Handle columns case
-        $columns = ColumnsConfiguration::getInstance()->get($dataType, $settings['columns']);
-        if (count($columns) === 0) {
-            return '<strong style="color: red">Please select at least one column to be displayed!</strong>';
+        // Configure the template path according to the Plugin settings.
+        $fileNameAndPath = GeneralUtility::getFileAbsFileName($settings['templateList']);
+        if (!is_file($fileNameAndPath)) {
+            return '<strong style="color: red">I could not find the appropriate template file.</strong>';
         }
+        $view->setTemplatePathAndFilename($fileNameAndPath);
+
+        $view->setPartialRootPaths($this->getTemplatePaths('partialRootPaths'));
+        $view->setLayoutRootPaths($this->getTemplatePaths('layoutRootPaths'));
+
 
         // Assign values.
-        $this->view->assign('columns', $columns);
-        $this->view->assign('settings', $settings);
-        $this->view->assign('gridIdentifier', $this->getGridIdentifier($settings));
-        $this->view->assign('contentElementIdentifier', $this->configurationManager->getContentObject()->data['uid']);
-        $this->view->assign('dataType', $dataType);
-        $this->view->assign('objects', []);
-        $this->view->assign('numberOfColumns', count($columns));
+        $view->assignMultiple([
+            'settings' => $settings,
+            'arguments' => ArgumentService::getInstance()->getArguments(),
+            'matches' => $matches,
+            'page' => $this->getTypoScriptFrontendController()->page,
+            'contentElement' => $contentObjectRender->data,
+            'dataType' => $settings['dataType'],
+            'objects' => [],
+        ]);
 
-        if (!$settings['loadContentByAjax']) {
+        if (!$settings['loadByAjax']) {
 
             // Initialize some objects related to the query.
-            $matcher = MatcherFactory::getInstance()->getMatcher($settings, $matches, $dataType);
-            $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
+            $matcher = MatcherFactory::getInstance()->getMatcher($settings, $matches, $settings['dataType']);
+            $order = TemplateBasedContentOrderFactory::getInstance()->getOrder($settings, $settings['dataType']);
+            $pager = TemplateBasedContentPagerFactory::getInstance()->getPager($settings);
 
             // Fetch objects via the Content Service.
             $contentService = $this->getContentService()
-                ->setDataType($dataType)
+                ->setDataType($settings['dataType'])
                 ->setSettings($settings)
-                ->findBy($matcher, $order, (int)$settings['limit']);
-            $this->view->assign('objects', $contentService->getObjects());
+                ->findBy($matcher, $order, $pager->getLimit(), $pager->getOffset());
+
+            $pager->setCount($contentService->getNumberOfObjects());
+
+            $view->assignMultiple([
+                'objects' => $contentService->getObjects(),
+                'pager' => $pager,
+            ]);
         }
 
-        // Initialize Content Element settings to be accessible across the request life cycle.
-        $contentObjectRenderer = $this->configurationManager->getContentObject();
-        ContentElementConfiguration::getInstance($contentObjectRenderer->data);
+        return $view->render();
     }
 
     /**
@@ -126,6 +141,7 @@ class ContentController extends ActionController
     {
         $settings = ContentElementConfiguration::getInstance($contentData)->getSettings();
         $settings = $this->computeFinalSettings($settings);
+        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings('additionalSettingsList'));
 
         $dataType = $settings['dataType'];
 
@@ -165,71 +181,12 @@ class ContentController extends ActionController
         $this->request->setFormat('json');
 
         // Assign values.
-        $this->view->assign('objects', $contentService->getObjects());
-        $this->view->assign('numberOfObjects', $contentService->getNumberOfObjects());
-        $this->view->assign('pager', $pager);
-        $this->view->assign('response', $this->response);
-    }
-
-    /**
-     * List Row action for this controller. Output a json list of contents
-     *
-     * @param array $contentData
-     * @param string $actionName
-     * @param array $matches
-     * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
-     * @return string
-     */
-    public function executeAction(array $contentData, $actionName, array $matches = [])
-    {
-        $settings = ContentElementConfiguration::getInstance($contentData)->getSettings();
-        $settings = $this->computeFinalSettings($settings);
-
-        $dataType = $settings['dataType'];
-
-        $massActions = FrontendTca::grid($dataType)->getMassActions();
-
-        if (empty($massActions[$actionName])) {
-            return '<strong style="color: red">Action Name is not valid.</strong>';
-        }
-
-        // In the context of Ajax, we must define manually the current Content Element object.
-        $contentObjectRenderer = $this->getContentElementService($dataType)->getContentObjectRender($contentData);
-        $this->configurationManager->setContentObject($contentObjectRenderer);
-
-        // Initialize some objects related to the query.
-        $matcher = MatcherFactory::getInstance()->getMatcher($settings, $matches, $dataType);
-        $order = OrderFactory::getInstance()->getOrder($settings, $dataType);
-
-        // Fetch objects via the Content Service.
-        $contentService = $this->getContentService()
-            ->setDataType($dataType)
-            ->setSettings($settings)
-            ->findBy($matcher, $order);
-
-        // Assign values.
-        $this->view->assign('objects', $contentService->getObjects());
-        $this->view->assign('numberOfObjects', $contentService->getNumberOfObjects());
-
-        /** @var MassActionInterface $action */
-        $action = $massActions[$actionName];
-        $result = $action->with($settings)->execute($contentService);
-
-        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Response $response */
-        $response = $this->response;
-        foreach ($result->getHeaders() as $name => $value) {
-            $response->setHeader($name, $value);
-        }
-        $response->sendHeaders();
-
-        if ($result->hasFile()) {
-            readfile($result->getFile());
-            $task = $result->getCleanUpTask();
-            $task();
-            exit();
-        } else {
-            return $result->getOutput();
-        }
+        $this->view->assignMultiple([
+            'objects' => $contentService->getObjects(),
+            'numberOfObjects' => $contentService->getNumberOfObjects(),
+            'pager' => $pager,
+            'response' => $this->response,
+        ]);
     }
 
     /**
@@ -239,10 +196,11 @@ class ContentController extends ActionController
     public function showAction(Content $content)
     {
         $settings = $this->computeFinalSettings($this->settings);
+        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings('additionalSettingsDetail'));
 
         // Configure the template path according to the Plugin settings.
-        $pathAbs = GeneralUtility::getFileAbsFileName($settings['templateDetail']);
-        if (!is_file($pathAbs)) {
+        $fileNameAndPath = GeneralUtility::getFileAbsFileName($settings['templateDetail']);
+        if (!is_file($fileNameAndPath)) {
             return '<strong style="color: red">I could not find the appropriate template file.</strong>';
         }
 
@@ -252,7 +210,7 @@ class ContentController extends ActionController
             $variableName = $settings['fluidVariables'][$dataType];
         }
 
-        $this->view->setTemplatePathAndFilename($pathAbs);
+        $this->view->setTemplatePathAndFilename($fileNameAndPath);
         $this->view->assign($variableName, $content);
     }
 
@@ -262,8 +220,8 @@ class ContentController extends ActionController
      * @param array $settings
      * @return array
      */
-    protected function computeFinalSettings(array $settings) {
-
+    protected function computeFinalSettings(array $settings)
+    {
         $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         $ts = GeneralUtility::removeDotsFromTS($configuration['plugin.']['tx_vidifrontend.']['settings.']);
         ArrayUtility::mergeRecursiveWithOverrule($settings, $ts);
@@ -272,31 +230,28 @@ class ContentController extends ActionController
     }
 
     /**
-     * Take some specific values and transform as as unique md5 identifier.
-     *
-     * @param array $settings
-     * @return string
+     * @return array
      */
-    protected function getGridIdentifier(array $settings)
+    protected function getTemplatePaths($partName)
     {
+        $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        return GeneralUtility::removeDotsFromTS($configuration['plugin.']['tx_vidifrontend.']['view.'][$partName . '.']);
+    }
 
-        $key = $this->configurationManager->getContentObject()->data['uid'];
-        $key .= $settings['dataType'];
-        $key .= $settings['columns'];
-        $key .= $settings['sorting'];
-        $key .= $settings['direction'];
-        $key .= $settings['defaultNumberOfItems'];
-        $key .= $settings['loadContentByAjax'];
-        $key .= $settings['facets'];
-        $key .= $settings['isVisualSearchBar'];
-        return md5($key);
+    /**
+     * Returns an instance of the Frontend object.
+     *
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController()
+    {
+        return $GLOBALS['TSFE'];
     }
 
     /**
      * Get the Vidi Module Loader.
      *
-     * @return ContentService
-     * @throws \InvalidArgumentException
+     * @return object|ContentService
      */
     protected function getContentService()
     {
@@ -307,8 +262,7 @@ class ContentController extends ActionController
      * Get the Vidi Module Loader.
      *
      * @param string $dataType
-     * @return ContentElementService
-     * @throws \InvalidArgumentException
+     * @return object|ContentElementService
      */
     protected function getContentElementService($dataType)
     {
@@ -316,12 +270,32 @@ class ContentController extends ActionController
     }
 
     /**
-     * @return ContentType
-     * @throws \InvalidArgumentException
+     * @return object|ContentType
      */
     protected function getContentType()
     {
         return GeneralUtility::makeInstance(ContentType::class);
+    }
+
+    /**
+     * @param string $settingName
+     * @return array
+     */
+    protected function getAdditionalSettings($settingName)
+    {
+        // Assign values.
+        $parseObj = $this->getTypoScriptParser();
+        $parseObj->setup = [];
+        $parseObj->parse($this->settings[$settingName]);
+        return (array)$parseObj->setup;
+    }
+
+    /**
+     * @return object|TypoScriptParser
+     */
+    protected function getTypoScriptParser()
+    {
+        return GeneralUtility::makeInstance(TypoScriptParser::class);
     }
 
 }

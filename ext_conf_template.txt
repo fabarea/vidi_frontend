@@ -3,3 +3,6 @@ content_types = fe_groups, fe_users, sys_file
 
 # cat=basic//; type=boolean; label=Autoload TypoScript: If enabled, the extension will register the TypoScript setup as a Static TypoScript template for inclusion in your template records.
 autoload_typoscript = 1
+
+# cat=basic//; type=boolean; label=Is the index view cached: If enabled, the index view is cached which is fine if the content is retrieved by Ajax or if the cached is flushed automatically via TCEMAIN.clearCacheCmd = x,y. However, it must be deactivate if the template-based-content view contains filters / search fields.
+is_index_view_cached = 1

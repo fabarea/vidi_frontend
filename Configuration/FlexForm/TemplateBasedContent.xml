@@ -117,61 +117,6 @@
 				</el>
 			</ROOT>
 		</general>
-		<grid>
-			<ROOT>
-				<TCEforms>
-					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.grid</sheetTitle>
-				</TCEforms>
-				<type>array</type>
-				<el>
-					<settings.loadContentByAjax>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.loadContentByAjax</label>
-							<config>
-								<type>check</type>
-								<default>0</default>
-							</config>
-						</TCEforms>
-					</settings.loadContentByAjax>
-					<settings.defaultNumberOfItems>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.numberOfItems</label>
-							<config>
-								<type>input</type>
-								<default>10, 20, 50, 100, -1</default>
-							</config>
-						</TCEforms>
-					</settings.defaultNumberOfItems>
-					<settings.gridClassName>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.gridClassName</label>
-							<config>
-								<type>input</type>
-								<default>table table-striped table-hover</default>
-							</config>
-						</TCEforms>
-					</settings.gridClassName>
-					<settings.hasColumnHeaders>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.hasColumnHeaders</label>
-							<config>
-								<type>check</type>
-								<default>1</default>
-							</config>
-						</TCEforms>
-					</settings.hasColumnHeaders>
-					<settings.gridConfiguration>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.gridConfiguration</label>
-							<config>
-								<type>user</type>
-								<userFunc>Fab\VidiFrontend\Backend\TceForms->renderGridConfigurationField</userFunc>
-							</config>
-						</TCEforms>
-					</settings.gridConfiguration>
-				</el>
-			</ROOT>
-		</grid>
 
 		<facet>
 			<ROOT>
@@ -180,21 +125,9 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
-					<settings.isVisualSearchBar>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.isVisualSearchBar
-							</label>
-							<config>
-								<type>user</type>
-								<userFunc>Fab\VidiFrontend\Backend\TceForms->renderIsVisualSearchBarField</userFunc>
-								<!--<type>check</type>-->
-								<!--<default>0</default>-->
-							</config>
-						</TCEforms>
-					</settings.isVisualSearchBar>
 					<settings.facets>
 						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.facets</label>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.filters</label>
 							<config>
 								<type>select</type>
 								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getFacets</itemsProcFunc>
@@ -203,28 +136,48 @@
 							</config>
 						</TCEforms>
 					</settings.facets>
-					<settings.logicalSeparator>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.logicalSeparator</label>
-							<config>
-								<type>select</type>
-								<maxitems>1</maxitems>
-								<items>
-									<numIndex index="1" type="array">
-										<numIndex index="0">AND</numIndex>
-										<numIndex index="1">logicalAnd</numIndex>
-									</numIndex>
-									<numIndex index="2" type="array">
-										<numIndex index="0">OR</numIndex>
-										<numIndex index="1">logicalOr</numIndex>
-									</numIndex>
-								</items>
-							</config>
-						</TCEforms>
-					</settings.logicalSeparator>
 				</el>
 			</ROOT>
 		</facet>
+		<listView>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.listView
+					</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+                    <settings.templateList>
+                        <TCEforms>
+                            <label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.templateForListView</label>
+                            <config>
+                                <type>user</type>
+                                <userFunc>Fab\VidiFrontend\Backend\TceForms->renderTemplateMenu</userFunc>
+                            </config>
+                        </TCEforms>
+                    </settings.templateList>
+					<settings.additionalSettingsList>
+						<TCEforms>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.additionalSettings</label>
+							<config>
+								<type>text</type>
+								<rows>5</rows>
+								<cols>30</cols>
+							</config>
+						</TCEforms>
+					</settings.additionalSettingsList>
+					<settings.additionalSettingsListHelp>
+						<TCEforms>
+							<config>
+								<type>user</type>
+								<userFunc>Fab\VidiFrontend\Backend\TceForms->renderAdditionalSettingsListHelp</userFunc>
+								<typoscriptConfigurationKey>listTemplates</typoscriptConfigurationKey>
+							</config>
+						</TCEforms>
+					</settings.additionalSettingsListHelp>
+				</el>
+			</ROOT>
+		</listView>
 		<detailView>
 			<ROOT>
 				<TCEforms>
@@ -246,17 +199,6 @@
 							</config>
 						</TCEforms>
 					</settings.templateDetail>
-					<settings.hasClickOnRow>
-						<TCEforms>
-							<label>
-								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.hasClickOnRow
-							</label>
-							<config>
-								<type>check</type>
-								<default>1</default>
-							</config>
-						</TCEforms>
-					</settings.hasClickOnRow>
 					<settings.targetPageDetail>
 						<TCEforms>
 							<label>
@@ -273,41 +215,29 @@
 							</config>
 						</TCEforms>
 					</settings.targetPageDetail>
-					<settings.parameterPrefix>
+					<settings.additionalSettingsDetail>
 						<TCEforms>
-							<label>
-								LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.parameterPrefix
-							</label>
+							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.additionalSettings</label>
 							<config>
-								<type>input</type>
+								<type>text</type>
+								<rows>5</rows>
+								<cols>30</cols>
 							</config>
 						</TCEforms>
-					</settings.parameterPrefix>
+					</settings.additionalSettingsDetail>
+					<settings.additionalSettingsDetailHelp>
+						<TCEforms>
+							<config>
+								<type>user</type>
+								<userFunc>Fab\VidiFrontend\Backend\TceForms->renderAdditionalSettingsListHelp</userFunc>
+								<typoscriptConfigurationKey>templates</typoscriptConfigurationKey>
+							</config>
+						</TCEforms>
+					</settings.additionalSettingsDetailHelp>
 				</el>
 			</ROOT>
 		</detailView>
-		<massActions>
-			<ROOT>
-				<TCEforms>
-					<sheetTitle>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:flexform.tab.massActions
-					</sheetTitle>
-				</TCEforms>
-				<type>array</type>
-				<el>
-					<settings.actions>
-						<TCEforms>
-							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.actions</label>
-							<config>
-								<type>select</type>
-								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getActions</itemsProcFunc>
-								<size>10</size>
-								<maxitems>100</maxitems>
-							</config>
-						</TCEforms>
-					</settings.actions>
-				</el>
-			</ROOT>
-		</massActions>
+
 	</sheets>
 
 </T3DataStructure>
