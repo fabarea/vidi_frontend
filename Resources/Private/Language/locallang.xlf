@@ -20,7 +20,7 @@
 
 			<!-- Plugin -->
 			<trans-unit id="plugin.pi1">
-				<source>Generic List - dynamic table</source>
+				<source>Generic List</source>
 			</trans-unit>
 			<trans-unit id="plugin.templateBasedContent">
 				<source>Generic List - with template</source>

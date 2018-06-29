@@ -30,14 +30,10 @@ News about latest development are also announced on http://twitter.com/fudriot
 Installation and requirement
 ============================
 
-The extension **requires TYPO3 7.6 or greater** . Install the extension as normal in the Extension Manager from the [TER](http://typo3.org/extensions/repository/view/vidi_frontend) or download the Git version:
+The extension **requires TYPO3 7.6 or higher**. The preferred way is to install the extension via Composer as follows:
 
 ```sh
-# local installation
-cd typo3conf/ext
-
-# download the source
-git clone https://github.com/fabarea/vidi_frontend.git
+composer require fab/vidi-frontend
 
 # -> next step, is to open the Extension Manager in the BE.
 ```
@@ -45,6 +41,39 @@ git clone https://github.com/fabarea/vidi_frontend.git
 You are almost there! Create a Content Element of type "Vidi Frontend" in `General Plugin` > `Generic List Component` and configure at your convenience.
 
 ![](https://raw.github.com/fabarea/vidi_frontend/master/Documentation/Backend-01.png)
+
+Template based display
+======================
+
+As of Vidi Frontend 1.3, it is possible to configure a custom template to display the records. We can register a new template by TypoScript.
+
+```
+plugin.tx_vidifrontend {
+		settings {
+
+		# Used in plugin "Generic List - with template
+		listTemplates {
+		
+			# We disable existing template for demo purposes
+			1 >
+			
+			# Best is to use a key as of 100 to not override existing configuration
+			# Tip: get inspired by EXT:vidi_frontend/Resources/Private/Standalone/DemoTemplateList.html
+			100 {
+                label = My specila list
+                path = EXT:my_extension/Resources/Private/Standalone/MyList.html
+                additionalSettingsHelp (
+                     # We can add additional settings tip for the BE user.
+                     # The settings will be passed to list view.
+                )
+            }
+		}
+	}
+}
+```
+
+Start editing template file `EXT:my_extension/Resources/Private/Standalone/MyList.html`.
+
 
 Configuration
 =============

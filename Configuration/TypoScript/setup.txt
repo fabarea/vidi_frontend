@@ -19,17 +19,21 @@ plugin.tx_vidifrontend {
 		# Used in plugin "Generic List - with template
 		listTemplates {
 			1 {
-				label = Demo template list - live search
+				label = Demo template list
 				path = EXT:vidi_frontend/Resources/Private/Standalone/DemoTemplateList.html
+
+				# We can add some tip for the BE user
 				additionalSettingsHelp (
+					# variable to be used in the template e.g. {foo}
+					foo = bar
 				)
 			}
-			2 {
-				label = Demo template list - server side search
-				path = EXT:vidi_frontend/Resources/Private/Standalone/DemoTemplateList.html
-				additionalSettingsHelp (
-				)
-			}
+			#2 {
+			#	label = Demo template list - server side search
+			#	path = EXT:vidi_frontend/Resources/Private/Standalone/DemoTemplateList.html
+			#	additionalSettingsHelp (
+			#	)
+			#}
 		}
 
 		templates {

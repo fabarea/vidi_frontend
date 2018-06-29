@@ -1,359 +1,89 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"
       xmlns:f="http://typo3.org/ns/fluid/ViewHelpers"
-      xmlns:v="http://typo3.org/ns/Fab/Vidi/ViewHelpers"
-      xmlns:vf="http://typo3.org/ns/Fab/VidiFrontend/ViewHelpers">
+      xmlns:v="http://typo3.org/ns/Fab/Vidi/ViewHelpers">
 
+<f:comment>
+    <!-- This load http://listjs.com/ -->
+</f:comment>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"
         integrity="sha384-JDmRxRiXkNkskRM5AD4qHRGk9ItwZ9flbqOpsRYs8SOrIRwcMtTGKP2Scnjptzgm"
         crossorigin="anonymous"></script>
 
 <script>
-
-	var contentElementIdentifier = '{contentElement.uid}';
-
-	<![CDATA[
-	window.HackerLists = window.HackerLists || [];
-
-	document.addEventListener('DOMContentLoaded', function() {
-
-		HackerLists[contentElementIdentifier] = {
-
-			/**
-			 * @param Array
-			 */
-			filteredItems: [],
-
-			/**
-			 * @param int
-			 */
-			offset: 0,
-
-			/**
-			 *
-			 * @param int
-			 */
-			limit: 10,
-
-			/**
-			 * @param Array
-			 */
-			filters: ['name', 'customer'],
-
-			/**
-			 * @param {List}
-			 */
-			list: {},
-
-			/**
-			 * @returns {this}
-			 */
-			initialize: function() {
-
-				/*
-                 * Initialize the data
-                 */
-				this.list = new List('list-objects-' + contentElementIdentifier, {
-					valueNames: this.filters,
-					page: this.limit
-				});
-
-				this.filteredItems = this.list.items;
-
-				this.initializeSearchInput()
-					.initializeFilters()
-					.initializeSortingButtons()
-					.initializePaginationButtons()
-					.initializeResetButton()
-					.updatePagination();
-				return this;
-			},
-
-			/**
-			 * Add handler upon the search field.
-			 *
-			 * @returns {this}
-			 */
-			initializeSearchInput: function() {
-				var me = this;
-				document.querySelector('.search-field').addEventListener('keyup', function(event) {
-					me.handleFilter();
-				});
-				return this;
-			},
-
-			/**
-			 * Add handler upon the filters.
-			 *
-			 * @returns {this}
-			 */
-			initializeFilters: function() {
-				var me = this;
-
-				forEach(
-					document.querySelectorAll('.filter-field'),
-					function(index, node) {
-						node.addEventListener('change', function(event) {
-							me.handleFilter();
-						});
-					}
-				);
-				return this;
-			},
-
-			/**
-			 * Add handler upon the filters.
-			 *
-			 * @returns {this}
-			 */
-			initializeSortingButtons: function() {
-				var me = this;
-
-				forEach(
-					document.querySelectorAll('.btn-sorting'),
-					function(index, node) {
-						node.addEventListener('click', function(event) {
-							event.preventDefault();
-
-							me.list.sort(
-								'name',
-								{order: this.hasClass('asc') ? 'asc' : 'desc'}
-							);
-						});
-					}
-				);
-
-				return this;
-			},
-
-			/**
-			 * Add handler upon the filters.
-			 *
-			 * @returns {this}
-			 */
-			initializePaginationButtons: function() {
-				var me = this;
-
-				forEach(
-					document.querySelectorAll('.btn-pagination'),
-					function(index, node) {
-						node.addEventListener('click', function(event) {
-							event.preventDefault();
-
-							if (this.hasClass('next')) {
-								me.offset++;
-							} else {
-								me.offset--;
-							}
-							var position = (me.offset * me.limit) + 1;
-							me.list.show(position, me.limit);
-
-							// Possible show / hide of pagination button
-							me.updatePagination();
-						});
-					}
-				);
-
-				return this;
-			},
-
-			/**
-			 * @returns {this}
-			 */
-			updatePagination: function() {
-				this.updatePaginationCounter()
-					.updatePaginationButtons();
-				return this;
-			},
-
-			/**
-			 * @returns {this}
-			 */
-			resetPagination: function() {
-				this.offset = 0; // reset pagination after filter me
-				this.updatePagination();
-				return this;
-			},
-
-			/**
-			 * Add handler upon the filters.
-			 *
-			 * @returns {this}
-			 */
-			updatePaginationButtons: function() {
-				var me = this;
-
-				document.querySelector('.btn-pagination.previous').style.visibility = me.offset <= 0
-					? 'hidden'
-					: 'visible';
-
-				var maxOffset = this.filteredItems.length / me.limit - 1;
-				document.querySelector('.btn-pagination.next').style.visibility = me.offset >= maxOffset
-					? 'hidden'
-					: 'visible';
-
-				return this;
-			},
-
-			/**
-			 * Add handler upon the "reset button".
-			 *
-			 * @returns {this}
-			 */
-			handleFilter: function() {
-				var me = this;
-
-				// We reset the filteredItems array
-				this.filteredItems = [];
-
-				this.list.filter(function(item) {
-
-					// default: the item is displayed
-					var isDisplayed = true;
-
-					// Loop around the filters and check whether there is a value set.
-					forEach(me.filters, function(index, filterName) {
-						if (isDisplayed) {
-
-							// Fetch the value of filter
-							var value = document.getElementById(filterName + '-filter').value;
-
-							// Only if we have a value we check if we have a match
-							if (value) {
-								var haystack = item.values()[filterName].toLowerCase();
-								var needle = value.toLowerCase();
-								isDisplayed = haystack.indexOf(needle) > -1;
-							}
-						}
-					});
-
-					// Feed the result array
-					if (isDisplayed) {
-						me.filteredItems.push(item)
-					}
-					return isDisplayed
-				});
-
-				this.resetPagination();
-				return this;
-			},
-
-			/**
-			 * Add handler upon the "reset button".
-			 *
-			 * @returns {this}
-			 */
-			initializeResetButton: function() {
-				var me = this;
-
-				document.querySelector('.btn-cancel').addEventListener('click', function(event) {
-
-					event.preventDefault();
-
-					// Reset the controls
-					forEach(
-						document.querySelectorAll('#list-objects-' + contentElementIdentifier + ' .form-control'),
-						function(index, node) {
-							node.value = '';
-						}
-					);
-
-					// Reset the filter
-					me.handleFilter()
-						.resetPagination();
-				});
-
-				return this;
-			},
-
-			/**
-			 * GUI: update the number of objects which was found.
-			 *
-			 * @returns {this}
-			 */
-			updatePaginationCounter: function() {
-				var position = this.offset + 1;
-				var numberOfPages = Math.round(this.filteredItems.length / this.limit) + 1;
-				document
-					.getElementById('number-of-objects-' + contentElementIdentifier)
-					.innerHTML = '(' + this.filteredItems.length + ' - ' + position + '/' + numberOfPages + ')';
-
-				return this;
-			},
-
-			/**
-			 * @param {string} selector
-			 * @returns {Element}
-			 */
-			getOne: function(selector) {
-				return document.querySelector('#list-objects-' + contentElementIdentifier +  ' ' + selector)
-			},
-
-			/**
-			 * @param selector
-			 * @returns {*}
-			 */
-			getMany: function(selector) {
-				return document.querySelectorAll('#list-objects-' + contentElementIdentifier +  ' ' + selector)
-			}
-
-		};
-
-		// Initialize the list
-		HackerLists[contentElementIdentifier].initialize();
-	});
-
-	/*
-     * Helper function
-     */
-	var forEach = function(array, callback, scope) {
-		for (var i = 0; i < array.length; i++) {
-			callback.call(scope, i, array[i]); // passes back stuff we need
-		}
-	};
-
-	/*
-     * Extend the Node Element object
-     */
-	Element.prototype.hasClass = function(className) {
-		return this.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(this.className);
-	};
-	]]>
+    // Dynamic value
+    var contentElementIdentifier = '{contentElement.uid}';
 </script>
+
+<f:format.raw>
+    <script>
+        window.HackerLists = window.HackerLists || [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            HackerLists[contentElementIdentifier] = {
+
+                /**
+                 * @param Array
+                 */
+                filteredItems: [],
+
+                /**
+                 * @param int
+                 */
+                offset: 0,
+
+                /**
+                 *
+                 * @param int
+                 */
+                limit: 10,
+
+                /**
+                 * @param Array
+                 */
+                filters: ['uid'],
+
+                /**
+                 * @param {List}
+                 */
+                list: {},
+
+                /**
+                 * @returns {this}
+                 */
+                initialize: function() {
+
+                    /*
+                     * Initialize the data
+                     */
+                    this.list = new List('list-objects-' + contentElementIdentifier, {
+                        valueNames: this.filters,
+                        page: this.limit
+                    });
+
+                    this.filteredItems = this.list.items;
+
+                    return this;
+                },
+
+            };
+
+            // Initialize the list
+            HackerLists[contentElementIdentifier].initialize();
+        });
+    </script>
+</f:format.raw>
 
 <div id="list-objects-{contentElement.uid}">
 
-    <form class="mb-3" onsubmit="return false">
-        <legend>Search</legend>
-        <div class="form-group">
-            <label for="name-filter">Name</label>
+    <div class="form-inline">
+        <input class="form-control search" placeholder="Search" style="width: 30%; margin-right: 10px"/>
 
-            <input class="form-control search-field" type="text" id="name-filter" name="searchTerm" value="">
-        </div>
+        <button class="btn btn-default sort" data-sort="uid">
+            Sort by uid
+        </button>
+    </div>
 
-        <div class="form-group">
-            <label for="customer-filter">Title</label>
-            <select class="form-control filter-field" id="customer-filter" autocomplete="off">
-                <option value="">All</option>
-                <f:for each="{v:content.find(matches: {pid: 1}, orderings: {title: 'ASC'}, type: 'tt_address_group')}"
-                       as="addressGroup">
-                    <option value="{addressGroup.title}">{addressGroup.title}</option>
-                </f:for>
-            </select>
-        </div>
-
-        <a href="#" title="Cancel" class="btn btn-secondary btn-cancel">Cancel</a>
-
-    </form>
-
-    <h2>Sorting</h2>
-    <ul>
-        <li>
-            <a href="#" class="btn-sorting asc">Name ascending</a>
-        </li>
-        <li>
-            <a href="#" class="btn-sorting desc">Name descending</a>
-        </li>
-    </ul>
     <h2>Results <span id="number-of-objects-{contentElement.uid}"></span></h2>
 
     <f:if condition="{objects}">
@@ -361,45 +91,10 @@
 
             <f:for each="{objects}" as="object">
                 <li>
-                    <h3 class="name">{object.name}</h3>
-
-                    <dl class="row">
-
-                        <f:if condition="{object.tx_vdaddrgeneral_categoryid1}">
-                            <dt class="col-md-4">Région</dt>
-                            <dd class="col-md-8 region">
-                                <f:for each="{object.tx_vdaddrgeneral_categoryid1}"
-                                       as="addressGroup"
-                                       iteration="iterator">
-                                    <f:if condition="{iterator.isLast}">
-                                        <f:then>{addressGroup.title}</f:then>
-                                        <f:else>{addressGroup.title},</f:else>
-                                    </f:if>
-                                </f:for>
-                            </dd>
-                        </f:if>
-                    </dl>
+                    <h3 class="uid">{object.uid}</h3>
                 </li>
             </f:for>
         </ul>
-
-        <nav>
-            <h3 class="sr-only">Browser</h3>
-            <div class="d-flex justify-content-between">
-                <a href="#"
-                   title="Lien précédent"
-                   class="btn btn-link btn-pagination previous"><span class="fa fa-chevron-left"
-                                                                      aria-hidden="true"></span>
-                    Previous
-                </a>
-
-                <a href="#" title="Lien suivant" class="btn btn-link btn-pagination next">Next
-                    <span class="fa fa-chevron-right"
-                          aria-hidden="true"></span>
-                </a>
-
-            </div>
-        </nav>
     </f:if>
 </div>
 </html>
