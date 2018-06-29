@@ -91,7 +91,9 @@
 		<tbody>
 		<f:if condition="!{settings.loadContentByAjax}">
 			<f:for each="{objects}" as="object" iteration="iterator">
-				<vf:grid.row object="{object}" index="{iterator.index}"/>
+				<f:format.raw>
+					<vf:grid.row object="{object}" index="{iterator.index}"/>
+				</f:format.raw>
 			</f:for>
 		</f:if>
 		</tbody>
