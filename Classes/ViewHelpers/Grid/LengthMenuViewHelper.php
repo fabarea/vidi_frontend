@@ -18,6 +18,11 @@ class LengthMenuViewHelper extends AbstractViewHelper
 {
 
     /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Returns the configuration for the length menu in the Grid.
      *
      * @return boolean

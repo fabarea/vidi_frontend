@@ -21,6 +21,11 @@ class MassActionsViewHelper extends AbstractViewHelper
 {
 
     /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Renders the mass-action components
      *
      * @return string

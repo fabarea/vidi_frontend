@@ -1,4 +1,5 @@
 <?php
+
 namespace Fab\VidiFrontend\ViewHelpers\Grid\Column;
 
 /*
@@ -18,6 +19,11 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class LocalizationViewHelper extends AbstractViewHelper
 {
+
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
 
     /**
      * Render the columns of the grid.
@@ -67,10 +73,10 @@ class LocalizationViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return \Fab\Vidi\Resolver\FieldPathResolver
+     * @return object|\Fab\Vidi\Resolver\FieldPathResolver
      */
     protected function getFieldPathResolver()
     {
-        return GeneralUtility::makeInstance('Fab\Vidi\Resolver\FieldPathResolver');
+        return GeneralUtility::makeInstance(\Fab\Vidi\Resolver\FieldPathResolver::class);
     }
 }

@@ -17,6 +17,11 @@ class ConfigurationViewHelper extends AbstractViewHelper
 {
 
     /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Returns the configuration for the Visual Search bar.
      *
      * @return string
