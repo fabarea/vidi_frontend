@@ -14,6 +14,10 @@ plugin.tx_vidifrontend {
 		}
 	}
 
+	features {
+		requireCHashArgumentForActionArguments = 0
+	}
+
 	settings {
 
 		# Used in plugin "Generic List - with template
