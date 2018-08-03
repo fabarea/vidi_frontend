@@ -14,6 +14,7 @@ use Fab\VidiFrontend\MassAction\ExportCsvAction;
 use Fab\VidiFrontend\MassAction\ExportXlsAction;
 use Fab\VidiFrontend\MassAction\ExportXmlAction;
 use Fab\VidiFrontend\MassAction\MassActionInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use Fab\Vidi\Exception\InvalidKeyInArrayException;
 use Fab\Vidi\Facet\FacetInterface;
@@ -118,6 +119,9 @@ class FrontendGridService extends GridService
         if (is_array($this->tca['actions'])) {
             /** @var MassActionInterface $action */
             foreach ($this->tca['actions'] as $action) {
+                if (is_string($action)) {
+                    $action = GeneralUtility::makeInstance($action);
+                }
                 $massAction[$action->getName()] = $action;
             }
         }

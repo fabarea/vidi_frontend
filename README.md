@@ -451,7 +451,7 @@ $tca = array(
             ...
         ],
         'actions' => [
-            new \Vendor\MyExt\MassAction\MyAction(),
+            \Vendor\MyExt\MassAction\MyAction::class,
         ]
     ],
 );
