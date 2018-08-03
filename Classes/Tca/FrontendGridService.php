@@ -69,7 +69,7 @@ class FrontendGridService extends GridService
         if ($this->hasLabel($fieldNameAndPath)) {
             $field = $this->getField($fieldNameAndPath);
             $label = LocalizationUtility::translate($field['label'], '');
-            if (is_null($label)) {
+            if ($label === null) {
                 $label = $field['label'];
             }
         } else {
