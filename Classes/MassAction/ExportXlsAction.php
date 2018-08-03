@@ -160,7 +160,7 @@ class ExportXlsAction extends AbstractMassAction
     }
 
     /**
-     * @return FieldPathResolver
+     * @return object|FieldPathResolver
      * @throws \InvalidArgumentException
      */
     protected function getFieldPathResolver()
