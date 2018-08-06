@@ -1,7 +1,7 @@
 {
 	"name": "fab/vidi-frontend",
 	"type": "typo3-cms-extension",
-	"description": "Generic List Component for the Frontend where content can be filtered in an advanced way... Veni, vidi, vici! - demo https://speciality.ecodev.ch/content-elements/dynamic-list-files/",
+	"description": "Generic List Component for the Frontend where content can be filtered in an advanced way... Veni, vidi, vici!",
 	"homepage": "https://github.com/fudriot/vidi_frontend",
 	"license": [
 		"GPL-2.0-or-later"
