@@ -8,7 +8,7 @@ namespace Fab\VidiFrontend\Backend;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use Fab\Vidi\Utility\BackendUtility;
 
 
 /**
@@ -31,7 +31,7 @@ class DisplayCondition
     /**
      * Returns a pointer to the database.
      *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     * @return \Fab\Vidi\Database\DatabaseConnection
      */
     protected function getDatabaseConnection()
     {

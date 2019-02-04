@@ -1,12 +1,12 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-    die ('Access denied.');
-}
+defined('TYPO3_MODE') or die();
 
 call_user_func(
     function () {
 
-        $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['vidi_frontend']);
+        $configuration = $configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+        )->get('vidi_frontend');
 
         if (!isset($configuration['autoload_typoscript']) || true === (bool)$configuration['autoload_typoscript']) {
 
@@ -49,13 +49,24 @@ call_user_func(
             ]
         );
 
+        // Register icons
+        $icons = [
+            'content-vidi-frontend' => 'EXT:vidi_frontend/Resources/Public/Images/VidiFrontend.png',
+        ];
+        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+        foreach ($icons as $identifier => $path) {
+            $iconRegistry->registerIcon(
+                $identifier, TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class, ['source' => $path]
+            );
+        }
+
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
             'mod {
                 wizards.newContentElement.wizardItems.plugins {
                     #header = LLL:EXT:sitepackage/Resources/Private/Language/newContentElements.xlf:extra
                     elements {
                         tx_vidifrontend_pi1 {
-                            icon = ' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('vidi_frontend') . 'Resources/Public/Images/VidiFrontend.png
+                            iconIdentifier = content-vidi-frontend
                             title = LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:wizard.title
                             description = LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:wizard.description
                             tt_content_defValues {
@@ -64,7 +75,7 @@ call_user_func(
                             }
                         }
                         tx_vidifrontend_templatebasedcontent {
-                            icon = ' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('vidi_frontend') . 'Resources/Public/Images/VidiFrontend.png
+                            iconIdentifier = content-vidi-frontend
                             title = LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:wizard_template_based.title
                             description = LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:wizard_template_based.description
                             tt_content_defValues {
@@ -77,7 +88,7 @@ call_user_func(
             }'
         );
 
-// Connect "preProcessTca" signal slot with the metadata service.
+        // Connect "preProcessTca" signal slot with the metadata service.
         $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
         $signalSlotDispatcher->connect(
             'Fab\Vidi\Tca\Tca',

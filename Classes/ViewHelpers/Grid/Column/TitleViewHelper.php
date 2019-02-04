@@ -9,7 +9,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid\Column;
  */
 
 use Fab\VidiFrontend\Tca\FrontendTca;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * View helper for rendering a column title in the grid.

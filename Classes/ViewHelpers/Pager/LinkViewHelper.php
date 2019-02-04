@@ -10,8 +10,9 @@ namespace Fab\VidiFrontend\ViewHelpers\Pager;
 
 use Fab\Vidi\Persistence\Pager;
 use Fab\VidiFrontend\Service\ArgumentService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class LinkViewHelper
@@ -20,12 +21,22 @@ class LinkViewHelper extends AbstractViewHelper
 {
 
     /**
-     * @param mixed $pageIndex
-     * @param mixed $pageOffset
-     * @return array
+     * @return void
      */
-    public function render($pageIndex = null, $pageOffset = null)
+    public function initializeArguments(): void
     {
+        $this->registerArgument('pageIndex', 'mixed', '', false, null);
+        $this->registerArgument('pageOffset', 'mixed', '', false, null);
+    }
+
+    /**
+     * @return string
+     */
+    public function render(): string
+    {
+        $pageIndex = $this->arguments['pageIndex'];
+        $pageOffset = $this->arguments['pageOffset'];
+
         /** @var Pager $pager */
         if ($pageIndex === null) {
             $pager = $this->templateVariableContainer->get('pager');
@@ -53,7 +64,7 @@ class LinkViewHelper extends AbstractViewHelper
      * @param int $pageIndex
      * @return array
      */
-    protected function getArguments($pageIndex)
+    protected function getArguments($pageIndex): array
     {
         if ($this->getArgument('matches')) {
             $arguments[ArgumentService::PREFIX]['matches'] = $this->getArgument('matches');
@@ -75,7 +86,7 @@ class LinkViewHelper extends AbstractViewHelper
      * @param string $matchName
      * @return array
      */
-    protected function getArgument($matchName)
+    protected function getArgument($matchName): array
     {
         $arguments = $this->templateVariableContainer->get('arguments');
 
@@ -89,7 +100,15 @@ class LinkViewHelper extends AbstractViewHelper
      */
     protected function getUriBuilder()
     {
-        return $this->objectManager->get(UriBuilder::class);
+        return $this->getObjectManager()->get(UriBuilder::class);
+    }
+
+    /**
+     * @return object|\TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
     }
 
 }

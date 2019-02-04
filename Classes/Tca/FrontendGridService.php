@@ -14,6 +14,7 @@ use Fab\VidiFrontend\MassAction\ExportCsvAction;
 use Fab\VidiFrontend\MassAction\ExportXlsAction;
 use Fab\VidiFrontend\MassAction\ExportXmlAction;
 use Fab\VidiFrontend\MassAction\MassActionInterface;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use Fab\Vidi\Exception\InvalidKeyInArrayException;
@@ -69,7 +70,7 @@ class FrontendGridService extends GridService
     {
         if ($this->hasLabel($fieldNameAndPath)) {
             $field = $this->getField($fieldNameAndPath);
-            $label = LocalizationUtility::translate($field['label'], '');
+            $label = $this->getLanguageService()->sL($field['label']);
             if ($label === null) {
                 $label = $field['label'];
             }
@@ -216,4 +217,13 @@ class FrontendGridService extends GridService
         return $facetNames;
     }
 
+    /**
+     * Returns LanguageService
+     *
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
+    }
 }

@@ -9,7 +9,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid\Column;
  */
 
 use Fab\VidiFrontend\Tca\FrontendTca;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Return a possible column header.
@@ -18,15 +18,22 @@ class HeaderViewHelper extends AbstractViewHelper
 {
 
     /**
+     * @return void
+     */
+    public function initializeArguments(): void
+    {
+        $this->registerArgument('name', 'string', 'The column name', true);
+    }
+
+    /**
      * Returns a column header.
      *
-     * @param string $name the column Name
      * @return boolean
      */
-    public function render($name)
+    public function render(): bool
     {
         $dataType = $this->templateVariableContainer->get('dataType');
-        return FrontendTca::grid($dataType)->getHeader($name);
+        return FrontendTca::grid($dataType)->getHeader($this->arguments['name']);
     }
 
 }

@@ -11,7 +11,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid;
 use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
 use Fab\VidiFrontend\View\Grid\Row;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * View helper for rendering multiple rows.

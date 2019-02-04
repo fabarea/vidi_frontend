@@ -11,7 +11,7 @@ namespace Fab\VidiFrontend\Grid;
 use Fab\Vidi\Grid\ColumnRendererAbstract;
 use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
 use Fab\VidiFrontend\Plugin\PluginParameter;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use Fab\Vidi\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -38,7 +38,7 @@ class ShowButtonRenderer extends ColumnRendererAbstract
         #$tagBuilder->setContent('<span class="glyphicon glyphicon-eye-open"></span>'); // Only if Font Awesome is installed.
         $icon = sprintf(
             '<img src="/%sResources/Public/Build/Images/show_property.png" alt="" width="16">',
-            ExtensionManagementUtility::extRelPath('vidi_frontend')
+            ExtensionManagementUtility::siteRelPath('vidi_frontend')
         );
         $tagBuilder->setContent($icon);
 

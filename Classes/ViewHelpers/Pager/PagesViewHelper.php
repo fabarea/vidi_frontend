@@ -10,7 +10,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Pager;
  */
 
 use Fab\Vidi\Persistence\Pager;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class PagesViewHelper

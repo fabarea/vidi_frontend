@@ -11,7 +11,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Render;
 use Fab\VidiFrontend\MassAction\MassActionInterface;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use Fab\Vidi\Module\ModuleLoader;
 
 /**

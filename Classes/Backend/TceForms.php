@@ -12,11 +12,12 @@ namespace Fab\VidiFrontend\Backend;
 use Fab\Vidi\Domain\Model\Selection;
 use Fab\Vidi\Facet\FacetInterface;
 use Fab\VidiFrontend\Tca\FrontendTca;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Tca\Tca;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Service\TypoScriptService;
 
 /**
  * A class to interact with TCEForms.
@@ -222,10 +223,8 @@ class TceForms
     public function getDataTypes(&$parameters)
     {
 
-        /** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
-        $configurationUtility = $this->getObjectManager()->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
-        $configuration = $configurationUtility->getCurrentConfiguration('vidi_frontend');
-        $availableContentTypes = GeneralUtility::trimExplode(',', $configuration['content_types']['value'], true);
+        $configuration = $configuration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('vidi_frontend');
+        $availableContentTypes = GeneralUtility::trimExplode(',', $configuration['content_types'], true);
 
         foreach ($GLOBALS['TCA'] as $contentType => $tca) {
             if (0 === count($availableContentTypes) || in_array($contentType, $availableContentTypes, true)) {
@@ -571,7 +570,7 @@ class TceForms
     }
 
     /**
-     * @return BackendConfigurationManager
+     * @return BackendConfigurationManager|object
      */
     protected function getConfigurationManager()
     {
@@ -579,7 +578,7 @@ class TceForms
     }
 
     /**
-     * @return ObjectManager
+     * @return ObjectManager|object
      */
     protected function getObjectManager()
     {

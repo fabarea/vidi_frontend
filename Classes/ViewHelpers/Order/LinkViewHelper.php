@@ -9,8 +9,9 @@ namespace Fab\VidiFrontend\ViewHelpers\Order;
  */
 
 use Fab\VidiFrontend\Service\ArgumentService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class LinkViewHelper
@@ -19,12 +20,22 @@ class LinkViewHelper extends AbstractViewHelper
 {
 
     /**
-     * @param string $order
-     * @param string $direction
-     * @return array
+     * @return void
      */
-    public function render($order, $direction)
+    public function initializeArguments(): void
     {
+        $this->registerArgument('order', 'string', '', true);
+        $this->registerArgument('direction', 'string', '', true);
+    }
+
+    /**
+     * @return string
+     */
+    public function render(): string
+    {
+        $order = $this->arguments['order'];
+        $direction = $this->arguments['direction'];
+
         return $this->getUriBuilder()
             ->setArguments($this->getArguments($order, $direction))
             ->build();
@@ -67,7 +78,14 @@ class LinkViewHelper extends AbstractViewHelper
      */
     protected function getUriBuilder()
     {
-        return $this->objectManager->get(UriBuilder::class);
+        return $this->getObjectManager()->get(UriBuilder::class);
     }
 
+    /**
+     * @return object|\TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+    }
 }

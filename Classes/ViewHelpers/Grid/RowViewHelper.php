@@ -11,7 +11,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid;
 use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
 use Fab\VidiFrontend\View\Grid\Row;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use Fab\Vidi\Domain\Model\Content;
 
 /**
@@ -27,14 +27,25 @@ class RowViewHelper extends AbstractViewHelper
     protected $configurationManager;
 
     /**
+     * @return void
+     */
+    public function initializeArguments(): void
+    {
+        $this->registerArgument('object', Content::class, '', true);
+        $this->registerArgument('index', 'int', '', false, 0);
+    }
+
+    /**
      * Returns rows of content as array.
      *
-     * @param Content $object
-     * @param int $index
      * @return string
      */
-    public function render(Content $object, $index = 0)
+    public function render(): string
     {
+
+        $object = $this->arguments['object'];
+        $index = $this->arguments['index'];
+
         $settings = $this->templateVariableContainer->get('settings');
 
         // Initialize returned array

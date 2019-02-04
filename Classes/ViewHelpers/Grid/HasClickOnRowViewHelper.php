@@ -8,7 +8,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * View helper which tells whether the click on row should be activated.

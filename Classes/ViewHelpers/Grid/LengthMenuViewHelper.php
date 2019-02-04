@@ -9,7 +9,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid;
  */
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * View helper which returns the configuration for the length menu in the Grid.
