@@ -13,6 +13,7 @@ use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
 use Fab\VidiFrontend\Plugin\PluginParameter;
 use Fab\Vidi\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
@@ -98,7 +99,7 @@ class ShowButtonRenderer extends ColumnRendererAbstract
     }
 
     /**
-     * @return ObjectManager
+     * @return ObjectManager|object
      * @throws \InvalidArgumentException
      */
     protected function getObjectManager()
@@ -107,12 +108,11 @@ class ShowButtonRenderer extends ColumnRendererAbstract
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
+     * @return UriBuilder|object
      */
     protected function getUriBuilder()
     {
-        $configuration = $this->getGridRendererConfiguration();
-        return $configuration['uriBuilder'];
+        return $this->getObjectManager()->get(UriBuilder::class);
     }
 
 }
