@@ -16,7 +16,7 @@ Project info and releases
 -------------------------
 
 Stable version:
-http://typo3.org/extensions/repository/view/vidi_frontend
+https://extensions.typo3.org/extension/vidi_frontend/
 
 Development version:
 https://github.com/fabarea/vidi_frontend
@@ -30,12 +30,12 @@ News about latest development are also announced on http://twitter.com/fudriot
 Installation and requirement
 ============================
 
-The extension **requires TYPO3 7.6 or higher**. The preferred way is to install the extension via Composer as follows:
+The preferred way is to install the extension via Composer as follows:
 
 ```sh
 composer require fab/vidi-frontend
 
-# -> next step, is to open the Extension Manager in the BE.
+# -> next step is to open the BE and activate the extension in the Extension Manager.
 ```
 
 You are almost there! Create a Content Element of type "Vidi Frontend" in `General Plugin` > `Generic List Component` and configure at your convenience.
@@ -73,6 +73,26 @@ plugin.tx_vidifrontend {
 ```
 
 Start editing template file `EXT:my_extension/Resources/Private/Standalone/MyList.html`.
+
+
+Route Enhancer
+==============
+
+For TYPO3 v9, to be added in `/config/sites/[SITE_IDENTIFIER]/config.yml`. 
+
+```..yaml
+routeEnhancers:
+  VidiFrontend:
+    type: Plugin
+    # limitToPages: [12]
+    routePath: '/content/{action}/{contentElement}-{content}'
+    namespace: 'tx_vidifrontend_pi1'
+    defaults:
+      action: "show"
+    requirements:
+      content: '[0-9].*'
+      contentElement: '[0-9].*'
+```
 
 
 Configuration

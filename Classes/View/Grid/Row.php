@@ -122,22 +122,24 @@ class Row extends AbstractComponentView
      * @return string
      * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
      */
-    protected function getUri(Content $object)
+    protected function getUri(Content $object): string
     {
         $uri = '';
         if ($this->hasClickOnRow()) {
             $settings =  ContentElementConfiguration::getInstance()->getSettings();
 
             $arguments = $this->getArguments($object);
-            $this->getUriBuilder()
-                ->setArguments($arguments);
+            $uriBuilder = $this->getUriBuilder()
+                ->reset()
+                ->setArguments($arguments)
+            ;
 
             $targetPageUid = (int)$settings['targetPageDetail'];
             if (!empty($targetPageUid)) {
-                $this->getUriBuilder()->setTargetPageUid($targetPageUid);
+                $uriBuilder->setTargetPageUid($targetPageUid);
             }
 
-            $uri = $this->getUriBuilder()->build();
+            $uri = $uriBuilder->build();
         }
 
         return $uri;
@@ -147,7 +149,7 @@ class Row extends AbstractComponentView
      * @param Content $object
      * @return array
      */
-    protected function getArguments(Content $object)
+    protected function getArguments(Content $object): array
     {
 
         $contentElementIdentifier =  ContentElementConfiguration::getInstance()->getIdentifier();
@@ -185,7 +187,7 @@ class Row extends AbstractComponentView
     /**
      * @return bool
      */
-    protected function hasClickOnRow()
+    protected function hasClickOnRow(): bool
     {
         $settings = ContentElementConfiguration::getInstance()->getSettings();
         return (bool)$settings['hasClickOnRow'] && !empty($settings['templateDetail']);
@@ -207,7 +209,7 @@ class Row extends AbstractComponentView
      * @param string $fieldNameAndPath
      * @return string
      */
-    protected function resolveValue(Content $object, $fieldNameAndPath)
+    protected function resolveValue(Content $object, $fieldNameAndPath): string
     {
 
         // Get the first part of the field name.
@@ -243,14 +245,14 @@ class Row extends AbstractComponentView
      * @param string $fieldNameAndPath
      * @return string
      */
-    protected function processValue($value, Content $object, $fieldNameAndPath)
+    protected function processValue($value, Content $object, $fieldNameAndPath): string
     {
 
         // Set default value if $field name correspond to the label of the table
         $fieldName = $this->getFieldPathResolver()->stripFieldPath($fieldNameAndPath, $object->getDataType());
-        if (Tca::table($object->getDataType())->getLabelField() === $fieldName && empty($value)) {
-            #$value = sprintf('[%s]', $this->getLabelService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1));
-        }
+        #if (Tca::table($object->getDataType())->getLabelField() === $fieldName && empty($value)) {
+        #    $value = sprintf('[%s]', $this->getLabelService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1));
+        #}
 
         // Resolve the identifier in case of "select" or "radio button".
         $fieldType = Tca::table($object->getDataType())->field($fieldNameAndPath)->getType();
@@ -272,7 +274,7 @@ class Row extends AbstractComponentView
      * @param array $configuration
      * @return string
      */
-    protected function formatValue($value, array $configuration)
+    protected function formatValue($value, array $configuration): string
     {
         if (empty($configuration['format'])) {
             return $value;
@@ -298,7 +300,7 @@ class Row extends AbstractComponentView
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      * @return $this
      */
-    public function setConfigurationManager($configurationManager)
+    public function setConfigurationManager($configurationManager): self
     {
         $this->configurationManager = $configurationManager;
         return $this;
@@ -308,7 +310,7 @@ class Row extends AbstractComponentView
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
      * @return $this
      */
-    public function setControllerContext($controllerContext)
+    public function setControllerContext($controllerContext): self
     {
         $this->controllerContext = $controllerContext;
         return $this;
