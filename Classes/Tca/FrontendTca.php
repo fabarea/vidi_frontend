@@ -54,7 +54,7 @@ class FrontendTca implements SingletonInterface, TcaServiceInterface
      * Returns a "grid" service instance.
      *
      * @param string|Content $tableNameOrContentObject
-     * @return \Fab\VidiFrontend\Tca\FrontendGridService
+     * @return \Fab\VidiFrontend\Tca\FrontendGridService|object
      */
     static public function grid($tableNameOrContentObject)
     {

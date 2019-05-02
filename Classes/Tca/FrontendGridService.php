@@ -14,10 +14,7 @@ use Fab\VidiFrontend\MassAction\ExportCsvAction;
 use Fab\VidiFrontend\MassAction\ExportXlsAction;
 use Fab\VidiFrontend\MassAction\ExportXmlAction;
 use Fab\VidiFrontend\MassAction\MassActionInterface;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use Fab\Vidi\Exception\InvalidKeyInArrayException;
 use Fab\Vidi\Facet\FacetInterface;
 use Fab\Vidi\Facet\StandardFacet;
 use Fab\Vidi\Tca\GridService;
@@ -30,11 +27,7 @@ class FrontendGridService extends GridService
 {
 
     /**
-     * __construct
-     *
-     * @throws InvalidKeyInArrayException
      * @param string $tableName
-     * @return \Fab\VidiFrontend\Tca\FrontendGridService
      */
     public function __construct($tableName)
     {
@@ -64,9 +57,8 @@ class FrontendGridService extends GridService
      *
      * @param string $fieldNameAndPath
      * @return string
-     * @throws \Fab\Vidi\Exception\InvalidKeyInArrayException
      */
-    public function getLabel($fieldNameAndPath)
+    public function getLabel($fieldNameAndPath): string
     {
         if ($this->hasLabel($fieldNameAndPath)) {
             $field = $this->getField($fieldNameAndPath);
@@ -85,9 +77,8 @@ class FrontendGridService extends GridService
      * Returns an array containing column names.
      *
      * @return array
-     * @throws \Fab\Vidi\Exception\NotExistingClassException
      */
-    public function getFields()
+    public function getFields(): array
     {
         $allFields = Tca::grid($this->tableName)->getAllFields();
         $frontendFields = is_array($this->tca['columns']) ? $this->tca['columns'] : [];
@@ -99,7 +90,7 @@ class FrontendGridService extends GridService
      *
      * @return MassActionInterface[]
      */
-    public function getMassActions()
+    public function getMassActions(): array
     {
 
         // Default classes
@@ -135,7 +126,7 @@ class FrontendGridService extends GridService
      * @param string $fieldName
      * @return bool
      */
-    public function hasField($fieldName)
+    public function hasField($fieldName): bool
     {
         return isset($this->tca['columns'][$fieldName]);
     }
@@ -144,9 +135,8 @@ class FrontendGridService extends GridService
      * Returns an array containing facets fields.
      *
      * @return FacetInterface[]
-     * @throws \Fab\Vidi\Exception\NotExistingClassException
      */
-    public function getFacets()
+    public function getFacets(): array
     {
         if ($this->facets === null) {
 
@@ -173,8 +163,6 @@ class FrontendGridService extends GridService
      *
      * @param string $fieldNameAndPath
      * @return int|string
-     * @throws \Fab\Vidi\Exception\NotExistingClassException
-     * @throws \Fab\Vidi\Exception\InvalidKeyInArrayException
      */
     public function isSortable($fieldNameAndPath)
     {
@@ -192,7 +180,7 @@ class FrontendGridService extends GridService
      *
      * @return array
      */
-    public function getFacetNames()
+    public function getFacetNames(): array
     {
         $facetNames = [];
 
@@ -220,9 +208,9 @@ class FrontendGridService extends GridService
     /**
      * Returns LanguageService
      *
-     * @return LanguageService
+     * @return \TYPO3\CMS\Lang\LanguageService
      */
-    protected function getLanguageService(): LanguageService
+    protected function getLanguageService(): \TYPO3\CMS\Lang\LanguageService
     {
         return $GLOBALS['LANG'];
     }
