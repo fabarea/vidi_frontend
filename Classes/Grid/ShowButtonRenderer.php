@@ -44,15 +44,17 @@ class ShowButtonRenderer extends ColumnRendererAbstract
         $tagBuilder->setContent($icon);
 
         $arguments = $this->getArguments();
-        $this->getUriBuilder()->setArguments($arguments);
+        $queryBuilder = $this->getUriBuilder()
+            ->reset()
+            ->setArguments($arguments);
 
         $settings =  ContentElementConfiguration::getInstance()->getSettings();
         $targetPageUid = (int)$settings['targetPageDetail'];
         if (!empty($targetPageUid)) {
-            $this->getUriBuilder()->setTargetPageUid($targetPageUid);
+            $queryBuilder->setTargetPageUid($targetPageUid);
         }
 
-        $uri = $this->getUriBuilder()->build();
+        $uri = $queryBuilder->build();
 
         $tagBuilder->addAttribute('href', $uri);
         $tagBuilder->addAttribute('class', 'link-show');
