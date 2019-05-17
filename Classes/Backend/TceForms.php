@@ -40,7 +40,7 @@ class TceForms
      * @param array $parameters
      * @return string
      */
-    public function renderIsVisualSearchBarField(array $parameters)
+    public function renderIsVisualSearchBarField(array $parameters): string
     {
 
         // Get existing flexform configuration
@@ -95,7 +95,7 @@ class TceForms
      * @param array $parameters
      * @return string
      */
-    public function getEnableFields(array $parameters)
+    public function getEnableFields(array $parameters): string
     {
 
         $flexform = $parameters['row']['pi_flexform'];
@@ -171,7 +171,7 @@ class TceForms
      * @param array $parameters
      * @return string
      */
-    public function renderGridConfigurationField(array $parameters)
+    public function renderGridConfigurationField(array $parameters): string
     {
         // Default configuration
         $gridConfiguration = $this->gridConfigurationStandard;
@@ -220,7 +220,7 @@ class TceForms
      *
      * @param array $parameters
      */
-    public function getDataTypes(&$parameters)
+    public function getDataTypes(&$parameters): void
     {
 
         $configuration = $configuration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('vidi_frontend');
@@ -245,7 +245,7 @@ class TceForms
      *
      * @param array $parameters
      */
-    public function getTemplates(&$parameters)
+    public function getTemplates(&$parameters): void
     {
         $configuration = $this->getPluginConfiguration();
 
@@ -274,7 +274,7 @@ class TceForms
      *
      * @param array $parameters
      */
-    public function getColumns(&$parameters)
+    public function getColumns(&$parameters): void
     {
 
         $configuration = $this->getPluginConfiguration();
@@ -307,7 +307,7 @@ class TceForms
      *
      * @param array $parameters
      */
-    public function getActions(&$parameters)
+    public function getActions(&$parameters): void
     {
 
         $configuration = $this->getPluginConfiguration();
@@ -338,7 +338,7 @@ class TceForms
      *
      * @param array $parameters
      */
-    public function getFacets(&$parameters)
+    public function getFacets(&$parameters): void
     {
         $configuration = $this->getPluginConfiguration();
 
@@ -369,7 +369,7 @@ class TceForms
      *
      * @param array $parameters
      */
-    public function getSelections(&$parameters)
+    public function getSelections(&$parameters): void
     {
         $configuration = $this->getPluginConfiguration();
 
@@ -411,7 +411,7 @@ class TceForms
      * @return string
      * @throws \InvalidArgumentException
      */
-    public function renderTemplateMenu(&$params, &$tsObj)
+    public function renderTemplateMenu(&$params, &$tsObj): string
     {
         $configuration = $this->getPluginConfiguration();
         $output = '';
@@ -445,7 +445,7 @@ class TceForms
      * @return string
      * @throws \InvalidArgumentException
      */
-    public function renderAdditionalSettingsListHelp(&$params, &$tsObj)
+    public function renderAdditionalSettingsListHelp(&$params, &$tsObj): string
     {
         $configuration = $this->getPluginConfiguration();
 
@@ -507,7 +507,7 @@ class TceForms
      * @param $parameters
      * @return string
      */
-    protected function getDataTypeFromFlexformLegacy($parameters)
+    protected function getDataTypeFromFlexformLegacy($parameters): string
     {
         $configuredDataType = '';
         if (!empty($parameters['row']['pi_flexform'])) {
@@ -523,7 +523,7 @@ class TceForms
      * @param array $flexform
      * @return string
      */
-    protected function getDataTypeFromFlexform(array $flexform = [])
+    protected function getDataTypeFromFlexform(array $flexform = []): string
     {
         return $this->getSettings($flexform, 'dataType');
     }
@@ -533,7 +533,7 @@ class TceForms
      * @param string $key
      * @return string
      */
-    protected function getSettings(array $flexform = [], $key)
+    protected function getSettings(array $flexform = [], $key): string
     {
 
         $value = '';
@@ -556,7 +556,7 @@ class TceForms
      *
      * @return array
      */
-    protected function getPluginConfiguration()
+    protected function getPluginConfiguration(): array
     {
         $setup = $this->getConfigurationManager()->getTypoScriptSetup();
 
@@ -598,7 +598,7 @@ class TceForms
      * @param string $valuePointer value pointer used in the flexForm
      * @return array the processed array
      */
-    protected function normalizeFlexForm(array $flexForm, $languagePointer = 'lDEF', $valuePointer = 'vDEF')
+    protected function normalizeFlexForm(array $flexForm, $languagePointer = 'lDEF', $valuePointer = 'vDEF'): array
     {
         $settings = [];
         $flexForm = isset($flexForm['data']) ? $flexForm['data'] : [];
@@ -637,7 +637,7 @@ class TceForms
      * @param string $valuePointer The valuePointer to use for value retrieval
      * @return array
      */
-    protected function walkFlexFormNode($nodeArray, $valuePointer = 'vDEF')
+    protected function walkFlexFormNode($nodeArray, $valuePointer = 'vDEF'): array
     {
         if (is_array($nodeArray)) {
             $return = [];
@@ -681,7 +681,7 @@ class TceForms
      * @param array $parameters
      * @return array
      */
-    protected function getLegacyFlexform(array $parameters)
+    protected function getLegacyFlexform(array $parameters): array
     {
         $flexform = [];
         if ($parameters['row']['pi_flexform']) {
@@ -694,7 +694,7 @@ class TceForms
     /**
      * @return \TYPO3\CMS\Lang\LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): \TYPO3\CMS\Lang\LanguageService
     {
         return $GLOBALS['LANG'];
     }
