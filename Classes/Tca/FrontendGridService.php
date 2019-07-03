@@ -19,6 +19,7 @@ use Fab\Vidi\Facet\FacetInterface;
 use Fab\Vidi\Facet\StandardFacet;
 use Fab\Vidi\Tca\GridService;
 use Fab\Vidi\Tca\Tca;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * A class to handle TCA grid configuration
@@ -62,10 +63,10 @@ class FrontendGridService extends GridService
     {
         if ($this->hasLabel($fieldNameAndPath)) {
             $field = $this->getField($fieldNameAndPath);
-            $label = $this->getLanguageService()->sL($field['label']);
-            if ($label === null) {
-                $label = $field['label'];
-            }
+
+            $label = GeneralUtility::isFirstPartOfStr($field['label'], 'LLL:')
+                ? LocalizationUtility::translate($field['label'])
+                : $field['label'];
         } else {
             // Fetch the label from the Grid service provided by "vidi". He may know more about labels.
             $label = Tca::grid($this->tableName)->getLabel($fieldNameAndPath);
@@ -205,13 +206,4 @@ class FrontendGridService extends GridService
         return $facetNames;
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
-    protected function getLanguageService(): \TYPO3\CMS\Lang\LanguageService
-    {
-        return $GLOBALS['LANG'];
-    }
 }
