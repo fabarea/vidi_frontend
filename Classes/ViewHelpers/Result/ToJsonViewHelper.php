@@ -68,7 +68,14 @@ class ToJsonViewHelper extends AbstractViewHelper
      */
     protected function getRowsViewHelper()
     {
-        return $this->objectManager->get('Fab\VidiFrontend\ViewHelpers\Grid\RowsViewHelper');
+        return $this->getObjectManager()->get(\Fab\VidiFrontend\ViewHelpers\Grid\RowsViewHelper::class);
     }
 
+    /**
+     * @return object|\TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+    }
 }

@@ -58,8 +58,8 @@
 
 	<f:if condition="{settings.isVisualSearchBar}">
 		<script>
-			VidiFrontend.settings[gridIdentifier]['facets'] = {vf:grid.facets()};
-			VidiFrontend.settings[gridIdentifier]['suggestions'] = {vf:grid.suggestions()};
+			VidiFrontend.settings[gridIdentifier]['facets'] = {vf:grid.facets() -> f:format.raw()};
+			VidiFrontend.settings[gridIdentifier]['suggestions'] = {vf:grid.suggestions() -> f:format.raw()};
 		</script>
 	</f:if>
 	<f:comment><!--Conditional style whether there is a detail view --></f:comment>
