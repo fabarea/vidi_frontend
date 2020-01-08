@@ -30,7 +30,9 @@ call_user_func(
                 'Content' => 'index, list, show, execute',
             ],
             [
-                'Content' => 'list, execute',
+                'Content' => isset($configuration['non_cacheable_actions'])
+                    ? $configuration['non_cacheable_actions']
+                    : 'list, execute',
             ]
         );
 
