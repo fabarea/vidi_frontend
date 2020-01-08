@@ -19,7 +19,7 @@
 		}
 	},
 	"replace": {
-		"vidi_frontend": "self.version",
+		"fab/vidi_frontend": "self.version",
 		"typo3-ter/vidi-frontend": "self.version"
 	}
 }
