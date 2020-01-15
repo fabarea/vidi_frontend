@@ -17,5 +17,6 @@ class PluginParameter extends Enumeration
 {
 
     const PREFIX = 'tx_vidifrontend_pi1';
+    const PREFIX_TEMPLATE_BASED_CONTENT = 'tx_vidifrontend_templatebasedcontent';
 
 }

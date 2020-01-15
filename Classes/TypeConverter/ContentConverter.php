@@ -8,6 +8,7 @@ namespace Fab\VidiFrontend\TypeConverter;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Fab\VidiFrontend\Service\ContentType;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
@@ -57,11 +58,11 @@ class ContentConverter extends AbstractTypeConverter
     }
 
     /**
-     * @return \Fab\VidiFrontend\Service\ContentType
+     * @return ContentType|object
      */
     protected function getContentType()
     {
-        return GeneralUtility::makeInstance('Fab\VidiFrontend\Service\ContentType');
+        return GeneralUtility::makeInstance(ContentType::class);
     }
 
 }

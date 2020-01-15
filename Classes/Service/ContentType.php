@@ -32,9 +32,16 @@ class ContentType implements SingletonInterface
     public function getCurrentType()
     {
 
-        $parameters = GeneralUtility::_GP(PluginParameter::PREFIX);
+        $parameters = GeneralUtility::_GP(PluginParameter::PREFIX)
+            ? GeneralUtility::_GP(PluginParameter::PREFIX)
+            : GeneralUtility::_GP(PluginParameter::PREFIX_TEMPLATE_BASED_CONTENT);
+
+        if ($parameters === null) {
+            throw new \Exception('Missing parameter or wrong prefix...', 1579098327);
+        }
+
         if (empty($parameters['contentElement'])) {
-            throw new \Exception('Missing parameter...', 1414713537);
+            throw new \Exception('Missing parameter "contentElement"...', 1414713537);
         }
 
         $contentElementIdentifier = (int)$parameters['contentElement'];

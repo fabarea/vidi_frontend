@@ -212,6 +212,7 @@ class TemplateBasedContentController extends ActionController
 
         $this->view->setTemplatePathAndFilename($fileNameAndPath);
         $this->view->assign($variableName, $content);
+        return $this->view->render();
     }
 
     /**
