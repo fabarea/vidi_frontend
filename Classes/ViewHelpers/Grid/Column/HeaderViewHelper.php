@@ -28,9 +28,9 @@ class HeaderViewHelper extends AbstractViewHelper
     /**
      * Returns a column header.
      *
-     * @return boolean
+     * @return string
      */
-    public function render(): bool
+    public function render(): string
     {
         $dataType = $this->templateVariableContainer->get('dataType');
         return FrontendTca::grid($dataType)->getHeader($this->arguments['name']);
