@@ -1,4 +1,5 @@
 <?php
+
 namespace Fab\VidiFrontend\Backend;
 
 /*
@@ -8,7 +9,8 @@ namespace Fab\VidiFrontend\Backend;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Fab\Vidi\Utility\BackendUtility;
+use Fab\Vidi\Service\DataService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 
 /**
@@ -22,19 +24,15 @@ class DisplayCondition
      */
     public function hasSelection()
     {
-        $tableName = 'tx_vidi_selection';
-        $clause = '1 = 1' . BackendUtility::deleteClause($tableName);
-        $records = $this->getDatabaseConnection()->exec_SELECTgetRows('*', $tableName, $clause);
+        $records = $this->getDataService()->getRecords('tx_vidi_selection');
         return !empty($records);
     }
 
     /**
-     * Returns a pointer to the database.
-     *
-     * @return \Fab\Vidi\Database\DatabaseConnection
+     * @return object|DataService
      */
-    protected function getDatabaseConnection()
+    protected function getDataService(): DataService
     {
-        return $GLOBALS['TYPO3_DB'];
+        return GeneralUtility::makeInstance(DataService::class);
     }
 }

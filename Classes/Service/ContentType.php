@@ -8,6 +8,7 @@ namespace Fab\VidiFrontend\Service;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Fab\Vidi\Service\DataService;
 use Fab\VidiFrontend\Plugin\PluginParameter;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -48,10 +49,12 @@ class ContentType implements SingletonInterface
 
         if (empty($this->contentTypes[$contentElementIdentifier])) {
 
-            $clause = sprintf('uid = %s ', $contentElementIdentifier);
-            $clause .= self::getPageRepository()->enableFields('tt_content');
-            $clause .= self::getPageRepository()->deleteClause('tt_content');
-            $contentElement = self::getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tt_content', $clause);
+            $contentElement = $this->getDataService()->getRecord(
+                'tt_content',
+                [
+                    'uid' => $contentElementIdentifier,
+                ]
+            );
 
             $xml = GeneralUtility::xml2array($contentElement['pi_flexform']);
 
@@ -67,13 +70,11 @@ class ContentType implements SingletonInterface
     }
 
     /**
-     * Returns a pointer to the database.
-     *
-     * @return \Fab\Vidi\Database\DatabaseConnection
+     * @return object|DataService
      */
-    static protected function getDatabaseConnection()
+    protected function getDataService(): DataService
     {
-        return $GLOBALS['TYPO3_DB'];
+        return GeneralUtility::makeInstance(DataService::class);
     }
 
     /**

@@ -8,7 +8,8 @@ namespace Fab\VidiFrontend\TypeConverter;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Resource\File;
+use Fab\Vidi\Service\DataService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
 
@@ -46,14 +47,13 @@ class ContentDataConverter extends AbstractTypeConverter
      */
     public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
     {
-
-        $tableName = 'tt_content';
-        $clause = 'uid = ' . $source;
-        $clause .= ' AND pid = ' . self::getFrontendObject()->id; // Make sure we are on the same pid for security reason
-        $clause .= self::getPageRepository()->enableFields($tableName);
-        $clause .= self::getPageRepository()->deleteClause($tableName);
-        $record = self::getDatabaseConnection()->exec_SELECTgetSingleRow('*', $tableName, $clause);
-
+        $record = $this->getDataService()->getRecord(
+            'tt_content',
+            [
+                'uid' => $source,
+                'pid' => self::getFrontendObject()->id,
+            ]
+        );
         if (empty($record)) {
             throw new \RuntimeException('Vidi Frontend: I could not access this resource', 1445352723);
         }
@@ -62,13 +62,11 @@ class ContentDataConverter extends AbstractTypeConverter
     }
 
     /**
-     * Returns a pointer to the database.
-     *
-     * @return \Fab\Vidi\Database\DatabaseConnection
+     * @return object|DataService
      */
-    static protected function getDatabaseConnection()
+    protected function getDataService(): DataService
     {
-        return $GLOBALS['TYPO3_DB'];
+        return GeneralUtility::makeInstance(DataService::class);
     }
 
     /**

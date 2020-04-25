@@ -10,8 +10,12 @@ namespace Fab\VidiFrontend\Persistence;
 
 use Fab\Vidi\Domain\Model\Selection;
 use Fab\Vidi\Domain\Repository\SelectionRepository;
+use Fab\Vidi\Persistence\Query;
 use Fab\Vidi\Resolver\FieldPathResolver;
+use Fab\Vidi\Service\DataService;
 use Fab\VidiFrontend\Tca\FrontendTca;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -87,6 +91,9 @@ class MatcherFactory implements SingletonInterface
      */
     protected function applyCriteriaFromMatchesArgument(Matcher $matcher, $matches, $dataType)
     {
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($dataType);
         foreach ($matches as $fieldNameAndPath => $value) {
             // CSV values should be considered as "in" operator in Query, otherwise "equals".
             $explodedValues = GeneralUtility::trimExplode(',', $value, true);
@@ -95,7 +102,7 @@ class MatcherFactory implements SingletonInterface
             } else {
                 if (Tca::table($dataType)->field($fieldNameAndPath)->isTextArea()
                 || Tca::table($dataType)->field($fieldNameAndPath)->isText()) {
-                    $matcher->like($fieldNameAndPath, '%' . $this->getDatabaseConnection()->escapeStrForLike($explodedValues[0], $dataType) . '%');
+                    $matcher->like($fieldNameAndPath, '%' . $queryBuilder->escapeLikeWildcards($explodedValues[0]) . '%');
                 } else {
                     $matcher->equals($fieldNameAndPath, $explodedValues[0]);
                 }
@@ -297,16 +304,6 @@ class MatcherFactory implements SingletonInterface
     protected function getFieldPathResolver()
     {
         return GeneralUtility::makeInstance(FieldPathResolver::class);
-    }
-
-    /**
-     * Returns a pointer to the database.
-     *
-     * @return \Fab\Vidi\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
 }
