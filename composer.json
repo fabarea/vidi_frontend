@@ -24,7 +24,7 @@
 	},
 	"extra": {
 		"typo3/cms": {
-			"extension-key": "vidi-frontend"
+			"extension-key": "vidi_frontend"
 		}
 	}
 }
