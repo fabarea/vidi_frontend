@@ -8,6 +8,7 @@ namespace Fab\VidiFrontend\MassAction;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -43,7 +44,7 @@ trait TemporaryFileTrait
         /** @var \Fab\Vidi\Domain\Model\Content $object */
         $object = reset($objects);
 
-        $this->temporaryDirectory = PATH_site . 'typo3temp/' . uniqid('vidi-', true) . '/';
+        $this->temporaryDirectory = Environment::getPublicPath() . '/typo3temp/' . uniqid('vidi-', true) . '/';
         GeneralUtility::mkdir($this->temporaryDirectory);
 
         // Compute file name and path variable
