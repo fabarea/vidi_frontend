@@ -42,7 +42,6 @@ class ConfigurationViewHelper extends AbstractViewHelper
 
     /**
      * @return string
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
      */
     public function getGridConfiguration()
     {

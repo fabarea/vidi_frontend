@@ -120,7 +120,6 @@ class Row extends AbstractComponentView
     /**
      * @param Content $object
      * @return string
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
      */
     protected function getUri(Content $object): string
     {
