@@ -134,7 +134,7 @@ class TemplateBasedContentController extends ActionController
      *
      * @param array $matches
      * @param array $contentData
-     * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
+     * @Validate("Fab\VidiFrontend\Domain\Validator\ContentDataValidator", param="contentData")
      * @return void
      */
     public function listAction(array $contentData, array $matches = [])

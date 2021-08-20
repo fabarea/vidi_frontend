@@ -21,7 +21,6 @@ class RowsViewHelper extends AbstractViewHelper
 
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     * @inject
      */
     protected $configurationManager;
 
@@ -62,5 +61,10 @@ class RowsViewHelper extends AbstractViewHelper
     {
         $this->controllerContext = $controllerContext;
         return $this;
+    }
+
+    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
     }
 }

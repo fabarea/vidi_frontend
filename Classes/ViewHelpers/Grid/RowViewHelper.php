@@ -22,7 +22,6 @@ class RowViewHelper extends AbstractViewHelper
 
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     * @inject
      */
     protected $configurationManager;
 
@@ -102,6 +101,11 @@ class RowViewHelper extends AbstractViewHelper
     protected function getUriBuilder()
     {
         return $this->controllerContext->getUriBuilder();
+    }
+
+    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
     }
 
 }

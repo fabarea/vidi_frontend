@@ -26,6 +26,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Fab\Vidi\Domain\Model\Content;
 use Fab\VidiFrontend\Persistence\MatcherFactory;
 use Fab\VidiFrontend\Persistence\OrderFactory;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 
 /**
  * Controller which handles actions related to Vidi in the Backend.
@@ -119,7 +120,7 @@ class ContentController extends ActionController
      *
      * @param array $matches
      * @param array $contentData
-     * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
+     * @Validate("Fab\VidiFrontend\Domain\Validator\ContentDataValidator", param="contentData")
      * @return void
      */
     public function listAction(array $contentData, array $matches = [])
@@ -177,7 +178,7 @@ class ContentController extends ActionController
      * @param array $contentData
      * @param string $actionName
      * @param array $matches
-     * @validate $contentData Fab\VidiFrontend\Domain\Validator\ContentDataValidator
+     * @Validate("Fab\VidiFrontend\Domain\Validator\ContentDataValidator", param="contentData")
      * @return string
      */
     public function executeAction(array $contentData, $actionName, array $matches = [])
