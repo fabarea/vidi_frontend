@@ -72,7 +72,7 @@ class DownloadAction extends AbstractMassAction
 
             $collectedFiles = [];
             foreach ($objects as $object) {
-                $file = ResourceFactory::getInstance()->getFileObject($object->getUid(), $object->toArray());
+                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($object->getUid(), $object->toArray());
                 $collectedFiles[$file->getUid()] = $file;
             }
 
