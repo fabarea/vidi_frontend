@@ -8,5 +8,5 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'plugin',
     'author_company' => 'Ecodev',
     'state' => 'stable',
-    'version' => '5.0.0',
+    'version' => '5.1.0-dev',
 ];
