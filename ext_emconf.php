@@ -8,21 +8,5 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'plugin',
     'author_company' => 'Ecodev',
     'state' => 'stable',
-    'version' => '4.0.1-dev',
-    'autoload' =>
-        [
-            'psr-4' => ['Fab\\VidiFrontend\\' => 'Classes']
-        ],
-    'constraints' => [
-        'depends' => [
-            'typo3' => '10.4.0-11.5.99',
-            'vidi' => '5.0.0-0.0.0',
-        ],
-        'conflicts' => [
-        ],
-        'suggests' => [
-        ],
-    ],
-    'suggests' => [
-    ],
+    'version' => '5.0.0',
 ];
