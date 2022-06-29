@@ -1,3 +1,8 @@
+## 5.0.3 (2022-06-29)
+
+[FIX] Return type must be of type string
+[FIX] Headers
+
 ## 5.0.2 (2022-06-29)
 
 [FIX] Annotation import
