@@ -1,3 +1,7 @@
+## 5.0.4 (2022-06-29)
+
+[FIX] typo3 query settings
+
 ## 5.0.3 (2022-06-29)
 
 [FIX] Return type must be of type string
