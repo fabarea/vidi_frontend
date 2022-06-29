@@ -27,6 +27,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Fab\Vidi\Domain\Model\Content;
 use Fab\VidiFrontend\Persistence\MatcherFactory;
 use Fab\VidiFrontend\Persistence\OrderFactory;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 
 /**
  * Controller which handles actions related to Vidi in the Backend.
