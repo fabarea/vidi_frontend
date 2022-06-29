@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Domain\Model\Content;
 use Fab\Vidi\Tca\Tca;
 use Fab\Vidi\View\AbstractComponentView;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * View helper for rendering a row of a content object.
@@ -230,7 +229,7 @@ class Row extends AbstractComponentView
             $value = $object[$fieldName][$fieldNameOfForeignTable];
         }
 
-        return $value;
+        return (string)$value;
     }
 
     /**
