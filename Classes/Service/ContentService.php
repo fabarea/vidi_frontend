@@ -8,12 +8,12 @@ namespace Fab\VidiFrontend\Service;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Fab\Vidi\Persistence\QuerySettings;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Domain\Repository\ContentRepositoryFactory;
 use Fab\Vidi\Persistence\Matcher;
 use Fab\Vidi\Persistence\Order;
 use Fab\Vidi\Signal\AfterFindContentObjectsSignalArguments;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
@@ -70,11 +70,11 @@ class ContentService
         // Query the repository.
         $contentRepository = ContentRepositoryFactory::getInstance($this->dataType);
 
-        /** @var QuerySettings $querySettings */
+        /** @var Typo3QuerySettings $querySettings */
         if (!empty($this->settings['enableFields'])) {
 
             $ignoreFields = GeneralUtility::trimExplode(',', $this->settings['enableFields'], true);
-            $querySettings = GeneralUtility::makeInstance(QuerySettings::class);
+            $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
             $querySettings->setEnableFieldsToBeIgnored($ignoreFields);
             $querySettings->setIgnoreEnableFields(true);
             $contentRepository->setDefaultQuerySettings($querySettings);
