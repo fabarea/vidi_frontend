@@ -10,9 +10,7 @@ namespace Fab\VidiFrontend\Persistence;
 
 use Fab\Vidi\Domain\Model\Selection;
 use Fab\Vidi\Domain\Repository\SelectionRepository;
-use Fab\Vidi\Persistence\Query;
 use Fab\Vidi\Resolver\FieldPathResolver;
-use Fab\Vidi\Service\DataService;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -21,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use Fab\Vidi\Persistence\Matcher;
 use Fab\Vidi\Tca\Tca;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
@@ -199,8 +198,9 @@ class MatcherFactory implements SingletonInterface
         $selectionIdentifier = (int)$this->settings['selection'];
         if ($selectionIdentifier > 0) {
 
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
             /** @var SelectionRepository $selectionRepository */
-            $selectionRepository = GeneralUtility::makeInstance(SelectionRepository::class);
+            $selectionRepository = $objectManager->get(SelectionRepository::class);
 
             /** @var Selection $selection */
             $selection = $selectionRepository->findByUid($selectionIdentifier);
