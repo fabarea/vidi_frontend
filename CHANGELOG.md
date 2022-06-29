@@ -1,3 +1,8 @@
+## 5.0.5 (2022-06-29)
+
+[FIX] Remove wrong return type
+[FIX] Temporary dependency injection with old object manager
+
 ## 5.0.4 (2022-06-29)
 
 [FIX] typo3 query settings
