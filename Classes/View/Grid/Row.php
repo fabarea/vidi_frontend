@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Domain\Model\Content;
 use Fab\Vidi\Tca\Tca;
 use Fab\Vidi\View\AbstractComponentView;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * View helper for rendering a row of a content object.
@@ -48,11 +48,9 @@ class Row extends AbstractComponentView
      */
     protected $columns;
 
-    /**
-     * @param array $columns
-     */
     public function __construct(array $columns = [])
     {
+        $this->configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $this->columns = $columns;
     }
 
@@ -82,7 +80,7 @@ class Row extends AbstractComponentView
                 foreach ($renderers as $rendererClassName => $rendererConfiguration) {
 
                     $rendererConfiguration['uriBuilder'] = $this->getUriBuilder();
-                    $rendererConfiguration['contentElement'] = $this->configurationManager->getContentObject();
+                    //$rendererConfiguration['contentElement'] = $this->configurationManager->getContentObject();
 
                     /** @var $rendererObject \Fab\Vidi\Grid\ColumnRendererInterface */
                     $rendererObject = GeneralUtility::makeInstance($rendererClassName);
@@ -197,8 +195,7 @@ class Row extends AbstractComponentView
      */
     protected function getUriBuilder()
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        return $objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
     }
 
     /**

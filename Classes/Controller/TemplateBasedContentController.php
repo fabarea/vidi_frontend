@@ -44,7 +44,7 @@ class TemplateBasedContentController extends ActionController
         if ($this->arguments->hasArgument('content')) {
 
             /** @var ContentConverter $typeConverter */
-            $typeConverter = $this->objectManager->get(ContentConverter::class);
+            $typeConverter = GeneralUtility::makeInstance(ContentConverter::class);
 
             $this->arguments->getArgument('content')
                 ->getPropertyMappingConfiguration()
@@ -54,7 +54,7 @@ class TemplateBasedContentController extends ActionController
         if ($this->arguments->hasArgument('contentData')) {
 
             /** @var ContentConverter $typeConverter */
-            $typeConverter = $this->objectManager->get(ContentDataConverter::class);
+            $typeConverter = GeneralUtility::makeInstance(ContentDataConverter::class);
 
             $this->arguments->getArgument('contentData')
                 ->getPropertyMappingConfiguration()
@@ -81,7 +81,7 @@ class TemplateBasedContentController extends ActionController
         $contentObjectRender = $this->configurationManager->getContentObject();
 
         /** @var StandaloneView $view */
-        $view = $this->objectManager->get(StandaloneView::class);
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
 
         // Configure the template path according to the Plugin settings.
         $fileNameAndPath = GeneralUtility::getFileAbsFileName($settings['templateList']);

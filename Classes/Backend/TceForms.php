@@ -13,11 +13,11 @@ use Fab\Vidi\Domain\Model\Selection;
 use Fab\Vidi\Facet\FacetInterface;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Tca\Tca;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * A class to interact with TCEForms.
@@ -380,7 +380,7 @@ class TceForms
             $parameters['items'][] = array('', '', null);
 
             /** @var \Fab\Vidi\Domain\Repository\SelectionRepository $selectionRepository */
-            $selectionRepository = $this->getObjectManager()->get(\Fab\Vidi\Domain\Repository\SelectionRepository::class);
+            $selectionRepository = GeneralUtility::makeInstance(\Fab\Vidi\Domain\Repository\SelectionRepository::class);
 
             if (version_compare(TYPO3_branch, '7.0', '<')) {
                 $configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
@@ -574,16 +574,7 @@ class TceForms
      */
     protected function getConfigurationManager()
     {
-        return $this->getObjectManager()->get(BackendConfigurationManager::class);
-    }
-
-    /**
-     * @return ObjectManager|object
-     */
-    protected function getObjectManager()
-    {
-        /** @var ObjectManager $objectManager */
-        return GeneralUtility::makeInstance(ObjectManager::class);
+        return GeneralUtility::makeInstance(BackendConfigurationManager::class);
     }
 
     /**
@@ -691,10 +682,7 @@ class TceForms
         return is_array($flexform) ? $flexform : [];
     }
 
-    /**
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
-    protected function getLanguageService(): \TYPO3\CMS\Lang\LanguageService
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

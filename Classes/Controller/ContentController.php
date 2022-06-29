@@ -1,4 +1,5 @@
 <?php
+
 namespace Fab\VidiFrontend\Controller;
 
 /*
@@ -26,7 +27,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Fab\Vidi\Domain\Model\Content;
 use Fab\VidiFrontend\Persistence\MatcherFactory;
 use Fab\VidiFrontend\Persistence\OrderFactory;
-use TYPO3\CMS\Extbase\Annotation\Validate;
 
 /**
  * Controller which handles actions related to Vidi in the Backend.
@@ -43,7 +43,7 @@ class ContentController extends ActionController
         if ($this->arguments->hasArgument('content')) {
 
             /** @var ContentConverter $typeConverter */
-            $typeConverter = $this->objectManager->get(ContentConverter::class);
+            $typeConverter = GeneralUtility::makeInstance(ContentConverter::class);
 
             $this->arguments->getArgument('content')
                 ->getPropertyMappingConfiguration()
@@ -53,7 +53,7 @@ class ContentController extends ActionController
         if ($this->arguments->hasArgument('contentData')) {
 
             /** @var ContentConverter $typeConverter */
-            $typeConverter = $this->objectManager->get(ContentDataConverter::class);
+            $typeConverter = GeneralUtility::makeInstance(ContentDataConverter::class);
 
             $this->arguments->getArgument('contentData')
                 ->getPropertyMappingConfiguration()
@@ -61,12 +61,6 @@ class ContentController extends ActionController
         }
     }
 
-    /**
-     * List action for this controller.
-     *
-     * @param array $matches
-     * @return string
-     */
     public function indexAction(array $matches = [])
     {
         $settings = $this->computeFinalSettings($this->settings);
@@ -165,11 +159,15 @@ class ContentController extends ActionController
         // Set format.
         $this->request->setFormat('json');
 
+        // Handle columns case
+        $columns = ColumnsConfiguration::getInstance()->get($dataType, $settings['columns']);
+
         // Assign values.
         $this->view->assign('objects', $contentService->getObjects());
+        $this->view->assign('columns', $columns);
         $this->view->assign('numberOfObjects', $contentService->getNumberOfObjects());
         $this->view->assign('pager', $pager);
-        $this->view->assign('response', $this->response);
+        $this->view->assign('response', $this->responseFactory->createResponse());
     }
 
     /**
@@ -216,12 +214,10 @@ class ContentController extends ActionController
         $action = $massActions[$actionName];
         $result = $action->with($settings)->execute($contentService);
 
-        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Response $response */
-        $response = $this->response;
+        $response = $this->responseFactory->createResponse();
         foreach ($result->getHeaders() as $name => $value) {
-            $response->setHeader($name, $value);
+            $response->withHeader($name, $value);
         }
-        $response->sendHeaders();
 
         if ($result->hasFile()) {
             readfile($result->getFile());
@@ -233,11 +229,7 @@ class ContentController extends ActionController
         }
     }
 
-    /**
-     * @param Content $content
-     * @return string
-     */
-    public function showAction(Content $content)
+    public function showAction(Content $content): ?string
     {
         $settings = $this->computeFinalSettings($this->settings);
 
@@ -263,7 +255,8 @@ class ContentController extends ActionController
      * @param array $settings
      * @return array
      */
-    protected function computeFinalSettings(array $settings) {
+    protected function computeFinalSettings(array $settings)
+    {
 
         $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         $ts = GeneralUtility::removeDotsFromTS($configuration['plugin.']['tx_vidifrontend.']['settings.']);

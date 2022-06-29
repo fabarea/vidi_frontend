@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use Fab\Vidi\Persistence\Matcher;
 use Fab\Vidi\Tca\Tca;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
@@ -201,7 +200,7 @@ class MatcherFactory implements SingletonInterface
         if ($selectionIdentifier > 0) {
 
             /** @var SelectionRepository $selectionRepository */
-            $selectionRepository = $this->getObjectManager()->get(SelectionRepository::class);
+            $selectionRepository = GeneralUtility::makeInstance(SelectionRepository::class);
 
             /** @var Selection $selection */
             $selection = $selectionRepository->findByUid($selectionIdentifier);
@@ -287,15 +286,7 @@ class MatcherFactory implements SingletonInterface
      */
     protected function getSignalSlotDispatcher()
     {
-        return $this->getObjectManager()->get(Dispatcher::class);
-    }
-
-    /**
-     * @return object|ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(ObjectManager::class);
+        return GeneralUtility::makeInstance(Dispatcher::class);
     }
 
     /**

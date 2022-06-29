@@ -1,4 +1,8 @@
 <?php
+
+use Fab\VidiFrontend\Controller\ContentController;
+use Fab\VidiFrontend\Controller\TemplateBasedContentController;
+
 defined('TYPO3_MODE') or die();
 
 call_user_func(
@@ -27,10 +31,10 @@ call_user_func(
             'Fab.vidi_frontend',
             'Pi1',
             [
-                'Content' => 'index, list, show, execute',
+                ContentController::class => 'index, list, show, execute',
             ],
             [
-                'Content' => isset($configuration['non_cacheable_actions'])
+                ContentController::class => isset($configuration['non_cacheable_actions'])
                     ? $configuration['non_cacheable_actions']
                     : 'list, execute',
             ]
@@ -44,10 +48,10 @@ call_user_func(
             'Fab.vidi_frontend',
             'TemplateBasedContent',
             [
-                'TemplateBasedContent' => 'index, list, show',
+                TemplateBasedContentController::class => 'index, list, show',
             ],
             [
-                'TemplateBasedContent' => $nonCacheableControllerActions,
+                TemplateBasedContentController::class => $nonCacheableControllerActions,
             ]
         );
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Fab\VidiFrontend\ViewHelpers\Result;
 
 /*
@@ -8,6 +9,8 @@ namespace Fab\VidiFrontend\ViewHelpers\Result;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Fab\VidiFrontend\ViewHelpers\Grid\RowsViewHelper;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -24,16 +27,13 @@ class ToJsonViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-
         $objects = $this->templateVariableContainer->get('objects');
         $output = array(
             'sEcho' => $this->getNextTransactionId(),
             'iTotalRecords' => $this->templateVariableContainer->get('numberOfObjects'),
             'iTotalDisplayRecords' => $this->templateVariableContainer->get('numberOfObjects'),
             'iNumberOfRecords' => count($objects),
-            'aaData' => $this->getRowsViewHelper()
-                ->setControllerContext($this->controllerContext)
-                ->render($objects),
+            'aaData' => $this->getRowsViewHelper()->render($objects),
         );
 
         $this->setHttpHeaders();
@@ -57,25 +57,13 @@ class ToJsonViewHelper extends AbstractViewHelper
      */
     protected function setHttpHeaders()
     {
-        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Response $response */
+        /** @var Response $response */
         $response = $this->templateVariableContainer->get('response');
-        $response->setHeader('Content-Type', 'application/json');
-        $response->sendHeaders();
+        $response->withHeader('Content-Type', 'application/json');
     }
 
-    /**
-     * @return \Fab\VidiFrontend\ViewHelpers\Grid\RowsViewHelper
-     */
-    protected function getRowsViewHelper()
+    protected function getRowsViewHelper(): RowsViewHelper
     {
-        return $this->getObjectManager()->get(\Fab\VidiFrontend\ViewHelpers\Grid\RowsViewHelper::class);
-    }
-
-    /**
-     * @return object|\TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        return GeneralUtility::makeInstance(RowsViewHelper::class);
     }
 }

@@ -100,15 +100,7 @@ class LinkViewHelper extends AbstractViewHelper
      */
     protected function getUriBuilder()
     {
-        return $this->getObjectManager()->get(UriBuilder::class);
-    }
-
-    /**
-     * @return object|\TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        return GeneralUtility::makeInstance(UriBuilder::class);
     }
 
 }

@@ -14,7 +14,6 @@ use Fab\VidiFrontend\Plugin\PluginParameter;
 use Fab\Vidi\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
@@ -33,7 +32,7 @@ class ShowButtonRenderer extends ColumnRendererAbstract
     {
 
         /** @var TagBuilder $tagBuilder */
-        $tagBuilder = $this->getObjectManager()->get(TagBuilder::class);
+        $tagBuilder = GeneralUtility::makeInstance(TagBuilder::class);
         $tagBuilder->reset();
         $tagBuilder->setTagName('a');
         #$tagBuilder->setContent('<span class="glyphicon glyphicon-eye-open"></span>'); // Only if Font Awesome is installed.
@@ -101,20 +100,11 @@ class ShowButtonRenderer extends ColumnRendererAbstract
     }
 
     /**
-     * @return ObjectManager|object
-     * @throws \InvalidArgumentException
-     */
-    protected function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(ObjectManager::class);
-    }
-
-    /**
      * @return UriBuilder|object
      */
     protected function getUriBuilder()
     {
-        return $this->getObjectManager()->get(UriBuilder::class);
+        return GeneralUtility::makeInstance(UriBuilder::class);
     }
 
 }
