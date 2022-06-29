@@ -229,7 +229,7 @@ class ContentController extends ActionController
         }
     }
 
-    public function showAction(Content $content): ?string
+    public function showAction(Content $content)
     {
         $settings = $this->computeFinalSettings($this->settings);
 
