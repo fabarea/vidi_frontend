@@ -215,9 +215,8 @@ class ContentController extends ActionController
         $action = $massActions[$actionName];
         $result = $action->with($settings)->execute($contentService);
 
-        $response = $this->responseFactory->createResponse();
         foreach ($result->getHeaders() as $name => $value) {
-            $response->withHeader($name, $value);
+            header($name . ':' . (string)$value);
         }
 
         if ($result->hasFile()) {
