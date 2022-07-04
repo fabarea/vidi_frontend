@@ -16,6 +16,7 @@
 							<onChange>reload</onChange>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getDataTypes</itemsProcFunc>
 								<size>1</size>
 								<maxitems>1</maxitems>
@@ -27,6 +28,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.columns</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getColumns</itemsProcFunc>
 								<size>10</size>
 								<maxitems>100</maxitems>
@@ -86,6 +88,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.direction</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items>
 									<numIndex index="0" type="array">
 										<numIndex index="0"></numIndex>
@@ -110,7 +113,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.enableFields</label>
 							<config>
 								<type>user</type>
-								<userFunc>Fab\VidiFrontend\Backend\TceForms->getEnableFields</userFunc>
+								<renderType>vidiFrontendEnableFields</renderType>
 							</config>
 						</TCEforms>
 					</settings.enableFields>
@@ -164,8 +167,7 @@
 						<TCEforms>
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.gridConfiguration</label>
 							<config>
-								<type>user</type>
-								<userFunc>Fab\VidiFrontend\Backend\TceForms->renderGridConfigurationField</userFunc>
+								<type>text</type>
 							</config>
 						</TCEforms>
 					</settings.gridConfiguration>
@@ -185,10 +187,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.isVisualSearchBar
 							</label>
 							<config>
-								<type>user</type>
-								<userFunc>Fab\VidiFrontend\Backend\TceForms->renderIsVisualSearchBarField</userFunc>
-								<!--<type>check</type>-->
-								<!--<default>0</default>-->
+								<type>check</type>
 							</config>
 						</TCEforms>
 					</settings.isVisualSearchBar>
@@ -197,6 +196,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.facets</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getFacets</itemsProcFunc>
 								<size>10</size>
 								<maxitems>100</maxitems>
@@ -208,6 +208,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.logicalSeparator</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<maxitems>1</maxitems>
 								<items>
 									<numIndex index="1" type="array">
@@ -240,6 +241,7 @@
 							</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getTemplates</itemsProcFunc>
 								<size>1</size>
 								<maxitems>1</maxitems>
@@ -299,6 +301,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.actions</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getActions</itemsProcFunc>
 								<size>10</size>
 								<maxitems>100</maxitems>

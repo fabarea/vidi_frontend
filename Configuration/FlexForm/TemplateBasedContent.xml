@@ -16,6 +16,7 @@
 							<onChange>reload</onChange>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getDataTypes</itemsProcFunc>
 								<size>1</size>
 								<maxitems>1</maxitems>
@@ -27,6 +28,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.columns</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getColumns</itemsProcFunc>
 								<size>10</size>
 								<maxitems>100</maxitems>
@@ -39,6 +41,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.selection</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getSelections</itemsProcFunc>
 								<size>1</size>
 								<maxitems>1</maxitems>
@@ -86,6 +89,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.direction</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items>
 									<numIndex index="0" type="array">
 										<numIndex index="0"></numIndex>
@@ -110,7 +114,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.enableFields</label>
 							<config>
 								<type>user</type>
-								<userFunc>Fab\VidiFrontend\Backend\TceForms->getEnableFields</userFunc>
+								<renderType>vidiFrontendEnableFields</renderType>
 							</config>
 						</TCEforms>
 					</settings.enableFields>
@@ -130,6 +134,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.filters</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getFacets</itemsProcFunc>
 								<size>10</size>
 								<maxitems>100</maxitems>
@@ -152,7 +157,7 @@
                             <label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.templateForListView</label>
                             <config>
                                 <type>user</type>
-                                <userFunc>Fab\VidiFrontend\Backend\TceForms->renderTemplateMenu</userFunc>
+								<renderType>vidiFrontendTemplateMenu</renderType>
                             </config>
                         </TCEforms>
                     </settings.templateList>
@@ -170,8 +175,7 @@
 						<TCEforms>
 							<config>
 								<type>user</type>
-								<userFunc>Fab\VidiFrontend\Backend\TceForms->renderAdditionalSettingsListHelp</userFunc>
-								<typoscriptConfigurationKey>listTemplates</typoscriptConfigurationKey>
+								<renderType>vidiFrontendAdditionalSettingsListHelpListTemplates</renderType>
 							</config>
 						</TCEforms>
 					</settings.additionalSettingsListHelp>
@@ -193,6 +197,7 @@
 							</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getTemplates</itemsProcFunc>
 								<size>1</size>
 								<maxitems>1</maxitems>
@@ -229,8 +234,7 @@
 						<TCEforms>
 							<config>
 								<type>user</type>
-								<userFunc>Fab\VidiFrontend\Backend\TceForms->renderAdditionalSettingsListHelp</userFunc>
-								<typoscriptConfigurationKey>templates</typoscriptConfigurationKey>
+								<renderType>vidiFrontendAdditionalSettingsListHelpTemplates</renderType>
 							</config>
 						</TCEforms>
 					</settings.additionalSettingsDetailHelp>

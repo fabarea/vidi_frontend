@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Tca\Tca;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * A class to interact with TCEForms.
@@ -379,8 +380,9 @@ class TceForms
 
             $parameters['items'][] = array('', '', null);
 
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
             /** @var \Fab\Vidi\Domain\Repository\SelectionRepository $selectionRepository */
-            $selectionRepository = GeneralUtility::makeInstance(\Fab\Vidi\Domain\Repository\SelectionRepository::class);
+            $selectionRepository = $objectManager->get(\Fab\Vidi\Domain\Repository\SelectionRepository::class);
 
             if (version_compare(TYPO3_branch, '7.0', '<')) {
                 $configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);

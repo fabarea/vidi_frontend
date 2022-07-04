@@ -94,6 +94,37 @@ call_user_func(
             }'
         );
 
+        // Register new nodes
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1656697370] = [
+            'nodeName' => 'vidiFrontendEnableFields',
+            'priority' => 40,
+            'class' => Fab\VidiFrontend\Form\Elements\EnableFieldsElement::class,
+        ];
+
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1656697371] = [
+            'nodeName' => 'vidiFrontendTemplateMenu',
+            'priority' => 40,
+            'class' => Fab\VidiFrontend\Form\Elements\TemplateMenuElement::class,
+        ];
+
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1656697372] = [
+            'nodeName' => 'vidiFrontendAdditionalSettingsListHelpListTemplates',
+            'priority' => 40,
+            'class' => Fab\VidiFrontend\Form\Elements\AdditionalSettingsListHelpElement::class,
+            'parameters' => [
+                'typoscriptConfigurationKey' => 'listTemplates',
+            ],
+        ];
+
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1656697373] = [
+            'nodeName' => 'vidiFrontendAdditionalSettingsListHelpTemplates',
+            'priority' => 40,
+            'class' => Fab\VidiFrontend\Form\Elements\AdditionalSettingsListHelpElement::class,
+            'parameters' => [
+                'typoscriptConfigurationKey' => 'template',
+            ],
+        ];
+
         // Connect "preProcessTca" signal slot with the metadata service.
         $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
         $signalSlotDispatcher->connect(
