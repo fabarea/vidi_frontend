@@ -1,3 +1,7 @@
+## 5.0.6 (2022-07-04)
+
+[FIX] Flexform v11
+
 ## 5.0.5 (2022-06-29)
 
 [FIX] Remove wrong return type
