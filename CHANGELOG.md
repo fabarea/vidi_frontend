@@ -1,3 +1,9 @@
+## 5.0.7 (2022-09-05)
+
+[TASK] Update composer require
+[FIX] Change type of selection
+[TASK] TYPO3 rector
+
 ## 5.0.6 (2022-07-04)
 
 [FIX] Flexform v11
