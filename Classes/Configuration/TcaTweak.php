@@ -7,7 +7,7 @@ namespace Fab\VidiFrontend\Configuration;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use TYPO3\CMS\Core\Http\ApplicationType;
 use Fab\Vidi\Tca\TcaServiceInterface;
 
 /**
@@ -98,7 +98,7 @@ class TcaTweak
      */
     protected function isFrontendMode()
     {
-        return TYPO3_MODE === 'FE';
+        return ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
     }
 
 }

@@ -64,7 +64,7 @@ class FrontendGridService extends GridService
         if ($this->hasLabel($fieldNameAndPath)) {
             $field = $this->getField($fieldNameAndPath);
 
-            $label = GeneralUtility::isFirstPartOfStr($field['label'], 'LLL:')
+            $label = \str_starts_with($field['label'], 'LLL:')
                 ? LocalizationUtility::translate($field['label'])
                 : $field['label'];
         } else {

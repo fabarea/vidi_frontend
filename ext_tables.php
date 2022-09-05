@@ -1,29 +1,33 @@
 <?php
-defined('TYPO3_MODE') or die();
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+defined('TYPO3') or die();
 
 call_user_func(
     function () {
 
-        $configuration = $configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+        $configuration = $configuration = GeneralUtility::makeInstance(
+            ExtensionConfiguration::class
         )->get('vidi_frontend');
 
         // Possible Static TS loading
         if (true === isset($configuration['autoload_typoscript']) && true === (bool)$configuration['autoload_typoscript']) {
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('vidi_frontend', 'Configuration/TypoScript', 'Vidi Frontend: generic List Component');
+            ExtensionManagementUtility::addStaticFile('vidi_frontend', 'Configuration/TypoScript', 'Vidi Frontend: generic List Component');
         }
 
         if (TYPO3_MODE === 'BE') {
 
             // Register plugin "pi1"
-            \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-                'Fab.vidi_frontend',
+            ExtensionUtility::registerPlugin(
+                'VidiFrontend',
                 'Pi1',
                 'LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:plugin.pi1'
             );
 
             $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['vidifrontend_pi1'] = 'pi_flexform';
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+            ExtensionManagementUtility::addPiFlexFormValue(
                 'vidifrontend_pi1',
                 'FILE:EXT:vidi_frontend/Configuration/FlexForm/VidiFrontend.xml'
             );
@@ -32,14 +36,14 @@ call_user_func(
             $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['vidifrontend_pi1'] = 'pi_flexform';
 
             // Register plugin "TemplateBasedContent"
-            \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-                'Fab.vidi_frontend',
+            ExtensionUtility::registerPlugin(
+                'VidiFrontend',
                 'TemplateBasedContent',
                 'LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:plugin.templateBasedContent'
             );
 
             $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['vidifrontend_templatebasedcontent'] = 'pi_flexform';
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+            ExtensionManagementUtility::addPiFlexFormValue(
                 'vidifrontend_templatebasedcontent',
                 'FILE:EXT:vidi_frontend/Configuration/FlexForm/TemplateBasedContent.xml'
             );

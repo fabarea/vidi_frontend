@@ -9,6 +9,9 @@ namespace Fab\VidiFrontend\Controller;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
 use Fab\VidiFrontend\Persistence\TemplateBasedContentOrderFactory;
 use Fab\VidiFrontend\Persistence\TemplateBasedContentPagerFactory;
@@ -37,7 +40,7 @@ class TemplateBasedContentController extends ActionController
 {
 
     /**
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws NoSuchArgumentException
      */
     public function initializeAction()
     {
@@ -68,11 +71,11 @@ class TemplateBasedContentController extends ActionController
      * @param array $matches
      * @return string
      */
-    public function indexAction(array $matches = [])
+    public function indexAction(array $matches = []): ResponseInterface
     {
         // Filter empty value
         $matches = array_filter($matches, function($value) {
-            return ($value !== null && $value !== false && $value !== '');
+            return ($this->htmlResponse($value !== null && $value !== false && $value !== ''));
         });
 
         $settings = $this->computeFinalSettings($this->settings);
@@ -86,7 +89,7 @@ class TemplateBasedContentController extends ActionController
         // Configure the template path according to the Plugin settings.
         $fileNameAndPath = GeneralUtility::getFileAbsFileName($settings['templateList']);
         if (!is_file($fileNameAndPath)) {
-            return '<strong style="color: red">I could not find the appropriate template file.</strong>';
+            return $this->htmlResponse('<strong style="color: red">I could not find the appropriate template file.</strong>');
         }
         $view->setTemplatePathAndFilename($fileNameAndPath);
 
@@ -126,7 +129,7 @@ class TemplateBasedContentController extends ActionController
             ]);
         }
 
-        return $view->render();
+        return $this->htmlResponse($view->render());
     }
 
     /**
@@ -134,10 +137,10 @@ class TemplateBasedContentController extends ActionController
      *
      * @param array $matches
      * @param array $contentData
-     * @Validate("Fab\VidiFrontend\Domain\Validator\ContentDataValidator", param="contentData")
+     * @TYPO3\CMS\Extbase\Annotation\Validate("Fab\VidiFrontend\Domain\Validator\ContentDataValidator", param="contentData")
      * @return void
      */
-    public function listAction(array $contentData, array $matches = [])
+    public function listAction(array $contentData, array $matches = []): ResponseInterface
     {
         $settings = ContentElementConfiguration::getInstance($contentData)->getSettings();
         $settings = $this->computeFinalSettings($settings);
@@ -187,13 +190,14 @@ class TemplateBasedContentController extends ActionController
             'pager' => $pager,
             'response' => $this->response,
         ]);
+        return $this->htmlResponse();
     }
 
     /**
      * @param Content $content
      * @return string
      */
-    public function showAction(Content $content)
+    public function showAction(Content $content): ResponseInterface
     {
         $settings = $this->computeFinalSettings($this->settings);
         ArrayUtility::mergeRecursiveWithOverrule($settings, $this->getAdditionalSettings('additionalSettingsDetail'));
@@ -201,7 +205,7 @@ class TemplateBasedContentController extends ActionController
         // Configure the template path according to the Plugin settings.
         $fileNameAndPath = GeneralUtility::getFileAbsFileName($settings['templateDetail']);
         if (!is_file($fileNameAndPath)) {
-            return '<strong style="color: red">I could not find the appropriate template file.</strong>';
+            return $this->htmlResponse('<strong style="color: red">I could not find the appropriate template file.</strong>');
         }
 
         $variableName = 'object';
@@ -212,7 +216,7 @@ class TemplateBasedContentController extends ActionController
 
         $this->view->setTemplatePathAndFilename($fileNameAndPath);
         $this->view->assign($variableName, $content);
-        return $this->view->render();
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
@@ -242,7 +246,7 @@ class TemplateBasedContentController extends ActionController
     /**
      * Returns an instance of the Frontend object.
      *
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TypoScriptFrontendController
      */
     protected function getTypoScriptFrontendController()
     {

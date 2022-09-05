@@ -7,7 +7,7 @@ namespace Fab\VidiFrontend\MassAction;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use Fab\Vidi\Domain\Model\Content;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -41,7 +41,7 @@ trait TemporaryFileTrait
     protected function initializeEnvironment(array $objects)
     {
 
-        /** @var \Fab\Vidi\Domain\Model\Content $object */
+        /** @var Content $object */
         $object = reset($objects);
 
         $this->temporaryDirectory = Environment::getPublicPath() . '/typo3temp/' . uniqid('vidi-', true) . '/';

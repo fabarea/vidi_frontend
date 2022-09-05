@@ -7,7 +7,8 @@ namespace Fab\VidiFrontend\TypeConverter;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use Fab\Vidi\Domain\Model\Content;
+use TYPO3\CMS\Extbase\Error\Error;
 use Fab\VidiFrontend\Service\ContentType;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -44,7 +45,7 @@ class ContentConverter extends AbstractTypeConverter
      * @param array $convertedChildProperties
      * @param PropertyMappingConfigurationInterface $configuration
      * @throws \Exception
-     * @return \Fab\Vidi\Domain\Model\Content|mixed|null|\TYPO3\CMS\Extbase\Error\Error
+     * @return Content|mixed|null|Error
      * @api
      */
     public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)

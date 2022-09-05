@@ -2,89 +2,80 @@
 # plugin.tx_vidifrontend
 ########################
 plugin.tx_vidifrontend {
-	view {
-		templateRootPaths {
-			10 = {$plugin.tx_vidifrontend.view.templateRootPath}
-		}
-		partialRootPaths {
-			10 = {$plugin.tx_vidifrontend.view.partialRootPath}
-		}
-		layoutRootPaths {
-			10 = {$plugin.tx_vidifrontend.view.layoutRootPath}
-		}
-	}
+    view {
+        templateRootPaths {
+            10 = {$plugin.tx_vidifrontend.view.templateRootPath}
+        }
+        partialRootPaths {
+            10 = {$plugin.tx_vidifrontend.view.partialRootPath}
+        }
+        layoutRootPaths {
+            10 = {$plugin.tx_vidifrontend.view.layoutRootPath}
+        }
+    }
+    features {
+        requireCHashArgumentForActionArguments = 0
+    }
+    settings {
 
-	features {
-		requireCHashArgumentForActionArguments = 0
-	}
+        # Used in plugin "Generic List - with template
+        listTemplates {
+            1 {
+                label = Demo template list
+                path = EXT:vidi_frontend/Resources/Private/Standalone/DemoTemplateList.html
 
-	settings {
-
-		# Used in plugin "Generic List - with template
-		listTemplates {
-			1 {
-				label = Demo template list
-				path = EXT:vidi_frontend/Resources/Private/Standalone/DemoTemplateList.html
-
-				# We can add some tip for the BE user
-				additionalSettingsHelp (
+                # We can add some tip for the BE user
+                additionalSettingsHelp (
 					# variable to be used in the template e.g. {foo}
 					foo = bar
-				)
-			}
-			#2 {
-			#	label = Demo template list - server side search
-			#	path = EXT:vidi_frontend/Resources/Private/Standalone/DemoTemplateList.html
-			#	additionalSettingsHelp (
-			#	)
-			#}
-		}
+                )
+            }
+            #2 {
+            #	label = Demo template list - server side search
+            #	path = EXT:vidi_frontend/Resources/Private/Standalone/DemoTemplateList.html
+            #	additionalSettingsHelp (
+            #	)
+            #}
+        }
+        templates {
+            1 {
+                title = Default detail view
+                path = EXT:vidi_frontend/Resources/Private/Templates/Content/Show.html
+                additionalSettingsHelp = 
+            }
+            2 {
+                # Restrict visibility of this template for "fe_users" only.
+                dataType = fe_users
+                title = User detail view
+                path = EXT:vidi_frontend/Resources/Private/Templates/Content/ShowUser.html
+                additionalSettingsHelp = 
+            }
+        }
+        # Fluid variable mappings to be used in the detail view of your Fluid template.
+        fluidVariables {
+            fe_users = user
+        }
+        asset {
 
-		templates {
-			1 {
-				title = Default detail view
-				path = EXT:vidi_frontend/Resources/Private/Templates/Content/Show.html
-				additionalSettingsHelp (
-				)
-			}
-			2 {
-				# Restrict visibility of this template for "fe_users" only.
-				dataType = fe_users
-				title = User detail view
-				path = EXT:vidi_frontend/Resources/Private/Templates/Content/ShowUser.html
-				additionalSettingsHelp (
-				)
-			}
-		}
+            vidiCss {
+                # For none Bootstrap replace by EXT:vidi_frontend/Resources/Public/Build/StyleSheets/vidi_frontend.min.css
+                path = EXT:vidi_frontend/Resources/Public/Build/StyleSheets/vidi_frontend.bootstrap.min.css
+                type = css
 
-		# Fluid variable mappings to be used in the detail view of your Fluid template.
-		fluidVariables {
-			fe_users = user
-		}
+                # Optional key if loading assets through EXT:vhs.
+                dependencies = mainCss
+            }
+            vidiJs {
+                # For none Bootstrap replace by EXT:vidi_frontend/Resources/Public/Build/JavaScript/vidi_frontend.min.js
+                path = EXT:vidi_frontend/Resources/Public/Build/JavaScript/vidi_frontend.bootstrap.min.js
+                type = js
 
-		asset {
-
-			vidiCss {
-				# For none Bootstrap replace by EXT:vidi_frontend/Resources/Public/Build/StyleSheets/vidi_frontend.min.css
-				path = EXT:vidi_frontend/Resources/Public/Build/StyleSheets/vidi_frontend.bootstrap.min.css
-				type = css
-
-				# Optional key if loading assets through EXT:vhs.
-				dependencies = mainCss
-			}
-
-			vidiJs {
-				# For none Bootstrap replace by EXT:vidi_frontend/Resources/Public/Build/JavaScript/vidi_frontend.min.js
-				path = EXT:vidi_frontend/Resources/Public/Build/JavaScript/vidi_frontend.bootstrap.min.js
-				type = js
-
-				# Optional key if loading assets through EXT:vhs.
-				dependencies = mainJs
-			}
-		}
-
-		loadAssetWithVhsIfAvailable = 1
-	}
+                # Optional key if loading assets through EXT:vhs.
+                dependencies = mainJs
+            }
+        }
+        loadAssetWithVhsIfAvailable = 1
+    }
 }
 
 ###################
@@ -99,20 +90,20 @@ page_1416239670 {
         disableAllHeaderCode = 1
         disablePrefixComment = 1
         debug = 0
-        additionalHeaders = Content-type:application/json
+        additionalHeaders.10.header = Content-type:application/json
     }
-	10 = USER_INT
-	10 {
-		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-		extensionName = VidiFrontend
-		pluginName = Pi1
-		vendorName = Fab
-		switchableControllerActions {
-			Content {
-				1 = list
-			}
-		}
-	}
+    10 = USER_INT
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = VidiFrontend
+        pluginName = Pi1
+        vendorName = Fab
+        switchableControllerActions {
+            Content {
+                1 = list
+            }
+        }
+    }
 }
 
 #########################
@@ -120,25 +111,25 @@ page_1416239670 {
 #########################
 page_1457381088 = PAGE
 page_1457381088 {
-	typeNum = 1457381088
-	config {
-		xhtml_cleaning = 0
-		admPanel = 0
-		disableAllHeaderCode = 1
-		disablePrefixComment = 1
-		debug = 0
-		#additionalHeaders = Content-type:application/json
-	}
-	10 = USER_INT
-	10 {
-		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-		extensionName = VidiFrontend
-		pluginName = Pi1
-		vendorName = Fab
-		switchableControllerActions {
-			Content {
-				1 = execute
-			}
-		}
-	}
+    typeNum = 1457381088
+    config {
+        xhtml_cleaning = 0
+        admPanel = 0
+        disableAllHeaderCode = 1
+        disablePrefixComment = 1
+        debug = 0
+        #additionalHeaders = Content-type:application/json
+    }
+    10 = USER_INT
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = VidiFrontend
+        pluginName = Pi1
+        vendorName = Fab
+        switchableControllerActions {
+            Content {
+                1 = execute
+            }
+        }
+    }
 }

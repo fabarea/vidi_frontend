@@ -7,7 +7,8 @@ namespace Fab\VidiFrontend\View\Grid;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use Fab\Vidi\Formatter\FormatterInterface;
 use Fab\Vidi\Resolver\ContentObjectResolver;
 use Fab\Vidi\Resolver\FieldPathResolver;
 use Fab\Vidi\Tca\FieldType;
@@ -26,16 +27,6 @@ class Row extends AbstractComponentView
 {
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
-     */
-    protected $controllerContext;
-
-    /**
      * Registry for storing variable values and speed up the processing.
      *
      * @var array
@@ -49,7 +40,6 @@ class Row extends AbstractComponentView
 
     public function __construct(array $columns = [])
     {
-        $this->configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $this->columns = $columns;
     }
 
@@ -79,7 +69,6 @@ class Row extends AbstractComponentView
                 foreach ($renderers as $rendererClassName => $rendererConfiguration) {
 
                     $rendererConfiguration['uriBuilder'] = $this->getUriBuilder();
-                    //$rendererConfiguration['contentElement'] = $this->configurationManager->getContentObject();
 
                     /** @var $rendererObject \Fab\Vidi\Grid\ColumnRendererInterface */
                     $rendererObject = GeneralUtility::makeInstance($rendererClassName);
@@ -190,17 +179,17 @@ class Row extends AbstractComponentView
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder|object
+     * @return UriBuilder|object
      */
     protected function getUriBuilder()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
+        return GeneralUtility::makeInstance(UriBuilder::class);
     }
 
     /**
      * Compute the value for the Content object according to a field name.
      *
-     * @param \Fab\Vidi\Domain\Model\Content $object
+     * @param Content $object
      * @param string $fieldNameAndPath
      * @return string
      */
@@ -236,7 +225,7 @@ class Row extends AbstractComponentView
      * Process the value
      *
      * @param string $value
-     * @param \Fab\Vidi\Domain\Model\Content $object
+     * @param Content $object
      * @param string $fieldNameAndPath
      * @return string
      */
@@ -276,7 +265,7 @@ class Row extends AbstractComponentView
         }
         $className = $configuration['format'];
 
-        /** @var \Fab\Vidi\Formatter\FormatterInterface $formatter */
+        /** @var FormatterInterface $formatter */
         $formatter = GeneralUtility::makeInstance($className);
         $value = $formatter->format($value);
 
@@ -289,26 +278,6 @@ class Row extends AbstractComponentView
     protected function getFieldPathResolver()
     {
         return GeneralUtility::makeInstance(FieldPathResolver::class);
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @return $this
-     */
-    public function setConfigurationManager($configurationManager): self
-    {
-        $this->configurationManager = $configurationManager;
-        return $this;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
-     * @return $this
-     */
-    public function setControllerContext($controllerContext): self
-    {
-        $this->controllerContext = $controllerContext;
-        return $this;
     }
 
     /**

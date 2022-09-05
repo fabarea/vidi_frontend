@@ -41,6 +41,7 @@
 							<label>LLL:EXT:vidi_frontend/Resources/Private/Language/locallang.xlf:settings.selection</label>
 							<config>
 								<type>select</type>
+<renderType>selectSingle</renderType>
 								<itemsProcFunc>Fab\VidiFrontend\Backend\TceForms->getSelections</itemsProcFunc>
 								<size>1</size>
 								<maxitems>1</maxitems>

@@ -1,34 +1,44 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
+use Fab\VidiFrontend\Form\Elements\EnableFieldsElement;
+use Fab\VidiFrontend\Form\Elements\TemplateMenuElement;
+use Fab\VidiFrontend\Form\Elements\AdditionalSettingsListHelpElement;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use Fab\VidiFrontend\Controller\ContentController;
 use Fab\VidiFrontend\Controller\TemplateBasedContentController;
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 call_user_func(
     function () {
 
-        $configuration = $configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+        $configuration = $configuration = GeneralUtility::makeInstance(
+            ExtensionConfiguration::class
         )->get('vidi_frontend');
 
         if (!isset($configuration['autoload_typoscript']) || true === (bool)$configuration['autoload_typoscript']) {
 
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
+            ExtensionManagementUtility::addTypoScript(
                 'vidi_frontend',
                 'constants',
                 '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:vidi_frontend/Configuration/TypoScript/constants.txt">'
             );
 
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
+            ExtensionManagementUtility::addTypoScript(
                 'vidi_frontend',
                 'setup',
                 '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:vidi_frontend/Configuration/TypoScript/setup.txt">'
             );
         }
 
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-            'Fab.vidi_frontend',
+        ExtensionUtility::configurePlugin(
+            'VidiFrontend',
             'Pi1',
             [
                 ContentController::class => 'index, list, show, execute',
@@ -44,8 +54,8 @@ call_user_func(
             ? 'list'
             : 'index, list';
 
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-            'Fab.vidi_frontend',
+        ExtensionUtility::configurePlugin(
+            'VidiFrontend',
             'TemplateBasedContent',
             [
                 TemplateBasedContentController::class => 'index, list, show',
@@ -59,14 +69,14 @@ call_user_func(
         $icons = [
             'content-vidi-frontend' => 'EXT:vidi_frontend/Resources/Public/Images/VidiFrontend.png',
         ];
-        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         foreach ($icons as $identifier => $path) {
             $iconRegistry->registerIcon(
-                $identifier, TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class, ['source' => $path]
+                $identifier, BitmapIconProvider::class, ['source' => $path]
             );
         }
 
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+        ExtensionManagementUtility::addPageTSConfig(
             'mod {
                 wizards.newContentElement.wizardItems.plugins {
                     #header = LLL:EXT:sitepackage/Resources/Private/Language/newContentElements.xlf:extra
@@ -98,19 +108,19 @@ call_user_func(
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1656697370] = [
             'nodeName' => 'vidiFrontendEnableFields',
             'priority' => 40,
-            'class' => Fab\VidiFrontend\Form\Elements\EnableFieldsElement::class,
+            'class' => EnableFieldsElement::class,
         ];
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1656697371] = [
             'nodeName' => 'vidiFrontendTemplateMenu',
             'priority' => 40,
-            'class' => Fab\VidiFrontend\Form\Elements\TemplateMenuElement::class,
+            'class' => TemplateMenuElement::class,
         ];
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1656697372] = [
             'nodeName' => 'vidiFrontendAdditionalSettingsListHelpListTemplates',
             'priority' => 40,
-            'class' => Fab\VidiFrontend\Form\Elements\AdditionalSettingsListHelpElement::class,
+            'class' => AdditionalSettingsListHelpElement::class,
             'parameters' => [
                 'typoscriptConfigurationKey' => 'listTemplates',
             ],
@@ -119,14 +129,14 @@ call_user_func(
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1656697373] = [
             'nodeName' => 'vidiFrontendAdditionalSettingsListHelpTemplates',
             'priority' => 40,
-            'class' => Fab\VidiFrontend\Form\Elements\AdditionalSettingsListHelpElement::class,
+            'class' => AdditionalSettingsListHelpElement::class,
             'parameters' => [
                 'typoscriptConfigurationKey' => 'template',
             ],
         ];
 
         // Connect "preProcessTca" signal slot with the metadata service.
-        $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+        $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $signalSlotDispatcher->connect(
             'Fab\Vidi\Tca\Tca',
             'preProcessTca',

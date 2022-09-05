@@ -7,7 +7,7 @@ namespace Fab\VidiFrontend\Domain\Validator;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /**
@@ -32,7 +32,7 @@ class ContentDataValidator extends AbstractValidator
     /**
      * Returns an instance of the Frontend object.
      *
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TypoScriptFrontendController
      */
     static protected function getFrontendObject()
     {

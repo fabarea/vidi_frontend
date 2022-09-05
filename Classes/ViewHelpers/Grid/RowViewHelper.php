@@ -7,7 +7,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
 use Fab\VidiFrontend\View\Grid\Row;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -19,11 +19,6 @@ use Fab\Vidi\Domain\Model\Content;
  */
 class RowViewHelper extends AbstractViewHelper
 {
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
 
     /**
      * @return void
@@ -41,7 +36,6 @@ class RowViewHelper extends AbstractViewHelper
      */
     public function render(): string
     {
-
         $object = $this->arguments['object'];
         $index = $this->arguments['index'];
 
@@ -55,8 +49,6 @@ class RowViewHelper extends AbstractViewHelper
 
         /** @var Row $row */
         $row = GeneralUtility::makeInstance(Row::class, $columns);
-        $row->setConfigurationManager($this->configurationManager)
-            ->setControllerContext($this->controllerContext);
 
         $renderedRow = $row->render($object, $index);
         $formattedRow = $this->format($object, $renderedRow);
@@ -96,16 +88,11 @@ class RowViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
+     * @return UriBuilder
      */
-    protected function getUriBuilder()
+    protected function getUriBuilder(): UriBuilder
     {
-        return $this->controllerContext->getUriBuilder();
-    }
-
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
+        return GeneralUtility::makeInstance(UriBuilder::class);
     }
 
 }

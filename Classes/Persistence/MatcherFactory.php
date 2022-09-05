@@ -7,7 +7,9 @@ namespace Fab\VidiFrontend\Persistence;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException;
+use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException;
+use Fab\Vidi\Exception\NotExistingClassException;
 use Fab\Vidi\Domain\Model\Selection;
 use Fab\Vidi\Domain\Repository\SelectionRepository;
 use Fab\Vidi\Resolver\FieldPathResolver;
@@ -50,8 +52,8 @@ class MatcherFactory implements SingletonInterface
      * @param array $matches
      * @param string $dataType
      * @return Matcher
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws InvalidSlotReturnException
+     * @throws InvalidSlotException
      * @throws \InvalidArgumentException
      */
     public function getMatcher(array $settings, array $matches = [], $dataType)
@@ -59,7 +61,7 @@ class MatcherFactory implements SingletonInterface
         $this->settings = $settings;
 
         /** @var $matcher Matcher */
-        $matcher = GeneralUtility::makeInstance(\Fab\Vidi\Persistence\Matcher::class, $matches, $dataType);
+        $matcher = GeneralUtility::makeInstance(Matcher::class, $matches, $dataType);
 
         $matcher = $this->applyCriteriaFromDataTables($matcher, $dataType);
         $matcher = $this->applyCriteriaFromSelection($matcher, $dataType);
@@ -85,7 +87,7 @@ class MatcherFactory implements SingletonInterface
      * @param array $matches
      * @param string $dataType
      * @return Matcher $matcher
-     * @throws \Fab\Vidi\Exception\NotExistingClassException
+     * @throws NotExistingClassException
      */
     protected function applyCriteriaFromMatchesArgument(Matcher $matcher, $matches, $dataType)
     {
@@ -271,8 +273,8 @@ class MatcherFactory implements SingletonInterface
      *
      * @param Matcher $matcher
      * @signal
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @throws InvalidSlotException
+     * @throws InvalidSlotReturnException
      */
     protected function emitPostProcessMatcherObjectSignal(Matcher $matcher)
     {

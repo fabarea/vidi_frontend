@@ -8,7 +8,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid\Column;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use Fab\Vidi\Resolver\FieldPathResolver;
 use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -55,10 +55,10 @@ class ConfigurationViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return object|\Fab\Vidi\Resolver\FieldPathResolver
+     * @return object|FieldPathResolver
      */
     protected function getFieldPathResolver()
     {
-        return GeneralUtility::makeInstance(\Fab\Vidi\Resolver\FieldPathResolver::class);
+        return GeneralUtility::makeInstance(FieldPathResolver::class);
     }
 }

@@ -8,7 +8,8 @@ namespace Fab\VidiFrontend\Controller;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
+use Psr\Http\Message\ResponseInterface;
 use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
 use Fab\VidiFrontend\Configuration\ContentElementConfiguration;
 use Fab\VidiFrontend\MassAction\MassActionInterface;
@@ -27,7 +28,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Fab\Vidi\Domain\Model\Content;
 use Fab\VidiFrontend\Persistence\MatcherFactory;
 use Fab\VidiFrontend\Persistence\OrderFactory;
-use TYPO3\CMS\Extbase\Annotation\Validate;
 
 /**
  * Controller which handles actions related to Vidi in the Backend.
@@ -36,7 +36,7 @@ class ContentController extends ActionController
 {
 
     /**
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws NoSuchArgumentException
      */
     public function initializeAction()
     {
@@ -62,12 +62,12 @@ class ContentController extends ActionController
         }
     }
 
-    public function indexAction(array $matches = [])
+    public function indexAction(array $matches = []): ResponseInterface
     {
         $settings = $this->computeFinalSettings($this->settings);
 
         if (empty($settings['dataType'])) {
-            return '<strong style="color: red">Please select a content type to be displayed!</strong>';
+            return $this->htmlResponse('<strong style="color: red">Please select a content type to be displayed!</strong>');
         }
         $dataType = $settings['dataType'];
 
@@ -79,7 +79,7 @@ class ContentController extends ActionController
         // Handle columns case
         $columns = ColumnsConfiguration::getInstance()->get($dataType, $settings['columns']);
         if (count($columns) === 0) {
-            return '<strong style="color: red">Please select at least one column to be displayed!</strong>';
+            return $this->htmlResponse('<strong style="color: red">Please select at least one column to be displayed!</strong>');
         }
 
         // Assign values.
@@ -108,6 +108,7 @@ class ContentController extends ActionController
         // Initialize Content Element settings to be accessible across the request life cycle.
         $contentObjectRenderer = $this->configurationManager->getContentObject();
         ContentElementConfiguration::getInstance($contentObjectRenderer->data);
+        return $this->htmlResponse();
     }
 
     /**
@@ -115,10 +116,10 @@ class ContentController extends ActionController
      *
      * @param array $matches
      * @param array $contentData
-     * @Validate("Fab\VidiFrontend\Domain\Validator\ContentDataValidator", param="contentData")
+     * @TYPO3\CMS\Extbase\Annotation\Validate("Fab\VidiFrontend\Domain\Validator\ContentDataValidator", param="contentData")
      * @return void
      */
-    public function listAction(array $contentData, array $matches = [])
+    public function listAction(array $contentData, array $matches = []): ResponseInterface
     {
         $settings = ContentElementConfiguration::getInstance($contentData)->getSettings();
         $settings = $this->computeFinalSettings($settings);
@@ -169,6 +170,7 @@ class ContentController extends ActionController
         $this->view->assign('numberOfObjects', $contentService->getNumberOfObjects());
         $this->view->assign('pager', $pager);
         $this->view->assign('response', $this->responseFactory->createResponse());
+        return $this->htmlResponse();
     }
 
     /**
@@ -177,10 +179,10 @@ class ContentController extends ActionController
      * @param array $contentData
      * @param string $actionName
      * @param array $matches
-     * @Validate("Fab\VidiFrontend\Domain\Validator\ContentDataValidator", param="contentData")
+     * @TYPO3\CMS\Extbase\Annotation\Validate("Fab\VidiFrontend\Domain\Validator\ContentDataValidator", param="contentData")
      * @return string
      */
-    public function executeAction(array $contentData, $actionName, array $matches = [])
+    public function executeAction(array $contentData, $actionName, array $matches = []): ResponseInterface
     {
         $settings = ContentElementConfiguration::getInstance($contentData)->getSettings();
         $settings = $this->computeFinalSettings($settings);
@@ -190,7 +192,7 @@ class ContentController extends ActionController
         $massActions = FrontendTca::grid($dataType)->getMassActions();
 
         if (empty($massActions[$actionName])) {
-            return '<strong style="color: red">Action Name is not valid.</strong>';
+            return $this->htmlResponse('<strong style="color: red">Action Name is not valid.</strong>');
         }
 
         // In the context of Ajax, we must define manually the current Content Element object.
@@ -225,18 +227,19 @@ class ContentController extends ActionController
             $task();
             exit();
         } else {
-            return $result->getOutput();
+            return $this->htmlResponse($result->getOutput());
         }
+        return $this->htmlResponse();
     }
 
-    public function showAction(Content $content)
+    public function showAction(Content $content): ResponseInterface
     {
         $settings = $this->computeFinalSettings($this->settings);
 
         // Configure the template path according to the Plugin settings.
         $pathAbs = GeneralUtility::getFileAbsFileName($settings['templateDetail']);
         if (!is_file($pathAbs)) {
-            return '<strong style="color: red">I could not find the appropriate template file.</strong>';
+            return $this->htmlResponse('<strong style="color: red">I could not find the appropriate template file.</strong>');
         }
 
         $variableName = 'object';
@@ -247,6 +250,7 @@ class ContentController extends ActionController
 
         $this->view->setTemplatePathAndFilename($pathAbs);
         $this->view->assign($variableName, $content);
+        return $this->htmlResponse();
     }
 
     /**

@@ -7,7 +7,7 @@ namespace Fab\VidiFrontend\Configuration;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use Fab\Vidi\Exception\InvalidKeyInArrayException;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,7 +35,7 @@ class ColumnsConfiguration
      * @param string $dataType
      * @param string $columnList
      * @return array
-     * @throws \Fab\Vidi\Exception\InvalidKeyInArrayException
+     * @throws InvalidKeyInArrayException
      */
     public function get($dataType, $columnList = '')
     {

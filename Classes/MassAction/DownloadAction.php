@@ -7,7 +7,7 @@ namespace Fab\VidiFrontend\MassAction;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use Fab\VidiFrontend\Service\ContentService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -57,7 +57,7 @@ class DownloadAction extends AbstractMassAction
      *
      * @param ContentService $contentService
      * @return ResultActionInterface
-     * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
+     * @throws FileDoesNotExistException
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */

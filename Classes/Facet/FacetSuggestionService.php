@@ -7,7 +7,8 @@ namespace Fab\VidiFrontend\Facet;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use Fab\Vidi\Domain\Repository\ContentRepository;
+use Fab\Vidi\Resolver\FieldPathResolver;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Fab\Vidi\Domain\Repository\ContentRepositoryFactory;
@@ -81,9 +82,8 @@ class FacetSuggestionService
                     }
                 }
             } elseif (!Tca::table($dataType)->field($fieldName)->isTextArea()) { // We don't want suggestion if field is text area.
-
                 // Fetch the adequate repository
-                /** @var \Fab\Vidi\Domain\Repository\ContentRepository $contentRepository */
+                /** @var ContentRepository $contentRepository */
                 $contentRepository = ContentRepositoryFactory::getInstance($this->dataType);
 
                 /** @var $matcher Matcher */
@@ -128,7 +128,7 @@ class FacetSuggestionService
     }
 
     /**
-     * @return \Fab\Vidi\Resolver\FieldPathResolver
+     * @return FieldPathResolver
      * @throws \InvalidArgumentException
      */
     protected function getFieldPathResolver()

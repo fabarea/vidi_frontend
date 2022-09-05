@@ -7,7 +7,7 @@ namespace Fab\VidiFrontend\Service;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use Fab\Vidi\Service\DataService;
 use Fab\VidiFrontend\Plugin\PluginParameter;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -80,7 +80,7 @@ class ContentType implements SingletonInterface
     /**
      * Returns an instance of the page repository.
      *
-     * @return \TYPO3\CMS\Frontend\Page\PageRepository
+     * @return PageRepository
      */
     static protected function getPageRepository()
     {

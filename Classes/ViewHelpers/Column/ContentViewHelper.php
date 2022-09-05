@@ -88,7 +88,7 @@ class ContentViewHelper extends AbstractViewHelper
     /**
      * Compute the value for the Content object according to a field name.
      *
-     * @param \Fab\Vidi\Domain\Model\Content $object
+     * @param Content $object
      * @param string $fieldNameAndPath
      * @return string
      */
@@ -124,7 +124,7 @@ class ContentViewHelper extends AbstractViewHelper
      * Process the value
      *
      * @param string $value
-     * @param \Fab\Vidi\Domain\Model\Content $object
+     * @param Content $object
      * @param string $fieldNameAndPath
      * @return string
      */

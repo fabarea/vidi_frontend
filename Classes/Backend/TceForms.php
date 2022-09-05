@@ -8,7 +8,7 @@ namespace Fab\VidiFrontend\Backend;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use Fab\Vidi\Domain\Repository\SelectionRepository;
 use Fab\Vidi\Domain\Model\Selection;
 use Fab\Vidi\Facet\FacetInterface;
 use Fab\VidiFrontend\Tca\FrontendTca;
@@ -45,11 +45,7 @@ class TceForms
     {
 
         // Get existing flexform configuration
-        if (version_compare(TYPO3_branch, '7.0', '<')) {
-            $flexform = $this->getLegacyFlexform($parameters);
-        } else {
-            $flexform = $parameters['row']['pi_flexform'];
-        }
+        $flexform = $parameters['row']['pi_flexform'];
 
         $isVisualSearchBar = false;
         $normalizedFlexform = $this->normalizeFlexForm($flexform);
@@ -182,11 +178,7 @@ class TceForms
         );
 
         // Get existing flexform configuration
-        if (version_compare(TYPO3_branch, '7.0', '<')) {
-            $flexform = $this->getLegacyFlexform($parameters);
-        } else {
-            $flexform = $parameters['row']['pi_flexform'];
-        }
+        $flexform = $parameters['row']['pi_flexform'];
         $normalizedFlexform = $this->normalizeFlexForm($flexform);
         if (!empty($normalizedFlexform['settings']) && $normalizedFlexform['settings']['gridConfiguration']) {
             $gridConfiguration = trim($normalizedFlexform['settings']['gridConfiguration']);
@@ -254,11 +246,7 @@ class TceForms
             $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
         } else {
 
-            if (version_compare(TYPO3_branch, '7.0', '<')) {
-                $configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
-            } else {
-                $configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
-            }
+            $configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
 
             $parameters['items'][] = ''; // Empty value
             foreach ($configuration['settings']['templates'] as $template) {
@@ -284,12 +272,7 @@ class TceForms
             $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
         } else {
 
-
-            if (version_compare(TYPO3_branch, '7.0', '<')) {
-                $configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
-            } else {
-                $configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
-            }
+            $configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
 
             if (empty($configuredDataType)) {
                 $parameters['items'][] = array('No columns to display yet! Select a content type first.', '', null);
@@ -317,11 +300,7 @@ class TceForms
             $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
         } else {
 
-            if (version_compare(TYPO3_branch, '7.0', '<')) {
-                $configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
-            } else {
-                $configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
-            }
+            $configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
 
             if (empty($configuredDataType)) {
                 $parameters['items'][] = array('No columns to display yet! Select a content type first.', '', null);
@@ -347,11 +326,7 @@ class TceForms
             $parameters['items'][] = array('No template found. Forgotten to load the static TS template?', '', null);
         } else {
 
-            if (version_compare(TYPO3_branch, '7.0', '<')) {
-                $configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
-            } else {
-                $configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
-            }
+            $configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
 
             if (!empty($configuredDataType)) {
                 foreach (FrontendTca::grid($configuredDataType)->getFacetNames() as $facet) {
@@ -381,14 +356,10 @@ class TceForms
             $parameters['items'][] = array('', '', null);
 
             $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            /** @var \Fab\Vidi\Domain\Repository\SelectionRepository $selectionRepository */
-            $selectionRepository = $objectManager->get(\Fab\Vidi\Domain\Repository\SelectionRepository::class);
+            /** @var SelectionRepository $selectionRepository */
+            $selectionRepository = $objectManager->get(SelectionRepository::class);
 
-            if (version_compare(TYPO3_branch, '7.0', '<')) {
-                $configuredDataType = $this->getDataTypeFromFlexformLegacy($parameters);
-            } else {
-                $configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
-            }
+            $configuredDataType = $this->getDataTypeFromFlexform($parameters['flexParentDatabaseRow']['pi_flexform']);
 
             if ($configuredDataType) {
 

@@ -7,7 +7,7 @@ namespace Fab\VidiFrontend\ViewHelpers\Grid;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use Fab\VidiFrontend\Facet\FacetSuggestionService;
 use Fab\VidiFrontend\Tca\FrontendTca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -37,7 +37,7 @@ class SuggestionsViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return \Fab\VidiFrontend\Facet\FacetSuggestionService
+     * @return FacetSuggestionService
      */
     protected function getFacetSuggestionService()
     {

@@ -7,7 +7,7 @@ namespace Fab\VidiFrontend\MassAction;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use Fab\Vidi\Exception\NotExistingClassException;
 use Fab\Vidi\Tca\Tca;
 use Fab\VidiFrontend\Configuration\ColumnsConfiguration;
 use Fab\VidiFrontend\Resolver\FieldPathResolver;
@@ -91,7 +91,7 @@ class ExportCsvAction extends AbstractMassAction
      * @param array $objects
      * @param string $dataType
      * @throws \InvalidArgumentException
-     * @throws \Fab\Vidi\Exception\NotExistingClassException
+     * @throws NotExistingClassException
      */
     protected function writeCsvFile(array $objects, $dataType)
     {

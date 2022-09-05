@@ -1,13 +1,13 @@
 <?php
 namespace Fab\VidiFrontend\MassAction;
 
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /*
  * This file is part of the Fab/VidiFrontend project under GPLv2 or later.
  *
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
 /**
  * Class AbstractMassAction
  */
@@ -77,7 +77,7 @@ abstract class AbstractMassAction implements MassActionInterface
     /**
      * Returns an instance of the Frontend object.
      *
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TypoScriptFrontendController
      */
     static protected function getFrontendObject()
     {
