@@ -109,7 +109,7 @@ class FrontendGridService extends GridService
             $divider->getName() => $divider,
         ];
 
-        if (is_array($this->tca['actions'])) {
+        if (isset($this->tca['actions']) && is_array($this->tca['actions'])) {
             /** @var MassActionInterface $action */
             foreach ($this->tca['actions'] as $action) {
                 if (is_string($action)) {
