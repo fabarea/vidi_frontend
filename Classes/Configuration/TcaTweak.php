@@ -7,6 +7,8 @@ namespace Fab\VidiFrontend\Configuration;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use Fab\Vidi\Tca\TcaServiceInterface;
 
@@ -93,12 +95,11 @@ class TcaTweak
 
     /**
      * Returns whether the current mode is Frontend
-     *
-     * @return bool
      */
-    protected function isFrontendMode()
+    protected function isFrontendMode(): bool
     {
-        return ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
+        return ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
     }
 
 }
