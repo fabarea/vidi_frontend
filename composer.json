@@ -28,6 +28,16 @@
 	},
 	"require": {
 		"typo3/cms-core": "^11.0",
-		"fab/vidi": "^5 || dev-master"
+		"fab/vidi": "^5 || dev-master",
+		"typo3/cms-backend": "^11.0",
+		"typo3/cms-extbase": "^11.0",
+		"typo3/cms-frontend": "^11.0",
+		"fluidtypo3/vhs": "^6.1"
+	},
+	"config": {
+		"allow-plugins": {
+			"typo3/cms-composer-installers": true,
+			"typo3/class-alias-loader": true
+		}
 	}
 }
