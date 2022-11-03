@@ -31,8 +31,7 @@
 		"fab/vidi": "^5 || dev-master",
 		"typo3/cms-backend": "^11.0",
 		"typo3/cms-extbase": "^11.0",
-		"typo3/cms-frontend": "^11.0",
-		"fluidtypo3/vhs": "^6.1"
+		"typo3/cms-frontend": "^11.0"
 	},
 	"config": {
 		"allow-plugins": {
