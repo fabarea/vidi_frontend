@@ -1,3 +1,8 @@
+## 5.0.10 (2023-03-23)
+
+[DOCS] Update README
+[TASK] Update vidi dependencies in composer.json
+
 ## 5.0.9 (2022-11-08)
 
 - [FIX] Compatibility with CLI mode
