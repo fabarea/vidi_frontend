@@ -12,6 +12,18 @@ The Filter bar is provided by the [Visual Search](http://documentcloud.github.io
 
 Live example http://www.washinhcf.org/resources/publications/
 
+## Compatibility and Maintenance
+
+This package is currently maintained for the following versions:
+
+| TYPO3 Version | Package Version | Branch  | Maintained    |
+|---------------|-----------|---------|---------------|
+| TYPO3 11.5.x  | 5.x       | master  | Yes           |
+| TYPO3 10.4.x  | 4.x       | -       | No            |
+| TYPO3 9.x     | 3.x       | -       | No            |
+| TYPO3 9.x     | 2.x       | -       | No            |
+| TYPO3 7.x     | 1.x       | -       | No            |
+
 Project info and releases
 -------------------------
 
